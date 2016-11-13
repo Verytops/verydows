@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript">
+function startClear(){
+  var selected = $('#clean-select input:checked');
+  if(selected.length){
+    var clean = [];
+    selected.each(function(){  
+      clean.push($(this).val());  
+    });
+    cleanUp(clean);
+  }else{
+    $('body').vdsAlert({msg:'请选择至少一种您需要清理的类型', time:2});
+  }
+}
+
+function cleanUp(clean){
+  clean = clean || ['data', 'static', 'template'];
+  $.ajax({
+    type: 'post',
+    dataType: 'json',
+    url: "<{url m=$MOD c='cleaner' a='wiping'}>",
+    data: {clean:clean},
+    beforeSend: function(){$.vdsMasker(true);$('#waiting').vdsMidst({gotop: -200}).show();},
+    success: function(res){
+      $.vdsMasker(false);
+      $('#waiting').hide();
+      if(res.status == 'success'){
+        $('body').vdsAlert({msg:'清理完成', time:1});
+      }else{
+        $('body').vdsAlert({msg:res.msg, time:2}); 
+      }
+    },
+    error: function(){$.vdsMasker(false);$('#waiting').hide();$('body').vdsAlert({msg:'处理请求时发生错误'});}
+  });
+}
+</script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>系统清理</h2></div>
+  <div class="box">
+    <div class="bw-row pad10 cut">
+      <h3 class="c888">使用说明:</h3>
+      <div class="mt8 c888">
+        <p>当修改了系统配置、站点内容、模板以及进行了数据恢复或系统运行异常等情况时，可尝试系统清理。</p>
+        <p class="mt5">进行系统清理时，会增加服务器负载，一般情况下请尽量避开在访问高峰时使用此功能。</p>
+      </div>
+    </div>
+    <div class="bw-row mt5 pad10 ta-c cut"><a class="ubtn btn" onclick="cleanUp()">一键全部清理</a></div>
+    <div class="module mt5 cut">
+      <div class="bw-row pad10 cut">
+        <dl class="ml5 pad5" id="clean-select">
+          <dt><h3 class="c888">选择需要清理的类型:</h3></dt>
+          <dd class="mt15">
+            <label><input name="clean[]" type="checkbox" value="data" /><font class="ml10 c666">数据缓存</font></label>
+            <font class="ml20 caaa vtcmid">系统生成的数据缓存</font>
+          </dd>
+          <dd class="mt10">
+            <label><input name="clean[]" type="checkbox" value="template" /><font class="ml10 c666">静态缓存</font></label>
+            <font class="ml20 caaa vtcmid">系统生成的静态HTML、CSS、Javascript等</font>
+          </dd>
+          <dd class="mt10">
+            <label><input name="clean[]" type="checkbox" value="custom" /><font class="ml10 c666">模板缓存</font></label>
+            <font class="ml20 caaa vtcmid">系统模板引擎编译后的模板缓存</font>
+          </dd>
+        </dl>
+      </div>
+      <div class="bw-row mt5 pad10 ta-c"><button type="button" class="cbtn btn" onclick="startClear()">开始清理</button></div>
+    </div>
+  </div>
+</div>
+<!-- waiting start -->
+<div class="waiting ta-c cut hide" id="waiting">
+  <h3 class="c666 f14">正在清理...</h3>
+  <div class="loading"></div>
+</div>
+<!-- waiting end -->
+</body>
+</html>

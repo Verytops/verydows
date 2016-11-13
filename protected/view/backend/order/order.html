@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/poper.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript">
+function popOperate(pop_id){
+  $('#'+pop_id).vdsMidst({wrapper:$(window)});
+  $('#'+pop_id).show();
+  $.vdsMasker(true);
+}
+function closeOperate(pop_id){
+  $('#'+pop_id).hide().find('span.vdsfielderr').remove();
+  $('#'+pop_id).find('form')[0].reset();
+  $.vdsMasker(false);
+}
+</script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>订单详情:<font class="c888 ml5">[<{$order.id}>]</font></h2></div>
+  <div class="box">
+    <div class="module">
+      <div class="bw-row pad10 cut">
+        <table class="dataform">
+          <tr>
+            <th width="12%">订单号</th>
+            <td width="38%"><{$order.order_id}></td>
+            <th width="12%">用户</th>
+            <td><{$user.username}><font class="c888 ml5">[<{$user.email}>]</font></td>
+          </tr>
+          <tr>
+            <th>订单总额</th>
+            <td><b class="red"><{$order.order_amount}></b> 元 <font class="c666 ml10">(含运费)</font></td>
+            <th>下单日期</th>
+            <td><{date('Y-m-d H:i:s', $order.created_date)}></td>
+          </tr>
+          <tr>
+            <th>运费</th>
+            <td><{$order.shipping_amount}> 元</td>
+            <th>支付方式</th>
+            <td><{$order.payment_method_name}></td>
+          </tr>
+          <tr>
+            <th>订单状态</th>
+            <td><{if $order.order_status == 0}><b class="red"><{$status_map[$order.order_status]}></b><{else}><{$status_map[$order.order_status]}><{/if}></td>
+            <th>配送方式</th>
+            <td><{$order.shipping_method_name}></td>
+          </tr>
+          <tr>
+            <th>付款时间</th>
+            <td><{if !empty($order.payment_date)}><{date('Y-m-d H:i:s', $order.payment_date)}><{else}><font class="caaa">无</font><{/if}></td>
+            <th>第三方流水号</th>
+            <td><{if !empty($order.thirdparty_trade_id)}><{$order.thirdparty_trade_id}><{else}><font class="caaa">无</font><{/if}></td>
+          </tr>
+          <tr>
+            <th>收件人信息</th>
+            <td>
+              <div class="module" id="order-consignee">
+                <p><{$consignee.receiver}><font class="c555 ml10">(<b><{$consignee.mobile}></b>)</font></p>
+                <p class="mt5"><{$consignee.province}> <{$consignee.city}> <{$consignee.borough}> <{$consignee.address}></p>
+                <{if !empty($consignee.zip)}>
+                <p class="mt5"><{$consignee.zip}></p>
+                <{/if}>
+              </div>
+            </td>
+            <th>下单备注</th>
+            <td><{if !empty($order.memos)}><p class="c666"><{$order.memos}></p><{else}><p class="caaa">无</p><{/if}></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="module mt5">
+      <div class="bw-row pad10 cut">
+        <table class="datalist" id="goods-list">
+          <tr>
+            <th colspan="2">订单商品</th>
+            <th width="130">单价(元)</th>
+            <th width="90">数量</th>
+          </tr>
+          <{foreach $goods_list as $v}>
+          <tr>
+            <td width="80"><a href="<{url c='goods' a='index' id=$v.goods_id}>" target="_blank"><img class="gim" width="60" height="60" src="upload/goods/prime/0/<{$v.goods_image}>" /></a></td>
+            <td class="ta-l"><p><a class="blue" target="_blank" href="<{url c='goods' a='index' id=$v.goods_id}>"><{$v.goods_name}></a></p>
+              <{if !empty($v.goods_opts)}>
+              <p class="c999 mt5"><{foreach $v.goods_opts as $o}><span class="mr5">[<{$o.opt_type}>: <font class="c666"><{$o.opt_text}></font>]</span><{/foreach}></p>
+              <{/if}> </td>
+            <td><{$v.goods_price}></td>
+            <td><{$v.goods_qty}></td>
+          </tr>
+          <{/foreach}>
+        </table>
+        <div class="pad10 ta-c c888">商品金额共计：<font class="red"><{$order.goods_amount}> 元</font></div>
+      </div>
+    </div>
+    <div class="bw-row mt5 pad10 ta-c cut">
+      <{if $order.order_status == 1 || $order.order_status == 2}>
+      <button type="button" class="cbtn btn ml20 mr20" onclick="popOperate('pop-consignee')">修改收件人信息</button>
+      <{include file='backend/order/operate_consignee.html'}>
+      <{/if}>
+      <{if $order.order_status == 1}>
+      <button type="button" class="cbtn btn ml20 mr20" onclick="popOperate('pop-amount')">更改订单金额</button>
+      <{include file='backend/order/operate_amount.html'}>
+      <button type="button" class="cbtn btn ml20 mr20" onclick="popOperate('pop-cancel')">取消交易</button>
+      <{include file='backend/order/operate_cancel.html'}>
+      <{/if}>
+      <{if $order.order_status > 1 || ($order.order_status > 0 && $order.payment_method == 2)}>
+      <button type="button" class="cbtn btn ml20 mr20" onclick="popOperate('pop-shipping')">发货配送</button>
+      <{include file='backend/order/operate_shipping.html'}>
+      <{/if}>
+      <{if $order.order_status == 0}>
+      <button type="button" class="cbtn btn ml20 mr20" onclick="popOperate('pop-resume')">恢复交易</button>
+      <{include file='backend/order/operate_resume.html'}>
+      <script type="text/javascript">
+        function deleteOrder(e){
+          $(e).vdsConfirm({
+            text: '您确定要删除该订单吗? 删除后该订单将无法恢复!',
+            top: -25,
+            left: 300,
+            confirmed: function(){
+              window.location.href= "<{url m=$MOD c='order' a='delete' id=$order.order_id}>";
+            },
+          });
+        }
+      </script>
+      <button type="button" class="cbtn btn ml20 mr20" onclick="deleteOrder(this)">删除</button>
+      <{/if}>
+    </div>
+    <{if !empty($shipped_list)}>
+    <div class="bw-row mt5 pad10 c666 cut">
+      <table class="datalist">
+        <tr>
+          <th width="180">物流承运商</th>
+          <th width="180">运单号</th>
+          <th width="150">发货日期</th>
+          <th class="ta-l">备注</th>
+        </tr>
+        <{foreach $shipped_list as $v}>
+        <tr>
+          <td><{$v.carrier}></td>
+          <td><{$v.tracking_no}></td>
+          <td><{date('Y-m-d H:i:s', $v.dateline)}></td>
+          <td class="ta-l"><{if !empty($v.memos)}><{$v.memos}><{else}><font class="c999">无</font><{/if}></td>
+        </tr>
+        <{/foreach}>
+      </table>
+    </div>
+    <{/if}>
+    <{if !empty($log_list)}>
+    <div class="bw-row mt5 pad10 c666 cut">
+      <table class="datalist">
+        <tr>
+          <th class="ta-l" width="45%">操作记录</th>
+          <th class="ta-l">原因备注</th>
+        </tr>
+        <{foreach $log_list as $v}>
+        <tr>
+          <td class="ta-l">管理员<b class="ml5 mr5"><{$admin_list[$v.admin_id]['username']}></b>在<font class="ml5 mr5"><{date('Y-m-d H:i:s', $v.dateline)}></font><{$operate_map[$v.operate]}></td>
+          <td class="ta-l"><{$v.cause}></td>
+        </tr>
+        <{/foreach}>
+      </table>
+    </div>
+    <{/if}>
+  </div>
+</div>
+</body>
+</html>

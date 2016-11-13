@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>售后服务 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  showAftersales();
+  $.vdsTouchScroll({
+    onBottom: function(){
+      var container = $('#aftsli');
+      if(container.data('cur') != container.data('next')){showAftersales();}else{$('#nomore').show();}
+    },
+  });
+});
+
+function showAftersales(){
+  var container = $('#aftsli'), page_id = container.data('next');
+  $.asynList("<{url c='api/aftersales' a='list'}>", {page:page_id, pernum:10}, function(res){
+    if(res.status == 'success'){
+      container.append(juicer($('#afts-tpl').html(), res));
+      if(res.paging){
+        container.data('cur', page_id);
+        container.data('next', res.paging.next_page);
+      }
+    }else{
+      container.append($('#nodata-tpl').html());
+    }
+  });
+}
+</script>
+</head>
+<body>
+<div class="wrapper" id="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>售后服务</h2>
+  </div>
+  <!-- header end -->
+  <div class="aftsli" id="aftsli" data-cur='1' data-next='1'></div>
+  <div class="nomore hide" id="nomore">—— 没有更多内容了 ——</div>
+</div>
+<script type="text/template" id="afts-tpl">
+{@each list as v}
+<div class="row">
+  <div class="th"><span class="fr">${v.status}</span><font class="c666">${v.type}</font></div>
+  <div class="goods cut">
+    <a class="im"><img src="<{$common.baseurl}>/upload/goods/prime/50x50/${v.goods_image}" /></a>
+    <div class="info">
+      <p><a>${v.goods_name}</a></p>
+      {@if v.goods_opts == ''}
+      <p class="c999 mt5">{@each v.goods_opts as o}<span class="mr5">[${o.type}: <font class="c666">${o.opt_text}</font>]</span>{@/each}</p>
+      {@/if}
+      <p class="mt5"><font class="c999 mr5">数量:</font>${v.goods_qty}</p>
+    </div>
+  </div>
+  <div class="bom"><a class="fr" href="<{url c='mobile/aftersales' a='view' id='${v.as_id}'}>">查看详情</a><font class="date">${v.created_date}</font></div>
+</div>
+{@/each}
+</script>
+<script type="text/template" id="nodata-tpl">
+<div class="nodata">
+  <div class="th"><span><i class="iconfont">&#xe62a;</i></span><div class="line"></div></div>
+  <p>暂无任何售后服务申请</p>
+</div>
+</script>
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

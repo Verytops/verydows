@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="verydows-baseurl" content="<{$common.baseurl}>">
+<title>评价 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/jquery.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/general.js"></script>
+<script type="text/javascript">
+$(function(){
+  var rali = $('.rating ul li');
+  rali.hover(
+    function(){
+      var n = $(this).index() + 1;
+      $(this).parent().children('li').removeClass('on');
+      $(this).parent().find('li:lt('+n+')').addClass('on');
+    },
+    function(){
+      var v = $(this).parent().next('input[name="rating"]').val();
+      $(this).parent().children('li').removeClass('on');
+      if(v != 0) $(this).parent().find('li:lt('+v+')').addClass('on');
+    }
+  );
+  rali.click(function(){
+    $(this).parent().next('input[name="rating"]').val($(this).index() + 1);
+  });
+});
+
+function slideReview(e){
+  var revbox = $(e).closest('div.goods').next('div.module');
+  if(revbox.is(':hidden')){
+    $(e).text('收起评价');
+    revbox.slideDown();
+  }else{
+    $(e).text('展开评价');
+    revbox.slideUp();
+  }
+}
+
+function submitReview(e){
+  var form = $(e).closest('form');
+  form.find('input[name="rating"]').vdsFieldChecker({rules:{required:[true, '请点击选择相应的商品评分']}});
+  form.find('textarea[name="content"]').vdsFieldChecker({
+    rules:{required:[true, '请填写评价内容'], minlen:[15, '内容不能少于15个字符'], maxlen:[500, '内容不能超过500个字符']},
+    tipsPos: 'br'
+  });
+  form.vdsFormChecker();
+}
+</script>
+</head>
+<body>
+<!-- 顶部开始 -->
+<{layout_topper common=$common}>
+<!-- 顶部结束 -->
+<!-- 头部开始 -->
+<{layout_header common=$common}>
+<!-- 头部结束 -->
+<div class="loc w1100">
+  <div><a href="<{url c='main' a='index'}>">网站首页</a><b>&gt;</b><a href="<{url c='order' a='list'}>">我的订单</a><b>&gt;</b><font>评价</font></div>
+</div>
+<!-- 主体开始 -->
+<div class="container w1100 mt10">
+  <{foreach $goods_list as $v}>
+  <{if $v.is_reviewed == 0}>
+  <form method="post" action="<{url c='review' a='order' step='submit' order_id=$v.order_id goods_id=$v.goods_id}>">
+    <div class="review mcter cut">
+      <div class="goods cut">
+        <div class="fl cut"><a href="<{url c='goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/100x100/<{$v.goods_image}>" /></a></div>
+        <div class="lt">
+          <a href="<{url c='goods' a='index' id=$v.goods_id}>"><{$v.goods_name}></a>
+          <{if !empty($v.goods_opts)}>
+          <p class="c999 mt10"><{foreach $v.goods_opts as $o}><span class="mr5">[<{$o.opt_type}>: <font class="c666"><{$o.opt_text}></font>]</span><{/foreach}></p>
+          <{/if}>
+        </div>
+        <div class="fr"><a class="slide" onclick="slideReview(this)">展开评价</a>
+      </div>
+      </div>
+      <div class="module mt20 cut hide">
+        <div class="rating cut">
+          <h3 class="c666">商品评分</h3>
+          <ul class="mt10">
+            <li><i class="icon"></i><p>1分<br />很不满意</p></li>
+            <li><i class="icon"></i><p>2分<br />不满意</p></li>
+            <li><i class="icon"></i><p>3分<br />一般</p></li>
+            <li><i class="icon"></i><p>4分<br />满意</p></li>
+            <li><i class="icon"></i><p>5分<br />非常满意</p></li>
+          </ul>
+          <input type="hidden" name="rating" value="" />
+        </div>
+        <div class="revcon mt30">
+          <h3 class="c666">评价内容</h3>
+          <div class="mt10"><textarea name="content" placeholder="亲, 写点您对本次购物和商品的评价和感受吧"></textarea></div>
+        </div>
+        <div class="mt15 pad5"><button type="button" class="sm-blue" onclick="submitReview(this)">发表评价</button></div>
+      </div>
+    </div>
+  </form>
+  <{else}>
+  <div class="review mcter cut">
+    <div class="goods cut">
+      <div class="fl"><a href="<{url c='goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/100x100/<{$v.goods_image}>" /></a></div>
+      <div class="lt">
+        <a href="<{url c='goods' a='index' id=$v.goods_id}>"><{$v.goods_name}></a>
+        <{if !empty($v.goods_opts)}>
+        <p class="c999 mt10"><{foreach $v.goods_opts as $o}><span class="mr5">[<{$o.opt_type}>: <font class="c666"><{$o.opt_text}></font>]</span><{/foreach}></p>
+        <{/if}>
+      </div>
+      <div class="fr"><font class="c888">已评价</font></div>
+    </div>
+  </div>
+  <{/if}>
+  <{/foreach}>
+</div>
+<!-- 主体结束 -->
+<div class="cl"></div>
+<!-- 页脚开始 -->
+<{layout_footer}>
+<!-- 页脚结束 -->
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+</body>
+</html>

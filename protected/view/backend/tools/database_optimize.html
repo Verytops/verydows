@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/database.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/list.js"></script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>数据库优化</h2></div>
+  <div class="box">
+    <div class="doacts">
+      <a class="sbtn sm btn" href="<{url m=$MOD c='database' a='backup'}>"><font>备份</font></a>
+      <a class="sbtn sm btn" href="<{url m=$MOD c='database' a='restore'}>"><font>恢复</font></a>
+      <a class="sbtn sm btn disabled"><font>优化</font></a>
+    </div>
+    <{if !empty($table_list)}>
+    <div class="bw-row mt5 pad10" id="restore">
+      <h3 class="ta-c th">待优化数据表</h3>
+      <div class="module mt5">
+        <form method="post" id="tables-form">
+          <table class="datalist">
+            <tr>
+              <th width="50">选择</th>
+              <th class="ta-l">数据表</th>
+              <th width="135">引擎类型</th>
+              <th width="135">记录数</th>
+              <th width="135">数据</th>
+              <th width="135">索引</th>
+              <th width="135">碎片</th>
+            </tr>
+            <{foreach $table_list as $v}>
+            <tr>
+              <td><input checked="checked" name="table[]" type="checkbox" value="<{$v.table}>" /></td>
+              <td class="ta-l"><{$v.table}></td>
+              <td class="c666"><{$v.engine}></td>
+              <td class="c666"><{$v.rows_count}></td>
+              <td class="c666"><{$v.data_size}></td>
+              <td class="c666"><{$v.index_size}></td>
+              <td class="c666"><{$v.fragment_size}></td>
+            </tr>
+            <{/foreach}>
+          </table>
+        </form>
+        <p class="mt10 pad5 c888 ta-c">碎片总大小：<font class="red ml5"><{$fragment_totals}></font></p>
+      </div>
+    </div>
+    <div class="bw-row mt5 pad10 ta-c">
+      <button type="button" class="cbtn btn" onclick="domulent('<{url m=$MOD c='database' a='optimize' step='run'}>', 'tables-form', 'table[]')">开始优化</button>
+    </div>
+    <{else}>
+    <div class='nors mt5'>暂无需要优化的数据表...</div>
+    <{/if}>
+  </div>
+</div>
+</body>
+</html>

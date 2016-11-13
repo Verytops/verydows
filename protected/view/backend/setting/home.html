@@ -1,0 +1,46 @@
+<div class="bw-row pad10 cut">
+  <form method="post" action="<{url m=$MOD c='setting' a='update' step='home'}>">
+    <table class="dataform">
+      <tr>
+        <th width="110">首页标题</th>
+        <td><input class="w400 txt" name="home_title" type="text" value="<{$rs.home_title}>" /><font class="caaa ml20">网站首页在浏览器窗口标题栏显示的内容</font></td>
+      </tr>
+      <tr>
+        <th>首页关键字</th>
+        <td><textarea class="txtarea" name="home_keywords" cols="80" rows="4"><{$rs.home_keywords}></textarea><font class="caaa ml20">网站首页在浏览器窗口标题栏显示的内容</font></td>
+      </tr>
+      <tr>
+        <th>首页描述</th>
+        <td><textarea class="txtarea" name="home_description" cols="80" rows="4"><{$rs.home_description}></textarea></td>
+      </tr>
+      <tr>
+        <th>显示数据个数</th>
+        <td>
+          <table class="dataform">
+            <tr>
+              <th width="80">新品</th>
+              <td><input class="w50 txt" name="home_newarrival_num" type="text" value="<{$rs.home_newarrival_num}>" /><font class="caaa ml20">前台首页中新品商品显示最大数量</font>
+              </td>
+            </tr>
+            <tr>
+              <th>推荐</th>
+              <td><input class="w50 txt" name="home_recommend_num" type="text" value="<{$rs.home_recommend_num}>" /><font class="caaa ml20">前台首页中推荐商品显示最大数量</font></td>
+            </tr>
+            <tr>
+              <th>特价</th>
+              <td><input class="w50 txt" name="home_bargain_num" type="text" value="<{$rs.home_bargain_num}>" /><font class="caaa ml20">前台首页中特价商品显示最大数量</font></td>
+            </tr>
+            <tr>
+              <th>资讯</th>
+              <td><input class="w50 txt" name="home_article_num" type="text" value="<{$rs.home_article_num}>" /><font class="caaa ml20">前台首页中显示资讯最大数量</font></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <div class="submitbtn">
+      <button type="submit" class="ubtn btn">保存并更新首页设置</button>
+      <button type="reset" class="fbtn btn">重置表单</button>
+    </div>
+  </form>
+</div>

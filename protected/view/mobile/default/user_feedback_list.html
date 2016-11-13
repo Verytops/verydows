@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>咨询反馈 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  preserveSpace('footact');
+  showFeedback();
+  $.vdsTouchScroll({
+    onBottom: function(){
+      var obj = $('#feedback');
+      if(obj.data('cur') != obj.data('next')){showFeedback();}else{$('#nomore').show();}
+    },
+  });
+});
+
+function showFeedback(){
+  var container = $('#feedback'), page_id = container.data('next');
+  $.asynList("<{url c='api/feedback' a='list'}>", {page:page_id, pernum:10}, function(res){
+    if(res.status == 'success'){
+      container.append(juicer($('#feedback-tpl').html(), res));
+      if(res.paging){
+        container.data('cur', page_id);
+        container.data('next', res.paging.next_page);
+      }
+    }else{
+      container.append($('#nodata-tpl').html());
+    }
+  });
+}
+</script>
+</head>
+<body>
+<div class="wrapper" id="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>咨询反馈</h2>
+  </div>
+  <!-- header end -->
+  <div class="fbli" id="feedback" data-cur='1' data-next='1'></div>
+  <div class="nomore hide" id="nomore">—— 没有更多内容了 ——</div>
+</div>
+<div class="footact" id="footact">
+  <div class="feedback-launch"><a class="xauto center" href="<{url c='mobile/feedback' a='apply'}>"><i class="iconfont">&#xe61d;</i><font class="ml5 f14">我要咨询</font></a></div>
+</div>
+<script type="text/template" id="feedback-tpl">
+{@each list as v}
+<div class="row">
+  <a href="<{url c='mobile/feedback' a='view' id='${v.fb_id}'}>">
+    <span class="fr"><i class="iconfont">&#xe614;</i></span>
+    <font class="c999 mr5">[${v.type}]</font> ${v.subject}
+  </a>
+  <p class="mt5"><span class="fr caaa">${v.created_date}</span>{@if v.status == '0'}<font class="caaa">待审核</font>{@else if v.status == '1'}<font class="red">进行中</font>{@else}<font class="green">已完成</font>{@/if}</p>
+</div>
+{@/each}
+</script>
+<script type="text/template" id="nodata-tpl">
+<div class="nodata">
+  <div class="th"><span><i class="iconfont">&#xe61d;</i></span><div class="line"></div></div>
+  <p>暂无任何咨询反馈内容</p>
+</div>
+</script>
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

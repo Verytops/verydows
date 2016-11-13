@@ -1,0 +1,84 @@
+<script type="text/javascript">
+$(function(){
+  UM.getEditor('footer_info', {
+    textarea:'footer_info',
+    toolbar:[
+      'source | undo redo | bold italic underline strikethrough | superscript subscript | forecolor backcolor | removeformat |',
+      'insertorderedlist insertunorderedlist | selectall cleardoc paragraph | fontfamily fontsize' ,
+      '| justifyleft justifycenter justifyright justifyjustify |',
+      'link unlink',
+      '| horizontal preview fullscreen'
+    ]
+  });
+});
+
+function createEncrypt(){
+  var chars = random_chars(32);
+  $("#encrypt_key").val(chars);
+}
+</script>
+<div class="bw-row pad10 cut">
+  <form method="post" action="<{url m=$MOD c='setting' a='update' step='global'}>">
+    <table class="dataform">
+      <tr>
+        <th width="180">站点名称</th>
+        <td><input class="w250 txt" name="site_name" type="text" value="<{$rs.site_name}>" /><font class="caaa ml20">显示在浏览器窗口标题栏后缀位置</font></td>
+      </tr>
+      <tr>
+        <th>数据加密密钥</th>
+        <td>
+          <input class="w300 txt" name="encrypt_key" id="encrypt_key" type="text" value="<{$rs.encrypt_key}>" />
+          <button class="cbtn btn ml5" type="button" onclick="createEncrypt()">重新生成</button>
+          <font class="caaa ml20">为保证系统安全建议每隔一段时间修改一次秘钥</font>
+        </td>
+      </tr>
+      <tr>
+        <th>调试模式</th>
+        <td>
+          <div class="pad5">
+            <label><input type="radio" name="debug" value="1" <{if $rs.debug == 1}>checked="checked"<{/if}> /><font class="green ml5">开启</font></label>
+            <label class="ml20"><input type="radio" name="debug" value="0" <{if $rs.debug == 0}>checked="checked"<{/if}> /><font class="red ml5">关闭</font></label>
+            <font class="ml20 vtcmid caaa">开启调试模式后，当程序遇见错误或警告时会进行提示，如您的程序部署到远程服务器上后请关闭此项</font>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>访问量统计</th>
+        <td>
+          <div class="pad5">
+            <label><input type="radio" name="visitor_stats" value="1" <{if $rs.visitor_stats == 1}>checked="checked"<{/if}> /><font class="green ml5">开启</font></label>
+            <label class="ml20"><input type="radio" name="visitor_stats" value="0" <{if $rs.visitor_stats == 0}>checked="checked"<{/if}> /><font class="red ml5">关闭</font></label>
+            <font class="ml20 vtcmid caaa">开启访问量统计，系统将会自动统计网站访问量，此举将会增加服务器资源消耗，如空间用户或访问量过大时建议使用第三方统计代码</font>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>数据缓存周期</th>
+        <td>
+          <input class="w100 txt" name="data_cache_lifetime" type="text" value="<{$rs.data_cache_lifetime}>" />
+          <font class="caaa ml20">前台控制器中使用数据缓存的更新周期(秒)，设置为"0"则表示不使用缓存</font>
+        </td>
+      </tr>
+      <tr>
+        <th>多IP同时登录管理员账号</th>
+        <td>
+          <div class="pad5">
+            <label><input type="radio" name="admin_mult_ip_login" value="1" <{if $rs.admin_mult_ip_login == 1}>checked="checked"<{/if}> /><font class="green ml5">允许</font></label>
+            <label class="ml20"><input type="radio" name="admin_mult_ip_login" value="0" <{if $rs.admin_mult_ip_login == 0}>checked="checked"<{/if}> /><font class="red ml5">不允许</font></label>
+            <font class="ml20 vtcmid caaa">是否允许多IP同时登陆相同管理员账号，如不允许，系统将在用户登录时检测该账号是否已经被其他IP登录并给出提示</font>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>网站底部信息</th>
+        <td><script type="text/plain" id="footer_info" style="width:100%;height:200px;"><{$rs.footer_info nofilter}></script></td>
+      </tr>
+    </table>
+    <div class="submitbtn" style="padding-left:260px;">
+      <button type="submit" class="ubtn btn">保存并更新全局设置</button>
+      <button type="reset" class="fbtn btn">重置表单</button>
+    </div>
+  </form>
+</div>
+<script type="text/javascript" src="public/theme/backend/umeditor/umeditor.config.js"></script>
+<script type="text/javascript" src="public/theme/backend/umeditor/umeditor.min.js"></script>

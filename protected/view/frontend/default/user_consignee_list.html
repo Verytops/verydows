@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="verydows-baseurl" content="<{$common.baseurl}>">
+<title>收货地址 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/jquery.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/general.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/consignee.js"></script>
+<script type="text/javascript">
+var areaApi = "<{url c='api/area' a='children'}>";
+
+$(function(){
+  var cBox = $('#consignee-box');
+  getAreaSelect();
+  $('#newadrbtn').on('click', function(){
+    $(this).hide();
+    cBox.slideDown().find('span.vdsfielderr').remove();
+    cBox.find('form input[name="id"]').val('');
+  });
+  cBox.find('.submit-btn button').eq(0).click(function(){
+    if(checkConsigneeForm('consignee-form') == true){
+      $('#consignee-form').submit();
+    }
+  });
+  cBox.find('.submit-btn button').eq(1).click(function(){
+    cBox.slideUp('normal', function(){$('#newadrbtn').show()}).find('form')[0].reset();
+  });
+});
+
+function editConsignee(container, btn){
+  var form = $('#consignee-form'), data = $(btn).data('json');
+  $('#newadrbtn').hide();
+  form.parent().slideDown().find('span.vdsfielderr').remove();
+  form.find('input[name="id"]').val(data.id);
+  form.find('input[name="receiver"]').val(data.receiver);
+  form.find('input[name="address"]').val(data.address);
+  form.find('input[name="zip"]').val(data.zip);
+  form.find('input[name="mobile"]').val(data.mobile);
+  presAreaSelect(form.find('select[name="province"]'), null, data.province);
+  presAreaSelect(form.find('select[name="city"]'), {province:data.province}, data.city);
+  presAreaSelect(form.find('select[name="borough"]'), {province:data.province, city:data.city}, data.borough);
+}
+</script>
+</head>
+<body>
+<!-- 顶部开始 -->
+<{layout_topper common=$common}>
+<!-- 顶部结束 -->
+<!-- 头部开始 -->
+<{layout_header common=$common}>
+<!-- 头部结束 -->
+<div class="loc w1100">
+  <div><a href="<{url c='main' a='index'}>">网站首页</a><b>></b><font>收货地址</font></div>
+</div>
+<!-- 主体开始 -->
+<div class="container w1100 mt10">
+  <div class="module cut">
+    <!-- 左侧开始 -->
+    <div class="w180 fl cut">
+      <!-- 用户菜单开始 -->
+      <{layout_usermenu}>
+      <!-- 用户菜单结束 -->
+    </div>
+    <!-- 左侧结束 -->
+    <!-- 右侧开始 -->
+    <div class="w910">
+      <div class="consignee mcter">
+        <h2>收件地址管理</h2>
+        <div class="consignee-form">
+          <div><button type="button" class="sm-blue" id="newadrbtn">+ 新建收件人信息</button></div>
+          <div class="module mt10 hide cut" id="consignee-box">
+            <form method="post" id="consignee-form" action="<{url c='consignee' a='save'}>">
+              <input type="hidden" name="id" value="" />
+              <div class="mcter cut">
+                <dl>
+                  <dt><label for="receiver">收件人：</label></dt>
+                  <dd><input name="receiver" id="receiver" type="text" class="w200 txt" value="" /></dd>
+                </dl>
+                <dl>
+                  <dt>所在地区：</dt>
+                  <dd id="area-select">
+                    <select name="province" class="slt" id="areaslt-province" onchange="getAreaSelect('province')">
+                      <option value="">选择省份</option>
+                    </select>
+                    <select name="city" class="slt" id="areaslt-city" onchange="getAreaSelect('city')">
+                      <option value="">选择城市</option>
+                    </select>
+                    <select name="borough" class="slt" id="areaslt-borough">
+                      <option value="">选择区/县</option>
+                    </select>
+                  </dd>
+                </dl>
+                <dl>
+                  <dt><label for="address">详细地址：</label></dt>
+                  <dd><input name="address" id="address" type="text" class="w400 txt" value="" /></dd>
+                </dl>
+                <dl>
+                  <dt><label for="zip">邮编：</label></dt>
+                  <dd><input name="zip" id="zip" type="text" class="w100 txt" value="" /></dd>
+                </dl>
+                <dl>
+                  <dt><label for="mobile">手机号码：</label></dt>
+                  <dd><input name="mobile" id="mobile" type="text" class="w200 txt" value="" /></dd>
+                </dl>
+                <div class="submit-btn mt10"><button type="button" class="sm-green">保存信息</button><span class="ml10 mr10"></span><button type="button" class="sm-gray">取消</button></div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="list mt5 cut">
+          <p class="c888 ml5">您已保存了<b class="ml5 mr5 red"><{$total.saved}></b>条收件人地址，还能保存<b class="ml5 mr5 red"><{$total.remaining}></b>条收件人地址</p>
+          <{if !empty($consignee_list)}>
+          <div class="module mt10">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <th width="130">收件人</th>
+                <th>收件地址</th>
+                <th width="120"><p class="aln-c">联系电话</p></th>
+                <th width="110"><p class="aln-c">邮编</p></th>
+                <th width="150"><p class="aln-c">操作</p></th>
+              </tr>
+              <{foreach $consignee_list as $v}>
+              <tr>
+                <td><{$v.receiver}></td>
+                <td>
+                  <p><{$v.area.province}> <{$v.area.city}> <{$v.area.borough}></p>
+                  <p class="mt5"><{$v.address}></p>
+                </td>
+                <td><p class="aln-c"><{$v.mobile}></p></td>
+                <td><p class="aln-c"><{$v.zip}></p></td>
+                <td>
+                  <div class="aln-c">
+                    <{if $v.is_default == 1}><font class="caaa ml5 mr5">默认地址</font><{else}><a href="<{url c='consignee' a='defaulted' id=$v.id}>">设为默认</a><{/if}>
+                    <a onclick="editConsignee('consignee-form', this)" data-json="<{$v.json}>">编辑</a>
+                    <a href="<{url c='consignee' a='delete' id=$v.id}>">删除</a>
+                  </div>
+                </td>
+              </tr>
+              <{/foreach}>
+            </table>
+          </div>
+          <{/if}>
+        </div>
+      </div>
+    </div>
+    <!-- 右侧结束 -->
+  </div>
+  <div class="cl"></div>
+  <{layout_helper}>
+</div>
+<!-- 主体结束 -->
+<div class="cl"></div>
+<!-- 页脚开始 -->
+<{layout_footer}>
+<!-- 页脚结束 -->
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+</body>
+</html>

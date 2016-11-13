@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>售后申请 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('#qty a').click(function(){
+    var input = $(this).siblings('input'), qty = parseInt(input.val());
+    if($(this).hasClass('minus')){
+      if(qty > 1){input.val(qty - 1);}else{$.vdsPrompt({content:'数量不能少于1件'});}
+    }else{
+      if(input.val() < input.data('max')){
+        input.val(qty + 1);
+      }else{
+        $.vdsPrompt({content:"不能超过你所购买的商品数量"});
+        return false;
+      }
+    }
+  });
+});
+
+function submitApply(){
+  var form = $('#applyform');
+  form.find('textarea[name="cause"]').vdsFieldChecker({rules: {required:[true, '原因描述不能为空'], minlen:[15, '原因描述不能少于15个字符'], maxlen:[500, '原因描述不能超过500个字符']}});
+  form.find('input[name="mobile"]').vdsFieldChecker({rules: {required:[true, '请输入手机号码'], mobile:[true, '手机号码无效']}});
+  if(form.vdsFormChecker({isSubmit:false}) == true){
+    $.asynInter("<{url c='api/aftersales' a='apply'}>", form.serialize(), function(res){
+      if(res.status == 'success'){
+        $.vdsPrompt({
+          content:'提交成功, 等待客服审核', 
+          clicked:function(){
+            window.location.href = "<{url c='mobile/aftersales' a='list'}>";
+          }
+        });
+      }else{
+        $.vdsPrompt({content:res.msg});
+      }
+    });
+  }
+}
+</script>
+</head>
+<body>
+<div class="wrapper" id="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>售后申请</h2>
+  </div>
+  <!-- header end -->
+  <div class="aftsapply module cut">
+    <form id="applyform">
+    <input type="hidden" name="order_id" value="<{$goods.order_id}>" />
+    <input type="hidden" name="goods_id" value="<{$goods.goods_id}>" />
+    <div class="aftsgs cut">
+      <dl>
+        <dt><a href="<{url c='mobile/goods' a='index' id=$goods.goods_id}>"><img src="<{$common.baseurl}>/upload/goods/prime/100x100/<{$goods.goods_image}>" /></a></dt>
+        <dd>
+          <p class="c555"><a href="<{url c='mobile/goods' a='index' id=$goods.goods_id}>"><{$goods.goods_name}></a></p>
+          <{if !empty($goods.goods_opts)}>
+          <p class="mt5"><{foreach $goods.goods_opts as $o}><span class="c999 mr5">[<{$o.opt_type}>: <font class="c666"><{$o.opt_text}></font>]</span><{/foreach}></p>
+          <{/if}>
+          <div class="mt8 cut">
+            <div class="qty" id="qty"><a class="minus">-</a><input name="goods_qty" type="text" value="<{$goods.goods_qty}>" data-max="<{$goods.goods_qty}>" readonly /><a class="plus">+</a></div>
+          </div>
+        </dd>
+      </dl>
+    </div>
+    <div class="uform module">
+      <div class="main cut">
+        <dl>
+          <dt>期望处理类型</dt>
+          <dd>
+            <div class="vslt">
+              <select name="type">
+                <option value="0">报修</option>
+                <option value="1">换货</option>
+                <option value="2">退货</option>
+              </select>
+              <span><i class="iconfont">&#xe615;</i></span>
+            </div>
+          </dd>
+        </dl>
+        <dl>
+          <dt>原因描述</dt>
+          <dd><textarea name="cause" class="vtextarea" placeholder="描述不能少于15字符, 最多不能超过500个字符"></textarea></dd>
+        </dl>
+        <dl>
+          <dt>手机号码</dt>
+          <dd><input name="mobile" type="text" class="vinput" placeholder="请输入您的常用手机号码"></dd>
+        </dl>
+      </div>
+      <a class="submit xauto mt20 f14 center" onclick="submitApply()">提交申请</a>
+    </div>
+    </form>
+  </div>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

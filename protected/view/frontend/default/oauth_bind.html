@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="verydows-baseurl" content="<{$common.baseurl}>">
+<meta name="keywords" content="绑定账号, 完善账号" />
+<meta name="description" content="完善您的账号信息" />
+<title>完善账号信息 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/login.css" />
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/jquery.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/general.js"></script>
+<script type="text/javascript">
+function switchMethod(){
+  var l = $('#login'), r = $('#register');
+  if(l.hasClass('hide')){l.removeClass('hide');r.addClass('hide');}else{l.addClass('hide');r.removeClass('hide');}
+}
+//注册请求
+function register(btn){
+  var form = $('#register form');
+  form.find('input[name="username"]').vdsFieldChecker({
+    rules:{required:[true, '请设置用户名'], username:[/^[a-zA-Z][_a-zA-Z0-9]{4,15}$/.test($('#username').val()), '用户名不符合格式要求']},
+    tipsPos:'abs',
+  });
+  form.find('input[name="email"]').vdsFieldChecker({
+    rules:{required:[true, '请设置邮箱'], email:[true, '无效的邮箱地址'], maxlen:[60, '邮箱地址不能超过60个字符']}, 
+    tipsPos:'abs',
+  });
+  form.find('input[name="password"]').vdsFieldChecker({
+    rules:{required:[true, '请设置密码'], password:[true, '密码不符合格式要求']}, 
+    tipsPos:'abs',
+  });
+  form.find('input[name="repassword"]').vdsFieldChecker({
+    rules:{equal:[form.find('input[name="password"]').val(), '两次密码不一致']}, 
+    tipsPos:'abs',
+  });
+  if(form.find('input[name="captcha"]').length){
+    form.find('input[name="captcha"]').vdsFieldChecker({rules: {required:[true, '请输入验证码']}});
+  }
+  
+  if(form.vdsFormChecker({isSubmit:false}) == true){
+    $.ajax({
+      type: 'post',
+      dataType: 'json',
+      url: "<{url c='api/user' a='register'}>",
+      beforeSend: function(){$.vdsPopWaiting({text:'正在提交注册信息，请稍后'})},
+      data: form.serialize(),
+      success: function(res){
+        if(res.status == 'success'){
+          $.vdsPopWaiting({sw:false});
+          bindUser();
+        }else{
+          $.vdsPopDialog({
+            type: 'err',
+            text: res.msg,
+            callback:function(){
+              $.vdsPopWaiting({sw:false});
+              resetCaptcha('register');
+            }
+          });
+        }
+      }
+    });
+  }
+}
+//登录请求
+function login(){
+  var form = $('#login form'), username = form.find('input[name="username"]'), password = form.find('input[name="password"]'), captcha = form.find('input[name="captcha"]');
+  username.vdsFieldChecker({rules:{required:[true, '请输入用户名']}, tipsPos:'abs'});
+  password.vdsFieldChecker({rules:{required:[true, '请输入密码']}, tipsPos:'abs'});
+  if(captcha.length){
+    captcha.vdsFieldChecker({rules: {required:[true, '请输入验证码']}, tipsPos:'abs'});
+  }
+  if(form.vdsFormChecker({isSubmit:false}) == true){
+    $.ajax({
+      type: 'post',
+      dataType: 'json',
+      url: "<{url c='api/user' a='login'}>",
+      beforeSend: function(){$.vdsPopWaiting({text:'正在登录，请稍后'})},
+      data: {username:username.val(), password:hex_md5(password.val()+'Verydows'), captcha:captcha.val()},
+      success: function(res){
+        if(res.status == 'success'){
+          $.vdsPopWaiting({sw:false});
+          bindUser();
+        }else{
+          $.vdsPopDialog({type: 'err', text: res.msg, callback:function(){
+            $.vdsPopWaiting({sw:false});
+            resetCaptcha('login');
+            if(res.captcha == 'enabled' && !captcha.length){
+              var captchaTpl = $('#captcha-tpl').html().replace('$captchaSrc', "<{url c='api/captcha' a='image'}>");
+              form.find('dl.pwd').after(captchaTpl);
+            }
+          }});
+        }
+      }
+    });
+  }
+}
+//绑定第三方授权信息
+function bindUser(){
+  $.ajax({
+    type: 'post',
+    dataType: 'json',
+    url: "<{url c='api/oauth' a='bind' party=$oauth.party}>",
+    beforeSend: function(){$.vdsPopWaiting({text:'正在绑定账号信息，请稍后'})},
+    success: function(res){
+      var target = "<{url c='user' a='index'}>";
+      if(res.status == 'success'){
+        window.location.href = target;
+      }else{
+        $.vdsPopDialog({type:'err', text:res.msg, callback:function(){$.vdsPopWaiting({sw:false});window.location.href = target;}});
+      }
+    }
+  });
+}
+
+function resetCaptcha(formId){
+  var form = $('#'+formId), src = "<{url c='api/captcha' a='image' v='random'}>";
+  form.find('img.captcha-img').attr('src', src.replace('random', Math.random()));
+  form.find('input[name="captcha"]').focus();
+}
+</script>
+</head>
+<body>
+<!-- 头部开始 -->
+<div class="header">
+  <div class="w900 mt30 cut">
+    <div class="logo x-auto"><a href="<{url c='main' a='index'}>"><img src="<{$common.theme}>/images/logo.gif" /></a></div>
+  </div>
+</div>
+<!-- 头部结束 -->
+<!-- 主体开始 -->
+<div class="container w900 mt20">
+  <div class="wbox cut">
+    <div class="signup cut" id="register">
+      <div class="th module cut">
+        <h2 class="fl">完善账号信息</h2>
+        <div class="fr">已有本站账号？<a class="ml5 mr5 pointer" onclick="switchMethod()">点击登录</a>绑定本站账号</div>
+      </div>
+      <div class="mt10 pad10 c666 aln-c">
+        <p>您好 <b><{$oauth.name}>用户</b>，欢迎您登录<font class="ml5"><{$GLOBALS.cfg.site_name}></font></p>
+        <p class="mt20 f14">请完善您在本站的账号信息</p>
+      </div>
+      <form>
+      <div class="form cut">
+        <dl>
+          <dt>用户名：</dt>
+          <dd><input name="username" type="text" /><font class="caaa ml10">用户名可以包含字母、数字或下划线，须以字母开头，长度为5~16个字符</font></dd>
+        </dl>
+        <dl>
+          <dt>邮箱：</dt>
+          <dd><input name="email" type="text" placeholder="@" data-warnpos="fixed" /><font class="caaa ml10">请填写您常用的邮箱地址，邮箱可用来重置密码，接收订促销信息，订单状态等</font></dd>
+        </dl>
+        <dl>
+          <dt>设置密码：</dt>
+          <dd><input name="password" type="password" /><font class="caaa ml10">密码可包含字母、数字或特殊符号，长度为6~32个字符</font></dd>
+        </dl>
+        <dl>
+          <dt>确认密码：</dt>
+          <dd><input name="repassword" type="password" /><font class="caaa ml10">再次输入您所设置密码</font></dd>
+        </dl>
+        <{if !empty($GLOBALS.cfg.captcha_user_register)}>
+        <dl class="captcha">
+          <dt>验证码：</dt>
+          <dd>
+            <input name="captcha" type="text" />
+            <a onclick="resetCaptcha('register')"><i class="refresh icon"></i><font class="ml5">点击刷新</font></a>
+          </dd>
+        </dl>
+        <div class="ml80"><img class="captcha-img" src="<{url c='api/captcha' a='image'}>" /></div>
+        <{/if}>
+        <div class="sutr mt20 ml80"><a class="form-submit aln-c radius4" href="javascript:void(0)" onclick="register(this)">完成并提交</a></div>
+      </div>
+      </form>
+    </div>
+    <div class="binder hide" id="login">
+      <div class="th module cut">
+        <h2 class="fl">绑定本站账号</h2>
+        <div class="fr">没有本站账号？<a class="pointer" onclick="switchMethod()">返回注册</a></div>
+      </div>
+      <div class="login x-auto">
+        <form>
+        <h2 class="c888">请登录您的本站账号</h2>
+        <dl class="username mt20">
+          <dt><i class="icon"></i></dt>
+          <dd><input name="username" type="text" placeholder="请输入用户名" data-warnpos="fixed" /></dd>
+        </dl>
+        <dl class="pwd mt20">
+          <dt><i class="icon"></i></dt>
+          <dd><input name="password" type="password" placeholder="请输入密码" data-warnpos="fixed" /></dd>
+        </dl>
+        <{if !empty($login_captcha)}>
+        <dl class="captcha mt20">
+          <dt><i class="icon"></i></dt>
+          <dd><input name="captcha" type="text" placeholder="请输入验证码" /></dd>
+        </dl>
+        <div class="captcha mt15">
+          <a class="fr" onclick="resetCaptcha('login')"><i class="refresh icon"></i><font>点击刷新</font></a>
+          <img class="captcha-img" src="<{url c='api/captcha' a='image'}>" />
+        </div>
+        <{/if}>
+        <a class="form-submit aln-c radius4 mt20" href="javascript:void(0)" onclick="login(this)">登陆并绑定</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 主体结束 -->
+<div class="cl"></div>
+<!-- 页脚开始 -->
+<{layout_footer}>
+<!-- 页脚结束 -->
+<script type="text/template" id="captcha-tpl">
+<dl class="captcha mt20">
+  <dt><i class="icon"></i></dt>
+  <dd><input name="captcha" type="text" placeholder="请输入验证码" /></dd>
+</dl>
+<div class="captcha mt15">
+  <a class="fr" onclick="resetCaptcha('login')"><i class="refresh icon"></i><font>点击刷新</font></a>
+  <img class="captcha-img" src="$captchaSrc" />
+</div>
+</script>
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/md5.js"></script>
+</body>
+</html>

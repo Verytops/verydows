@@ -1,0 +1,39 @@
+/* 轮播图片 */
+.carousel {width:100%;height:auto;position:relative;}
+.carousel .slider {width:500%;height:auto;position:relative;top:0;left:0;}
+.carousel .slider a {display:block;float:left;width:20%;}
+.carousel .slider img {width:100%;}
+.carousel .trigger {position:absolute;width:100%;bottom:4%;margin:0 auto;text-align:center;}
+.carousel .trigger i {display:inline-block;width:5px;height:5px;border:1px solid #fff;margin:0 3px;background:#ccc;border-radius:5px;}
+.carousel .trigger i.cur {background:#ffcc66;}
+/* 菜单开始 */
+.wnav {width:100%;padding:15px 0;background:#fff;overflow:hidden}
+.wnav a {float:left;display:block;width:25%;text-align:center;}
+.wnav a div {width:75%;width:40px;height:40px;line-height:40px;margin:0 auto;border-radius:25%;}
+.wnav a i {font-size:26px;color:#fff;color:#fff}
+.wnav a span {display:block;color:#666;margin-top:5px;}
+.wnav a.news div {background:#0099ff}
+.wnav a.order div {background:#ffcc00}
+.wnav a.fav div {background:#ff3366}
+.wnav a.history div {background:#33cc66}
+/* 商品列表 */
+.gli_t {color:#666;padding:0 0 0 2px;}
+.gli_t h2 {font-size:18px;font-weight:normal}
+.gli {width:100%;height:auto;overflow:hidden;}
+.gli .slider {width:100%;height:auto;position:relative;overflow:hidden;}
+.gli ul {display:block;width:500%;height:auto;position:relative;left:0;}
+.gli ul li {display:block;float:left;width:10%;}
+.gli ul li .im {text-align:center;padding:5% 0;}
+.gli ul li .im img {width:50%;}
+.gli ul li h3 {padding:0 3%;}
+.gli ul li h3 a {font-weight:normal;color:#666;}
+.gli ul li h3 a:hover {color:#CC3366;text-decoration:none}
+.gli ul li p.price {text-align:center;font-size:16px;color:#CC3333}
+.gli ul li p.price i {font-family:Arial;font-style:normal;font-size:14px;}
+.gli .trigger {text-align:center;}
+.gli .trigger i {margin:0 2px;font-size:0;line-height:0;display:inline-block;width:5px;height:5px;border-radius:5px;background:#ccc;}
+.gli .trigger i.cur {background:#33CCCC}
+/* 广告 */
+.ad-abr a {display:block;float:left;margin-right:6px;}
+.ad-abr a last {margin-right:0;}
+.ad-abr a img {width:360px;}

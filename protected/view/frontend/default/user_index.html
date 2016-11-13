@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="verydows-baseurl" content="<{$common.baseurl}>">
+<title>用户中心 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/jquery.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/general.js"></script>
+</head>
+<body>
+<!-- 顶部开始 -->
+<{layout_topper common=$common}>
+<!-- 顶部结束 -->
+<!-- 头部开始 -->
+<{layout_header common=$common}>
+<!-- 头部结束 -->
+<div class="loc w1100">
+  <div><a href="<{url c='main' a='index'}>">网站首页</a><b>&gt;</b><font>用户中心</font></div>
+</div>
+<!-- 主体开始 -->
+<div class="container w1100 mt10">
+  <div class="module cut">
+    <!-- 左侧开始 -->
+    <div class="w180 fl cut">
+      <!-- 用户菜单开始 -->
+      <{layout_usermenu}>
+      <!-- 用户菜单结束 -->
+    </div>
+    <!-- 左侧结束 -->
+    <!-- 右侧开始 -->
+    <div class="w910 cut">
+      <div class="w660 fl cut">
+        <div class="welcome w658 cut">
+          <h3>您好<font class="c333 ml5"><{if !empty($user.profile.name)}><{$user.profile.name}><{else}><{$user.username}><{/if}></font>，欢迎登陆<font class="ml5"><{$GLOBALS.cfg.site_name}></font></h3>
+          <{if $user.email_status == 0}>
+          <p class="remind red">您的邮箱还未通过邮件认证</font><a class="ml10" href="<{url c='security' a='index'}>">[立即认证]</a></p>
+          <{/if}>
+          <div class="module mt10 cut">
+            <dl><dt>账户余额：</dt><dd><font class="red"><{$user.account.balance}></font> 元</dd></dl>
+            <dl><dt>积分：</dt><dd><font class="red">0</font></dd></dl>
+            <dl><dt>成长值：</dt><dd><{$user.account.exp}></dd></dl>
+            <dl><dt>会员类别：</dt><dd><font><{$user.account.group_name}></font></dd></dl>
+            <dl><dt>上次登录：</dt><dd><font class="c999"><{date('Y年m月d日 H:i', $_SESSION.USER.LAST_DATE)}></font></dd></dl>
+          </div>
+        </div>
+        <!-- 最近订单开始 -->
+        <div class="w658 mt10 cut">
+          <h2><a href="<{url c='order' a='list'}>" class="fr">查看全部订单</a>近期订单</h2>
+          <{if !empty($order_list)}>
+          <div class="tli">
+            <table>
+              <tr>
+                <th class="aln-l">订单号</th>
+                <th width="110" class="aln-l">订单总额</th>
+                <th width="110">订单状态</th>
+                <th width="110">下单日期</th>
+                <th width="90">操作</th>
+              </tr>
+              <{foreach $order_list as $v}>
+              <tr>
+                <td class="aln-l"><a href="<{url c='order' a='view' id=$v.order_id}>"><{$v.order_id}></a></td>
+                <td class="aln-l"><font class="cny">¥</font> <{$v.order_amount}></td>
+                <td><{$v.progress}></td>
+                <td><{date('Y-m-d', $v.created_date)}></td>
+                <td><a href="<{url c='order' a='view' id=$v.order_id}>">查看</a></td>
+              </tr>
+              <{/foreach}>
+            </table>
+          </div>
+          <{else}>
+          <p class="aln-c pad10 c999">暂无订单</p>
+          <{/if}>
+        </div>
+        <!-- 最近订单结束 -->
+        <!-- 最近收藏开始 -->
+        <div class="w658 mt10 cut">
+          <h2><a href="<{url c='favorite' a='list'}>" class="fr">查看全部收藏</a>近期收藏</h2>
+          <{if !empty($favorite_list)}>
+          <div class="tli">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <th colspan="2">商品</th>
+                <th width="110">日期</th>
+              </tr>
+              <{foreach $favorite_list as $v}>
+              <tr>
+                <td><a href="<{url c='goods' a='index' id=$v.goods_id}>"><img src="<{$common.baseurl}>/upload/goods/prime/50x50/<{$v.goods_image}>" /></a></td>
+                <td>
+                  <p class="aln-l"><a href="<{url c='goods' a='index' id=$v.goods_id}>"><{$v.goods_name}></a></p>
+                  <p class="aln-l red mt5"><font class="cny">¥</font> <{$v.now_price}></p>
+                </td>
+                <td><{date('Y-m-d', $v.created_date)}></td>
+              </tr>
+              <{/foreach}>
+            </table>
+          </div>
+          <{else}>
+          <p class="aln-c pad10 c999">暂无收藏</p>
+          <{/if}>
+        </div>
+        <!-- 最近收藏结束 -->
+      </div>
+      <div class="w240 fr cut">
+        <div class="sdcter cut">
+          <h2 class="srth"><a class="fr" href="<{url c='user' a='profile'}>">编辑</a>个人信息</h2>
+          <div class="module mt10 cut">
+            <{if !empty($user.avatar)}>
+            <div class="avatar fl"><img src="<{$common.baseurl}>/upload/user/avatar/<{$user.avatar}>" /></div>
+            <{else}>
+            <div class="avatar fl"><img src="<{$common.baseurl}>/public/image/noavatar_m.gif" /></div>
+            <{/if}>
+            <ul>
+              <li>昵称:<{if !empty($user.profile.nickname)}><b class="ml8"><{$user.profile.nickname}></b><{else}><font class="c999 ml8">未设置</font><{/if}></li>
+              <li>性别:<b class="ml8"><{if $user.profile.gender == 1}>男<{elseif $user.profile.gender == 2}>女<{else}>保密<{/if}></b></li>
+              <li><a href="<{url c='user' a='logout'}>">退出登录</a></li>
+            </ul>
+          </div>
+        </div>
+        <!-- 最近浏览开始 -->
+        <div class="history sli mt10">
+          <h2 class="srth">最近浏览</h2>
+          <{if !empty($history)}>
+          <{foreach $history as $v}>
+          <dl>
+            <dt><a href="<{url c='goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/50x50/<{$v.goods_image}>" /></a></dt>
+            <dd class="lt"><a title="<{$v.goods_name}>" href="<{url c='goods' a='index' id=$v.goods_id}>"><{truncate($v.goods_name, 35)}></a><p><i>¥</i> <{$v.now_price}></p></dd>
+          </dl>
+          <{/foreach}>
+          <{else}>
+          <p class="pad10 c999">尚未浏览过任何商品</p>
+          <{/if}>
+        </div>
+        <!-- 最近浏览结束 -->
+      </div>
+    </div>
+    <!-- 右侧结束 -->
+  </div>
+  <div class="cl"></div>
+  <{layout_helper}>
+</div>
+<!-- 主体结束 -->
+<div class="cl"></div>
+<!-- 页脚开始 -->
+<{layout_footer}>
+<!-- 页脚结束 -->
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+</body>
+</html>

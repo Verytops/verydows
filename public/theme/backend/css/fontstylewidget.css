@@ -1,0 +1,21 @@
+/*颜色选择器 */
+.widget-color {width:18px;height:18px;padding:0;border:none;background:#000 url(../images/selector_widget.gif) 0 0 no-repeat;font-size:0;line-height:0;vertical-align:middle;cursor:pointer;}
+.cxcolor {display:none;position:absolute;z-index:10000;}
+.cxcolor .panel_hd {position:relative;width:220px;padding:0 5px;border:1px solid #000;border-bottom:none;background:#fff;font:normal 12px/20px "\5B8B\4F53";}
+.cxcolor .panel_hd a {color:#999;text-decoration:none;}
+.cxcolor .panel_hd a:hover {color:#333;}
+.cxcolor .clear {position:absolute;top:0;right:5px;}
+.cxcolor table {border-collapse:collapse;table-layout:fixed;empty-cells:show;}
+.cxcolor td {position:static;width:10px;height:10px;padding:0;border:1px solid #000;font-size:0;line-height:0;cursor:pointer;}
+.cxcolor_lock, .widget-bg-lock {display:none;position:absolute;top:0;left:0;background:#fff;z-index:9999;filter:alpha(opacity=0);opacity:0;}
+/*大小选择器*/
+.widget-size {width:60px;height:16px;line-height:16px;text-align:center;padding:0;border:1px solid #8d8d8d;background:#fff url(../images/selector_widget.gif) 50px -73px no-repeat;vertical-align:middle;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+.widget-size-panel {position:absolute;width:60px;padding:0;text-align:center;border:1px solid #999;background:#fff;display:none;z-index:10000;}
+.widget-size-panel a {display:block;line-height:150%;padding:5px 0;}
+.widget-size-panel a:hover {color:#fff;background:#999;}
+/*加粗斜体下划线选择器*/
+.widget-face {width:18px;height:16px;text-align:center;color:#888;font-family:Georgia, Verdana, Arial;padding:0;text-align:center;border:1px solid #bbb;background:#fff;vertical-align:middle;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+.widget-face.bold {font-weight:bold;}
+.widget-face.underline {text-decoration:underline;}
+.widget-face.italic {font-style:italic;}
+.widget-face.checked {color:#444;border-color:#555;background:#fff url(../images/selector_widget.gif) 15px -28px no-repeat;}

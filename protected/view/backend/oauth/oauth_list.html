@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/list.js"></script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>授权登录列表</h2></div>
+  <div class="box">
+    <{if !empty($results)}>
+    <div class="module">
+      <table class="datalist">
+        <tr>
+          <th width="200" class="ta-l">名称</th>
+          <th class="ta-l">说明</th>
+          <th width="100">启用</th>
+        </tr>
+        <{foreach $results as $v}>
+        <tr>
+          <td class="ta-l"><p class="pad5"><a class="blue" href="<{url m=$MOD c='oauth' a='edit' party=$v.party}>"><{$v.name}></a></p></td>
+          <td class="ta-l"><{if !empty($v.instruction)}><p class="c666" style="line-height:180%"><{$v.instruction}></p><{else}><font class="caaa">未设置</font><{/if}></td>
+          <td><{if $v.enable == 1}><i class="icon yes"></i><{else}><i class="icon no"></i><{/if}></td>
+        </tr>
+        <{/foreach}>
+      </table>
+    </div>
+    <{else}>
+    <div class="nors mt5">未找到相关数据记录...</div>
+    <{/if}>
+  </div>
+</div>
+</body>
+</html>

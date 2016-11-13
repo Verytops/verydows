@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>确认订单 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/order.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/order.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/consignee.js"></script>
+<script type="text/javascript">
+var freightApi = "<{url c='api/order' a='freight'}>", areaApi = "<{url c='api/area' a='children'}>";
+
+$(function(){
+  getFreight();
+});
+
+function submitOrder(){
+  var csn_id = $('#consignee h4').data('id') || false;
+  if(!csn_id){
+    $.vdsPrompt({content:'您必须先创建一个收件人信息'});
+    return false;
+  }
+  $.asynInter("<{url c='api/order' a='submit'}>", {csn_id:csn_id, shipping_id:$('#shipping_method').val(), memos:$('#memos').val()}, function(res){
+    if(res.status == 'success'){
+      var target = "<{url c='mobile/pay' a='index' order_id='$replace'}>";
+      window.location.href = target.replace('$replace', res.order_id);
+    }else{
+      $.vdsPrompt({content:res.msg});
+    }
+  });
+}
+</script>
+</head>
+<body>
+<div class="wrapper" id="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1)"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>确认订单</h2>
+  </div>
+  <!-- header end -->
+  <div class="confirm">
+    <div class="row" id="consignee">
+      <div class="lc">收件人</div>
+      <{if !empty($consignee_list[0])}>
+      <div class="rc" onclick="popCsnList()">
+        <div class="unfold fr"><i class="iconfont">&#xe614;</i></div>
+        <h4 class="c666" data-id="<{$consignee_list[0].id}>"><{$consignee_list[0].receiver}><span class="ml10"><{$consignee_list[0].mobile}></span></h4>
+        <p class="mt5 c888"><{$consignee_list[0].area.province}> <{$consignee_list[0].area.city}> <{$consignee_list[0].area.borough}> <{$consignee_list[0].address}><{if !empty($consignee_list[0].zip)}><br /><{$consignee_list[0].zip}><{/if}></p>
+      </div>
+      <{else}>
+      <div class="rc" onclick="popCsnList()"><a class="add" onclick="addCsn()">+ 添加收件人</a></div>
+      <{/if}>
+    </div>
+    <div class="row">
+      <div class="lc">配送方式</div>
+      <div class="rc">
+        <div class="vslt">
+          <select id="shipping_method" onchange="getFreight()">
+            <{foreach $shipping_list as $v}>
+            <option value="<{$v.id}>"<{if $v@first == true}> selected="selected"<{/if}>><{$v.name}></option>
+            <{/foreach}>
+          </select>
+          <span><i class="iconfont">&#xe615;</i></span>
+        </div>
+      </div>
+    </div>
+    <div class="parcel row" id="parcel">
+      <div class="lc">包裹清单</div>
+      <div class="rc">
+        <ul class="gli" id="gli">
+          <{foreach $cart.items as $v}>
+          <li>
+            <div class="im"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/50x50/<{$v.goods_image}>" /></div>
+            <div class="info">
+              <p class="name"><{$v.goods_name}></p>
+              <{if !empty($v.opts)}>
+              <p class="opts mt5"><{foreach $v.opts as $o}><span class="mr5">[<{$o.type}>: <font><{$o.opt_text}></font>]</span><{/foreach}></p>
+              <{/if}>
+              <p class="subtotal mt5 c666"><span class="price mr10"><i class="cny">¥</i><font class="f14"><{$v.now_price}></font></span>×<b class="q"><{$v.qty}></b></p>
+            </div>
+          </li>
+          <{/foreach}>
+        </ul>
+      </div>
+    </div>
+    <div class="memos row">
+      <div class="lc">留言备注</div>
+      <div class="rc"><textarea name="memos" class="vtextarea" id="memos" placeholder="填写您对订单需要备注的内容，没有请留空"></textarea></div>
+    </div>
+    <div class="amount">
+      <h3 class="f14 center">订单合计</h3>
+      <dl>
+        <dt>商品合计:</dt>
+        <dd class="c666"><i class="cny">¥</i><font class="f14" id="goods-amount"><{$cart.amount}></font></dd>
+      </dl>
+      <dl>
+        <dt>运费:</dt>
+        <dd class="c666"><i class="cny">¥</i><font class="f14" id="shipping-amount">0.00</font></dd>
+      </dl>
+      <dl class="totals">
+        <dt class="f14">共计:</dt>
+        <dd class="f18"><i class="cny">¥</i><font id="total-amount"><{$cart.amount}></font></dd>
+      </dl>
+    </div>
+    <div class="submit mt20"><a class="f14 xauto center" onClick="submitOrder()">提交订单</a></div>
+  </div>
+</div>
+<!-- 收件人列表开始 -->
+<div class="csnli poper hide" id="csnli">
+  <div class="header">
+    <div class="op lt"><a onclick="hideCsnList()"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>选择收件人</h2>
+  </div>
+  <div class="opts module">
+    <{if !empty($consignee_list)}>
+    <{foreach $consignee_list as $v}>
+    <dl id="csnopt-<{$v.id}>"<{if $v@first == true}> class="checked"<{/if}>>
+      <dd class="l" onclick="onChangeCsn(this)"><i class="iconfont">&#xe61a;</i></dd>
+      <dd class="r" data-json='<{$v.json}>' onclick="editCsn(this)"><i class="iconfont">&#xe617;</i></dd>
+      <dd class="m">
+        <h4 class="c666" data-id="<{$v.id}>"><{$v.receiver}><span class="ml10"><{$v.mobile}></span></h4>
+        <p class="mt5 c888"><{$v.area.province}> <{$v.area.city}> <{$v.area.borough}> <{$v.address}><{if !empty($v.zip)}><br /><{$v.zip}><{/if}></p>
+      </dd>
+    </dl>
+    <{/foreach}>
+    <{/if}>
+    <a class="add" onclick="addCsn()">+ 添加收件人</a>
+  </div>
+</div>
+<!-- 收件人列表结束 -->
+<!-- 收件人表单开始 -->
+<div class="csnform hide" id="csnform">
+  <div class="header">
+    <div class="op lt"><a onclick="hideCsnForm()"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>收件人</h2>
+  </div>
+  <form><div class="main cut"></div></form>
+  <a class="submit act xauto mt15" onclick="saveCsnForm('<{url c='api/consignee' a='save'}>')">保 存</a>
+</div>
+<!-- 收件人表单结束 -->
+<script type="text/template" id="csn-row-tpl">
+<dl id="csnopt-${id}"{@if checked == 1} class="checked"{@/if}>
+  <dd class="l" onclick="onChangeCsn(this)"><i class="iconfont">&#xe61a;</i></dd>
+  <dd class="r" data-json='${json}' onclick="editCsn(this)"><i class="iconfont">&#xe617;</i></dd>
+  <dd class="m">
+    <h4 class="c666" data-id="${id}">${receiver}<span class="ml10">${mobile}</span></h4>
+    <p class="mt5 c888">${province} ${city} ${borough} ${address}{@if zip != ''}<br />${zip}{@/if}</p>
+  </dd>
+</dl>
+</script>
+<script type="text/template" id="csn-form-tpl">
+<input type="hidden" name="id" value="0" />
+<dl><dt>收件人</dt><dd><input name="receiver" type="text" class="vinput"></dd></dl>
+<dl><dt>手机号码</dt><dd><input name="mobile" type="number" pattern="[0-9]*" class="vinput"></dd></dl>
+<dl>
+  <dt>选择省份</dt>
+  <dd>
+    <div class="vslt">
+      <select name="province" id="areaslt-province" data-type="province" onchange="getAreaSelect('province')">
+      <option value="">选择省份</option>
+      </select>
+      <span><i class="iconfont">&#xe615;</i></span>
+    </div>
+  </dd>
+</dl>
+<dl>
+  <dt>选择城市</dt>
+  <dd>
+    <div class="vslt">
+      <select name="city" id="areaslt-city" onchange="getAreaSelect('city')">
+      <option value="">选择城市</option>
+      </select>
+      <span><i class="iconfont">&#xe615;</i></span>
+    </div>
+  </dd>
+</dl>
+<dl>
+  <dt>选择区/县</dt>
+  <dd>
+    <div class="vslt">
+      <select name="borough" id="areaslt-borough">
+      <option value="">选择区/县</option>
+      </select>
+      <span><i class="iconfont">&#xe615;</i></span>
+    </div>
+  </dd>
+</dl>
+<dl><dt>详细地址</dt><dd><textarea name="address" class="vtextarea"></textarea></dd></dl>
+<dl><dt>邮编</dt><dd><input name="zip" type="number" pattern="[0-9]*" class="vinput"></dd></dl>
+</script>
+<script type="text/template" id="csn-checked-tpl">
+<div class="unfold fr"><i class="iconfont">&#xe614;</i></div>
+<h4 class="c666" data-id="${id}">${receiver}<span class="ml10">${mobile}</span></h4>
+<p class="mt5 c888">${province} ${city} ${borough} ${address}{@if zip != ''}<br />${zip}{@/if}</p>
+</script>
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

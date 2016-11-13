@@ -1,0 +1,15 @@
+.scope .th {background:#f6f6f6;padding-bottom:10px;border-bottom:1px solid #eee;}
+.scope div.casing {width:720px;height:auto;margin:10px;padding:5px 5px 20px 5px;background:#fff;}
+.scope h3 font {font-weight:normal;}
+.scope .areasel label {display:block;float:left;width:140px;padding:6px 0;}
+.scope .segline {border-bottom:1px solid #eee;}
+.scope font.caaa {margin-left:5px;}
+.scopeli dl {position:relative;width:600px;color:#666;margin-top:10px;padding:5px;border:1px solid #e6f2ff;background:#f7fbff}
+.scopeli dl dt {padding:5px 5px 10px 5px;border-bottom:1px solid #f2f2f2;}
+.scopeli dl dt font {margin-right:15px;}
+.scopeli dl dd {padding:5px;margin-top:5px;}
+.scopeli dl dd span {margin-right:15px;}
+.scopeli dl dd font {color:#CC3366;margin:0 3px 0 5px;}
+.scopeli dl a.remove {position:absolute;top:5px;right:10px;color:#71B8FF;font-size:16px;}
+.scopeli dl a.remove:hover {color:#C30}
+span.sep60 {margin:0 30px;}

@@ -1,0 +1,11 @@
+<div class="ta-c bw-row pad10 c888 cut">
+  <p>
+    <span class="mr10">用户名：<font class="c666"><{$user.username}></font></span>
+    <span class="ml10">邮箱：<font class="c666"><{$user.email}></font></span>
+  </p>
+  <p class="mt10">
+    <a class="blue" href="<{url c='backend/user' a='index'}>">返回用户列表</a>
+    <span class="sep20 c999">|</span>
+    <a class="blue" href="<{url c='backend/user' a='view' id=$user.user_id}>">返回用户信息</a>
+  </p>
+</div>

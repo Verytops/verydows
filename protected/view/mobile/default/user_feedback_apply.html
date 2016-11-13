@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>我要咨询 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+function addFeedback(){
+  var form = $('#fbform');
+  form.find('input[name="subject"]').vdsFieldChecker({rules: {required:[true, '主题不能为空'], maxlen:[120, '主题不能超过120个字符']}});
+  form.find('textarea[name="content"]').vdsFieldChecker({rules: {required:[true, '内容不能为空'], minlen:[15, '内容不能少于15个字符'], maxlen:[600, '内容不能超过600个字符']}});
+  form.find('input[name="mobile"]').vdsFieldChecker({rules: {required:[true, '请输入手机号码'], mobile:[true, '手机号码无效']}});
+  if(form.vdsFormChecker({isSubmit:false}) == true){
+    $.asynInter("<{url c='api/feedback' a='save'}>", form.serialize(), function(res){
+      if(res.status == 'success'){
+        window.location.href = "<{url c='mobile/feedback' a='list'}>";
+      }else{
+        $.vdsPrompt({content:res.msg});
+      }
+    });
+  }
+}
+</script>
+</head>
+<body>
+<div class="wrapper" id="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>我要咨询</h2>
+  </div>
+  <!-- header end -->
+  <div class="feedback uform module">
+    <form id="fbform">
+    <div class="main cut">
+      <dl>
+        <dt>主题</dt>
+        <dd><input name="subject" type="text" class="vinput"></dd>
+      </dl>
+      <dl>
+        <dt>类型</dt>
+        <dd>
+          <div class="vslt">
+            <select name="type">
+              <option value="1">商品</option>
+              <option value="2">活动</option>
+              <option value="3">售后</option>
+              <option value="4">投诉</option>
+              <option value="0">其他</option>
+            </select>
+            <span><i class="iconfont">&#xe615;</i></span>
+          </div>
+        </dd>
+      </dl>
+      <dl>
+        <dt>详细内容</dt>
+        <dd><textarea name="content" class="vtextarea" placeholder="内容不能少于15字符, 最多不能超过600个字符"></textarea></dd>
+      </dl>
+      <dl>
+        <dt>手机号码</dt>
+        <dd><input name="mobile" type="text" class="vinput" placeholder="请输入您的常用手机号码"></dd>
+      </dl>
+    </div>
+    </form>
+    <a class="submit xauto mt15 f14 center" onclick="addFeedback()">提 交</a>
+  </div>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

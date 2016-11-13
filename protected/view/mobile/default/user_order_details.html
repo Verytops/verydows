@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>订单详情 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  preserveSpace('footact');
+  countdown();
+});
+
+function countdown(){
+  var obj = $('#countdown');
+  if(obj.size() == 0) return false;
+  var remaining = parseInt(obj.data('remaining'));
+  window.setInterval(function(){
+    var _d = 0, _h = 0, _m = 0, _s = 0;
+    if(remaining > 0){
+      _d = Math.floor(remaining / (60 * 60 * 24));
+      _h = Math.floor(remaining / (60 * 60)) - (_d * 24);
+      _m = Math.floor(remaining / 60) - (_d * 24 * 60) - (_h * 60);
+      _s = Math.floor(remaining) - (_d * 24 * 60 * 60) - (_h * 60 * 60) - (_m * 60);
+    }
+    if(_m <= 9) _m = '0' + _m;
+    if(_s <= 9) _s = '0' + _s;
+    obj.find('.remaining').text(_d+'天'+_h+'小时'+_m+'分'+_s+'秒');
+    remaining --;
+    obj.data('remaining', remaining);
+  }, 1000);
+}
+</script>
+</head>
+<body>
+<div class="wrapper" id="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="<{url c='mobile/order' a='list'}>"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>订单详情</h2>
+  </div>
+  <!-- header end -->
+  <div class="order cut">
+    <{if !empty($countdown)}>
+    <dl class="countdown mb8" id="countdown" data-remaining="<{$countdown}>">
+      <dt><i class="iconfont">&#xe633;</i></dt>
+      <dd>
+        <p class="c666 mt2">您还有<font class="remaining red">0天0小时0分0秒</font><{if $order.order_status == 1}>来付款，超时订单将自动取消<{else}>确认签收，超时订单将自动签收<{/if}></p>
+      </dd>
+    </dl>
+    <{/if}>
+    <div class="module cut">
+      <dl class="col"><dt>订单号：</dt><dd><{$order.order_id}></dd></dl>
+      <dl class="col"><dt>订单状态：</dt><dd><font class="red"><{array_pop($progress)}></font></dd></dl>
+      <dl class="col"><dt>下单时间：</dt><dd><{date('Y-m-d H:i:s', $order.created_date)}></dd></dl>
+      <dl class="col"><dt>支付方式：</dt><dd><{$order.payment_method_name}></dd></dl>
+      <dl class="col"><dt>配送方式：</dt><dd><{$order.shipping_method_name}></dd></dl>
+    </div>
+    <{if !empty($carrier)}>
+    <dl class="carrier col mt8">
+      <dt><i class="iconfont">&#xe623;</i></dt>
+      <dd>
+        <h4 class="c666"><{$carrier.name}></h4>
+        <p class="mt5 c888">运单编号：<a class="blue" href="<{$carrier.tracking_url}><{$shipping.tracking_no}>"><{$shipping.tracking_no}></a></p>
+        <p class="mt5 c888">客服电话：<a class="blue" href="tel:<{$carrier.service_tel}>"><{$carrier.service_tel}></a></p>
+      </dd>
+    </dl>
+    <{/if}>
+    <dl class="address col mt8">
+      <dt><i class="iconfont">&#xe62f;</i></dt>
+      <dd class="c666">
+        <h4><{$consignee.receiver}><span class="ml10"><{$consignee.mobile}></span></h4>
+        <p class="mt5"><{$consignee.province}> <{$consignee.city}> <{$consignee.borough}> <{$consignee.address}><{if !empty($consignee.zip)}><br /><{$consignee.zip}><{/if}></p>
+      </dd>
+    </dl>
+    <div class="parcel mt8">
+      <ul>
+        <{foreach $goods_list as $v}>
+        <li>
+          <div class="im"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/50x50/<{$v.goods_image}>" /></a></div>
+          <div class="info">
+            <p class="name"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><{$v.goods_name}></a></p>
+            <{if !empty($v.goods_opts)}>
+            <p class="c999 mt5"><{foreach $v.goods_opts as $o}><span class="mr5">[<{$o.opt_type}>: <font class="c666"><{$o.opt_text}></font>]</span><{/foreach}></p>
+            <{/if}>
+            <p class="subtotal mt5 c999">共<b class="q"><{$v.goods_qty}></b>件<span class="price ml10"><i class="cny">¥</i><{$v.goods_price}></span></p>
+          </div>
+        </li>
+        <{/foreach}>
+      </ul>
+    </div>
+    <div class="amount mt8 cut">
+      <dl class="col mt8"><dt>商品总计：</dt><dd><i class="cny">¥</i><{$order.goods_amount}></dd></dl>
+      <dl class="col mt5"><dt>运费：</dt><dd><i class="cny">¥</i><{$order.shipping_amount}></dd></dl>
+      <dl class="col total mt5"><dt>订单总额：</dt><dd class="f14"><i class="cny">¥</i><{$order.order_amount}></dd></dl>
+    </div>
+    <{if !empty($order.memos)}>
+    <dl class="memo col mt8">
+      <dt><i class="iconfont" style="">&#xe631;</i></dt>
+      <dd class="f12 c666"><{$order.memos}></dd>
+    </dl>
+    <{/if}>
+  </div>
+</div>
+<div class="orderact footfixed" id="footact">
+  <{if $order.order_status == 1}>
+  <a class="b2" href="<{url c='mobile/order' a='cancel' id=$order.order_id}>">取消订单</a>
+  <{if $order.payment_method != 2}><a class="b1" href="<{url c='mobile/pay' a='index' order_id=$order.order_id}>">去付款</a><{/if}>
+  <{elseif $order.order_status == 3}>
+  <a class="b1" href="<{url c='mobile/order' a='delivered' id=$order.order_id}>">确认签收</a>
+  <{elseif $order.order_status == 4}>
+  <a class="b3" href="<{url c='mobile/aftersales' a='order' order_id=$order.order_id}>">售后</a>
+  <a class="b1" href="<{url c='mobile/review' a='order' order_id=$order.order_id}>">评价</a>
+  <{elseif $order.order_status == 0}>
+  <a class="b1" href="<{url c='mobile/order' a='rebuy' id=$order.order_id}>">重新购买</a>
+  <{/if}>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

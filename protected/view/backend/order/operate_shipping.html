@@ -1,0 +1,53 @@
+<script type="text/javascript">
+$(function(){
+  $('#shipping-goods-list').html($('#goods-list').html());
+  $('#shipping-consignee').html($('#order-consignee').html());
+});
+function submitShipForm(){
+  var form = $('#pop-shipping form');
+  form.find('select[name="carrier_id"]').vdsFieldChecker({rules: {required:[true, '清选择物流承运商']}});
+  form.find('input[name="tracking_no"]').vdsFieldChecker({rules: {required:[true, '运单号不能为空']}});
+  form.find('textarea[name="memos"]').vdsFieldChecker({rules: {maxlen:[240, '备注不能超过240个字符']}, tipsPos: 'br'});
+  form.vdsFormChecker();
+}
+</script>
+<div class="poper cut" id="pop-shipping"> <a class="close" onclick="closeOperate('pop-shipping')"></a>
+  <h3 class="th f14 ta-c">添加配送发货信息</h3>
+  <div class="pad10 cut">
+    <form method="post" action="<{url m=$MOD c='order' a='operate' step='shipping' id=$order.order_id}>">
+      <div class="module"><table class="datalist" id="shipping-goods-list"></table></div>
+      <div class="module mt10">
+        <table class="dataform">
+          <tr>
+            <th width="100">配送地址</th>
+            <td id="shipping-consignee"></td>
+          </tr>
+          <tr>
+            <th>物流承运商</th>
+            <td>
+              <select class="slt" name="carrier_id">
+                <option value="">请选择</option>
+                <{foreach $carrier_list as $v}>
+                <option value="<{$v.id}>"><{$v.name}></option>
+                <{/foreach}>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>运单号</th>
+            <td><input name="tracking_no" type="text" class="w200 txt" value="" /></td>
+          </tr>
+          <tr>
+            <th>备注</th>
+            <td><textarea class="txtarea" name="memos" cols="80" rows="4"></textarea></td>
+          </tr>
+        </table>
+      </div>
+      <div class="ta-c mt5 pad10">
+        <button type="button" class="ubtn btn" onclick="submitShipForm()">确定并提交</button>
+        <span class="sep40"></span>
+        <button type="button" class="fbtn btn" onclick="closeOperate('pop-shipping')">取消</button>
+      </div>
+    </form>
+  </div>
+</div>

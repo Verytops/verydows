@@ -1,0 +1,87 @@
+.step {margin-left:280px;width:720px;height:42px;background:url(../images/cart-step.gif) no-repeat left bottom;}
+.step ul li {float:left;color:#888;display:block;width:240px;height:42px;text-align:center; z-index:999;}
+.step ul li.cur {color:#73AA00;font-weight:bold;background:url(../images/cart-step.gif) no-repeat -727px 29px;}
+/* 购物车 */
+.cart {border:1px solid #e5e5e5;}
+.cart table {text-align:center;}
+.cart table tr th {height:32px;color:#777;background:#f5f5f5;border-bottom:1px solid #eee;}
+.cart table tr td {padding:10px;color:#666;}
+.cart table tr td a {cursor:pointer}
+td.qty input {width:40px;color:#666;padding:5px 0;border:1px solid #aaa;border-right:none; border-left:none}
+td.qty button {color:#555;padding:5px;border:1px solid #aaa;background:#f2f2f2}
+.clear-cart {padding:10px 0 0 10px;}
+.clear-cart a i {width:11px;height:13px;margin:0 6px 0 0;background-position:-90px -70px;}
+.clear-cart a {color:#0099FF;cursor:pointer}
+.clear-cart a:hover {color:#CC3333;text-decoration:none;}
+.clear-cart a:hover i {background-position:-105px -70px;}
+.cart-bill {padding:10px 10px 0 0;}
+.cart-bill dl dt {float:left;width:270px;color:#777;text-align:right;line-height:25px;}
+.cart-bill dl dd {margin-left:310px;color:#666;line-height:25px;text-align:right}
+.cart-bill dl dd b {font-family:Arial;}
+.cart-bill dl.tot {padding:8px 0 8px 0;border-top:1px dotted #e2e2e2;border-bottom:1px dotted #e2e2e2;}
+.cart-bill dl.tot dd {font-size:24px;}
+.checkout-btn {color:#ffffcc;font-size:14px;font-weight:bold;padding:10px 30px;background:#CC3366;display:inline-block;cursor:pointer}
+.checkout-btn.disabled {}
+.checkout-btn:hover {background:#990033;color:#fff;text-decoration:none}
+.cart-empty {font-size:14px;padding:160px 0 100px 0;text-align:center;border:1px solid #eee;background:url(../images/cart-empty.gif) no-repeat center 50px;}
+.cart-empty a {color:#0066CC}
+/* 订单确认 */
+.th {background:#f2f2f2;border-bottom:1px solid #e5e5e5;border-top:1px solid #fff;}
+.th h2 {font-size:14px;color:#777;padding:7px 0 7px 15px;}
+.th div.fr {padding:7px 10px 7px 0;}
+.selection ul li {padding:10px 20px;background:#fff;border-bottom:1px solid #e5e5e5;}
+.selection ul li.cur {background:#F4FAFF}
+.selection ul li label input {vertical-align:middle;}
+.selection ul li span.fr {display:none;}
+.selection ul li span.fr a {color:#37f;margin:0 10px;cursor:pointer;}
+.selection ul li span.fr a:hover {text-decoration:none}
+.selection ul li.cur span.fr {display:block;}
+.selection div.add-btn {margin:15px 0 0 30px;}
+.consignee {padding:0 0 20px 0;border:1px solid #ddd;background:#fbfbfb;}
+.consignee-form {margin:10px 30px;padding:20px 10px;background:#fff;border:1px solid #eee;}
+.consignee-form dl {clear:both;padding:6px 0;}
+.consignee-form dl dt {float:left;width:100px;text-align:right;line-height:26px;color:#666;}
+.consignee-form dl dd {margin-left:105px;line-height:26px;}
+.consignee-form dl dd input.w70 {width:70px;}
+.consignee-form dl dd input.w100 {width:100px;}
+.consignee-form dl dd input.w200 {width:200px;}
+.consignee-form dl dd input.w400 {width:400px;}
+.consignee-btns {padding:0 0 0 105px;}
+.consignee-btns button {word-spacing:8px}
+.consignee-btns span.sep {margin:0 15px;}
+.odmod {border:1px solid #ddd;}
+.parcel .th h2 i.icon {width:22px;height:22px;}
+.parcel .th div.fr a {line-height:22px;}
+.parcel .th div.fr a i {width:18px;height:18px;background-position:0 -110px;}
+.parcel table tr th {background:#fff;}
+.parcel table tr td {border-bottom:1px solid #eee;}
+.parcel-form table tr td {border:none;background:#f4faff}
+.parcel-form textarea {border:1px solid #8ab6dd}
+.total {border:1px solid #ddd;padding:0 0 20px 0;}
+.total dl {clear:both;padding:7px 0 7px 30px;line-height:22px;}
+.total dl dt {float:left;width:120px;text-align:right;color:#666;}
+.total dl dd {margin-left:125px;color:#555;font-size:14px;}
+.total dl dd i {font-style:normal;font-family:Arial;margin-right:2px;}
+.total dl dd.count {font-size:22px;color:#CC3366}
+.paybox {border:1px solid #ddd;padding:30px 0 50px 80px;}
+.paybox h2 i.icon {width:20px;height:18px;background-position:-90px -120px;}
+.payinfo {width:600px;margin-left:15px;padding:10px 15px;border:1px solid #D2F0FF;background:#F7FBFF;}
+.payinfo table th, .pay-info table td {padding:8px;text-align:left;font-size:13px;vertical-align:middle}
+.payinfo table th {color:#777;text-align:right}
+.payinfo table td .red {font-size:16px;}
+.paybtn {margin-left:60px;}
+.uponpay {position:fixed;width:420px;height:180px;background:#fff;-moz-box-shadow:2px 2px 2px #888;-webkit-box-shadow:2px 2px 2px #888;box-shadow:2px 2px 2px #888;z-index:10000;}
+.uponpay h2 {position:relative;font-size:14px;color:#888;height:36px;line-height:36px;text-indent:10px;background:#f6f6f6;border-bottom:1px solid #e6e6e6;}
+.uponpay h2 a.close {position:absolute;top:10px;right:8px;}
+.uponpay a.btn {width:90px;height:20px;line-height:20px;margin:0 15px;}
+.payres {padding:25px 20px 35px 20px;border:1px solid #e5e5e5;}
+.payres h3 {font-size:20px;text-align:center;padding:5px 0 15px 0;border-bottom:1px dotted #eee;}
+.payres h3 i.icon {width:20px;height:18px;}
+.payres.success h3 {color:#090;}
+.payres.success h3 i.icon {width:20px;height:18px;background-position:-90px -120px;}
+.payres.failure h3 {color:#C30}
+.payres.failure h3 i.icon {background-position:-120px -120px;}
+.payres ul {margin-left:440px;}
+.payres ul li {padding:8px 0;font-size:14px;}
+.payres .links a {color:#36C;}
+.payres .links span.sep {color:#ddd;margin:0 10px;}

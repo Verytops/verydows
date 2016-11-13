@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/list.js"></script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>用户收件人地址列表</h2></div>
+  <div class="box">
+    <{include file='backend/user/bar.html'}>
+    <{if !empty($consignee_list)}>
+    <div class="module mt5">
+      <table class="datalist">
+        <tr>
+          <th width="160">收件人名</th>
+          <th class="ta-l">收件地址</th>
+          <th width="150">邮编</th>
+          <th width="180">手机号</th>
+        </tr>
+        <{foreach $consignee_list as $v}>
+        <tr>
+          <td><{$v.receiver}><{if $v.is_default == 1}><p class="mt5 c999">[用户默认地址]</p><{/if}></td>
+          <td class="ta-l"><p><{$v.area.province}> <{$v.area.city}> <{$v.area.borough}></p><p class="mt5"><{$v.address}></p></td>
+          <td><{if !empty($v.mobile)}><{$v.zip}><{else}><font class="c999">未设置</font><{/if}></td>
+          <td><{if !empty($v.mobile)}><{$v.mobile}><{else}><font class="c999">未填写</font><{/if}></td>
+        </tr>
+        <{/foreach}>
+      </table>
+    </div>
+    <{else}>
+    <div class='nors mt5'>该用户未添加任何收件人地址信息...</div>
+    <{/if}>
+  </div>
+</div>
+</body>
+</html>

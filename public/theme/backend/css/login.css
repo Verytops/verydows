@@ -1,0 +1,29 @@
+body {background:#F0F0F0;}
+.wrap {margin:150px auto 0 auto;width:700px;height:auto;}
+.banner {width:310px;height:auto;padding:40px 0 0 0;text-align:center;}
+.banner h1 {width:200px;height:60px;margin:0 auto;}
+.banner h1 a {display:block;width:200px;height:60px;font-size:0;background:url(../images/logo.gif) no-repeat 0 0;}
+.banner h2 {font-size:14px;font-weight:normal;color:#777;}
+.banner p {color:#aaa;}
+.login {width:300px;margin:0 0 0 320px;padding:30px 40px;background:#fff;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;-moz-box-shadow:2px 2px 2px #d9d9d9;-webkit-box-shadow:2px 2px 2px #d9d9d9;box-shadow:2px 2px 2px #d9d9d9;}
+.login h2 {font-size:14px;padding:0 0 0 5px;color:#666;}
+.login dl {display:block;width:298px;height:34px;border:1px solid #ccc;overflow:hidden}
+.login dl dt {float:left;display:block;width:16px;height:16px;padding:9px;background:#f3f3f3;border-right:1px solid #ccc;}
+.login dl dt i {width:16px;height:16px;}
+.login dl dd {display:block;float:right;width:260px;text-align:right}
+.login dl dd input {width:255px;font-size:12px;padding:10px 0;border:none;outline:none}
+.login .username dt i {width:16px;height:16px;background-position:-210px -120px;}
+.login .pwd dt i {background-position:-240px -120px;}
+.login .captcha dl {width:165px;}
+.login .captcha dd {width:160px;clear:both}
+.login .captcha dd input {width:155px;}
+.login .captcha div.fr {padding:12px 20px 0 0;}
+.login .captcha div.fr a {color:#0090C0;cursor:pointer}
+.login .captcha div.fr a:hover {text-decoration:none;color:#CC3366}
+.login-btn {margin:30px 10px 10px 40px;}
+.login-btn .fr {padding:10px 0 0 0;}
+.login-btn .btn {display:block;width:85px;height:32px;line-height:32px;word-spacing:8px;text-align:center;color:#4A839D;font-weight:bold;background:#F7F9FB;border:1px solid #9ABAD1;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
+.login-btn .btn.disabled {width:90px;color:#bbb;background:#e5e5e5;border-color:#ddd;word-spacing:0;}
+.login-btn label font {color:#999;margin-left:5px;}
+.lockout {color:#ff3366;margin:30px 0 20px 0;line-height:180%;border:1px solid #ff3366;border-radius:3px;}
+.lockout b {margin:0 2px;}

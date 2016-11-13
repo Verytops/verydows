@@ -1,0 +1,33 @@
+.pay .order {padding:8px 0;background:#fff;}
+.pay .order dl {display:block;line-height:30px;font-size:14px;} 
+.pay .order dl dt {float:left;display:block;width:90px;height:30px;text-align:right;color:#666;}
+.pay .order dl dd {display:block;margin-left:100px;height:30px;}
+.pay .order dl dd.amount {font-weight:bold;color:#e95d4e;}
+.pay .payment {background:#fff;}
+.pay .payment dl {display:block;padding:6px 20px;border-bottom:1px solid #eee;}
+.pay .payment dl dd {display:block;height:40px;line-height:40px;color:#555;}
+.pay .payment dl dd.fr a {display:block;margin-top:6px;width:22px;height:22px;border:2px solid #e2e2e2;border-radius:50%;}
+.pay .payment dl dd.fr a i {font-size:0;}
+.pay .payment dl dd.fl {width:22px;text-align:right}
+.pay .payment dl dd.fl i {font-size:22px;}
+.pay .payment dl dd.desc {margin-left:40px;}
+.pay .payment dl.checked dd.fr a {border-color:#33cc99;line-height:22px;text-align:center}
+.pay .payment dl.checked dd.fr a i {font-size:16px;color:#33cc99;}
+.pay .payment .more {padding:8px 0;color:#999;}
+.pay .payment .more i {font-size:12px;}
+.pay .submit a {display:block;min-width:180px;width:80%;max-width:300px;height:34px;line-height:34px;font-size:14px;color:#fff;word-spacing:10px;background:#f15353;border-radius:3px;}
+i.payico-alipay {content:"\e61b";}
+i.payico-weixin {content:"\e61c";}
+i.payico-balance {content:"\e61f";}
+i.payico-cod {content:"\e621";}
+i.payico-bankcard {content:"\e620";}
+.payico-alipay:before {content:"\e61b";color:#0088cc;}
+.payico-weixin:before {content:"\e61c";color:#009966}
+.payico-balance:before {content:"\e61f";color:#ff3399}
+.payico-cod:before {content:"\e621";color:#669999}
+.payico-bankcard:before {content:"\e620";color:#ff9933}
+.pay .return {padding:20px 15px;text-align:center;background:#fff;}
+.pay .return h2 {display:table;text-align:left;}
+.pay .return i.iconfont {font-size:60px;}
+.pay .return.success {color:#f36}
+.pay .return.error {color:#999}

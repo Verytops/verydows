@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="verydows-baseurl" content="<{$common.baseurl}>">
+<title>反馈进度详情 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/service.css" />
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/jquery.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/general.js"></script>
+</head>
+<body>
+<!-- 顶部开始 -->
+<{layout_topper common=$common}>
+<!-- 顶部结束 -->
+<!-- 头部开始 -->
+<{layout_header common=$common}>
+<!-- 头部结束 -->
+<div class="loc w1100">
+  <div><a href="<{url c='main' a='index'}>">网站首页</a><b>&gt;</b><font>反馈进度详情</font></div>
+</div>
+<!-- 主体开始 -->
+<div class="container w1100 mt10">
+  <div class="module cut">
+    <!-- 左侧开始 -->
+    <div class="w180 fl cut">
+      <!-- 用户菜单开始 -->
+      <{layout_usermenu}>
+      <!-- 用户菜单结束 -->
+    </div>
+    <!-- 左侧结束 -->
+    <!-- 右侧开始 -->
+    <div class="w910 cut">
+      <div class="mcter">
+        <h2>反馈进度详情</h2>
+        <div class="pad10 cut">
+          <div class="ptform">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <th width="120">主题：</th>
+                <td><{$feedback.subject}></td>
+              </tr>
+              <tr>
+                <th>反馈类型：</th>
+                <td><{$feedback.type_text}></td>
+              </tr>
+              <tr>
+                <th>反馈内容：</th>
+                <td><{$feedback.content}></td>
+              </tr>
+              <tr>
+                <th>联系手机：</th>
+                <td><{$feedback.mobile}></td>
+              </tr>
+              <tr>
+                <th>提交日期：</th>
+                <td><{date('Y-m-d H:i:s', $feedback.created_date)}></td>
+              </tr>
+              <tr>
+                <th>当前状态：</th>
+                <td><{$feedback.status_text}></td>
+              </tr>
+            </table>
+          </div>
+          <{if !empty($message_list)}>
+          <div class="line ce5"></div>
+          <div class="chatting mt10 pad10">
+            <{foreach $message_list as $v}>
+            <{if !empty($v.admin_id)}>
+            <dl class="csad"><dt>客服<font><{date('Y-m-d H:i:s', $v.dateline)}></font></dt><dd><{$v.content}></dd></dl>
+            <{else}>
+            <dl><dt>您<font><{date('Y-m-d H:i:s', $v.dateline)}></font></dt><dd><{$v.content}></dd></dl>
+            <{/if}>
+            <{/foreach}>
+          </div>
+          <{/if}>
+          <{if $feedback.status == 1}>
+          <div class="line ce5"></div>
+          <script type="text/javascript">
+            function postMessage(btn){
+              var form = $(btn).closest('form');
+              form.find('textarea[name="content"]').vdsFieldChecker({rules:{required:[true, '内容不能为空'], minlen:[15, '内容不能少于15个字符'], maxlen:[500, '内容不能超过500个字符']}, tipsPos:'abs'});
+              form.vdsFormChecker();
+            }
+          </script>
+          <form method="post" action="<{url c='feedback' a='messaging' id=$feedback.fb_id}>">
+            <div class="reply-form mt10 pad10 cut">
+              <dl>
+                <dt class="fl aln-r pad5">发送消息</dt>
+                <dd><textarea title="消息内容" class="txt" name="content" cols="60" rows="6" placeholder="输入发送给客服的信息，内容为15~500个字符之间"></textarea></dd>
+              </dl>
+              <div class="mt15 ptform-btn"><button type="button" class="sm-blue" onclick="postMessage(this)">确定并发送</button></div>
+            </div>
+          </form>
+          <{/if}>
+        </div>
+      </div>
+    </div>
+    <!-- 右侧结束 -->
+  </div>
+  <div class="cl"></div>
+  <{layout_helper}>
+</div>
+<!-- 主体结束 -->
+<div class="cl"></div>
+<!-- 页脚开始 -->
+<{layout_footer}>
+<!-- 页脚结束 -->
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+</body>
+</html>

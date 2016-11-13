@@ -1,0 +1,56 @@
+/* 添加商品相册 */
+.mrimgtr {margin:0 5px;padding:15px 0;height:auto;border-bottom:1px solid #eee;overflow:hidden;}
+/* 添加属性规格 */
+.attrli {width:400px;height:auto;line-height:28px;}
+.attrli dl {margin:5px 0;padding:5px;border:1px solid #E8F3FF;}
+.attrli dl dt {float:left;width:105px;text-align:right;color:#666;}
+.attrli dl dd {margin-left:120px;}
+/* 添加商品选择项 */
+.optlsdl {width:330px;height:auto;padding:5px 15px 30px 15px;float:left;overflow:hidden}
+.optlsdl dt {text-align:center;padding-bottom:5px;}
+.optlsdl dt font {font-weight:bold;}
+.optlsdl dt span.sep {margin:0 40px;}
+.optlsdl dt button {font-weight:normal;}
+.optlsdl dd {margin-top:10px;text-align:center}
+.optlsdl dd label {color:#999;}
+.optlsdl dd input.txt {padding:4px 0 4px 5px;}
+/* 关联商品 */
+.selmulwp {width:950px;}
+.selmulac ul {padding:80px 20px 0 20px}
+/* 图片上传 */
+.gim a {display:block;float:left;position:relative;width:80px;height:80px;margin-right:15px;padding:5px;text-align:center;border:1px dashed #eee;overflow:hidden;}
+.gim a img {width:100%;height:100%;}
+.gim a i {display:none;font-style:normal;font-size:18px;width:18px;height:18px;line-height:18px;color:#bbb;text-align:center;position:absolute;right:1px;top:1px;overflow:hidden}
+.gim a:hover i {display:block;background:#fff;color:#C30;border-radius:14px;}
+.impoper {height:auto;position:fixed;z-index:9999;border:2px solid #fff;background:#fff;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;-moz-box-shadow:0 0 10px #666;-webkit-box-shadow:0 0 10px #666;box-shadow:0 0 10px #666;display:none;}
+.impoper .th {font-size:14px;color:#3399aa;padding:10px 8px;background:#f6f6f6;border-bottom:1px solid #e9e9e9;}
+.impoper a.close {display:block;width:10px;height:10px;line-height:0;font-size:0;position:absolute;right:10px;top:10px;background:url(../images/icons.png) no-repeat -270px -120px;overflow:hidden}
+.impoper a.close:hover {background-position:-270px -140px;}
+.impoper .bom {padding:10px;background:#f6f6f6;border-top:1px solid #e9e9e9;}
+.impoper .bom button {word-spacing:5px;}
+.imul {width:500px;}
+.imul .imuler {padding:20px 10px 30px 10px;}
+.imul .imulqu {display:table;height:auto;margin:0 auto;overflow:hidden}
+.imul .imulqu li {position:relative;float:left;width:100px;height:100px;margin:0 10px;border:1px dotted #e5e5e5;vertical-align:middle;overflow:hidden;}
+.imul .imulqu li div.remove {display:none;position:absolute;top:0;left:0;width:100%;padding:5px 0;background:rgba(0, 0, 0, 0.5);overflow:hidden;z-index:99;}
+.imul .imulqu li div.remove a {display:block;width:16px;height:16px;margin:0 auto;text-indent:-9999px;background:url(../webupload/icons.png) no-repeat 0 -24px;overflow:hidden}
+.imul .imulqu li div.remove a:hover {background-position:0 0;}
+.imul .imulqu li p.hint {display:none;position:absolute;top:38px;left:20px;width:60px;height:22px;line-height:22px;font-size:12px;text-align:center;color:#C30;background:rgba(235, 235, 235, 0.6);border:1px solid #ddd;border-radius:3px;}
+.imul .imulqu li div.m {padding:5px;text-align:center;}
+.imul .imulqu li div.m img {width:100%;}
+.imul .imulqu li p.noprev {font-size:12px;color:#999;line-height:100px;text-align:center;}
+.imul .imulqu li div.hint p {display:table;margin:0 auto;}
+.imul .imulqu li div.pgs {display:block;position:absolute;bottom:0;width:100%;height:20px;line-height:20px;background:rgba(221, 221, 221, 0.8);}
+.imul .imulqu li div.pgs p {position:absolute;left:0;top:0;width:100%;text-align:center;color:#036;}
+.imul .imulqu li div.pgs .bar {width:0%;height:20px;background:#5AF;}
+.imul .imuler .picker {padding-top:80px;background:url(../webupload/image.png) no-repeat top center;}
+.imul .imuler .morepicker a {display:block;}
+.imsli {width:765px;top:100px;}
+.imsli .lister {padding:15px;}
+.imsli .lister .rows {height:380px;}
+.imsli .lister .rows a {display:block;position:relative;float:left;width:90px;height:90px;margin:10px;padding:5px;text-align:center;border:1px dotted #e5e5e5;overflow:hidden;}
+.imsli .lister .rows a img {width:100%;height:100%;}
+.imsli .lister .rows a:hover {border:1px solid #C03}
+.imsli .lister .rows a i {display:none;position:absolute;top:30px;left:30px;width:40px;height:40px;font-size:0;background:url(../images/tick.png) no-repeat;}
+.imsli .lister .rows .loading {margin-top:180px;}
+.imsli .lister .rows a.checked i {display:block;}

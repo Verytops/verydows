@@ -1,0 +1,10 @@
+<div class="footer mt20">
+  <div class="links radius4 mt20">
+    <a href="<{url c='main' a='index'}>">首 页</a>|
+    <a href="<{url c='mobile/main' a='index'}>">触屏版</a>
+    <{if !empty($nav)}>
+    |<{foreach $nav as $v}><a href="<{$v.link}>"><{$v.name}></a><{if $v@iteration != $v@total}>|<{/if}><{/foreach}>
+    <{/if}>
+  </div>
+  <{$footer nofilter}>
+</div>

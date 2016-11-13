@@ -1,0 +1,41 @@
+<div class="header">
+  <div class="w1100">
+    <div class="module cut">
+      <div class="logo fl"><a href="<{url c='main' a='index'}>"><img alt="<{$GLOBALS.cfg.site_name}>" src="<{$common.theme}>/images/logo.gif" border="0" /></a></div>
+      <!-- 头部搜索开始 -->
+      <div class="top-search fl">
+        <form method="get" action="<{url c='search' a='index'}>">
+          <{if $GLOBALS['cfg']['rewrite_enable'] == 0}><input type="hidden" name="c" value="search" /><input type="hidden" name="a" value="index" /><{/if}>
+          <div class="sf cut"><input class="fl" name="kw" type="text" value="" placeholder="双11提前购，畅想全年最低价" /><button class="fr" type="submit">搜 索</button></div>
+        </form>
+        <{if !empty($header.hot_searches)}>
+        <div class="hw mt8">热门搜索：<{foreach $hot_searches as $v}><a href="<{url c='goods' a='search' kw=$v}>"><{$v}></a><{/foreach}></div>
+        <{/if}>
+      </div>
+      <!-- 头部搜索结束 -->
+      <!-- 头部购物车开始 -->
+      <div class="top-cart fr">
+        <div class="radius4 mt10"><i class="icon"></i><a href="<{url c='cart' a='index'}>" id="cartbar"><font>我的购物车</font>(<b>0</b>)</a></div>
+      </div>
+      <!-- 头部购物车结束 -->
+    </div>
+    <div class="module mt20">
+      <!-- 导航开始 -->
+      <div class="nav">
+        <div class="cateth w210 fl" id="cateth">
+          <h2>全部商品分类<i class="icon"></i></h2>
+          <div class="catebar w210 hide"><{layout_catebar}></div>
+        </div>
+        <div class="cross cut">
+          <ul>
+            <li><a href="<{$common.baseurl}>">首页</a></li>
+            <{foreach $nav as $v}>
+            <li><a href="<{$v.link}>" <{$v.target nofilter}>><{$v.name}></a></li>
+            <{/foreach}>
+          </ul>
+        </div>
+      </div>
+      <!-- 导航结束 -->
+    </div>
+  </div>
+</div>

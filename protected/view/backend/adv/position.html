@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript">
+function submitForm(){
+  $('#name').vdsFieldChecker({rules: {required:[true, '广告位名称不能为空'], maxlen:[100, '广告位名称不能超过100个字符']}});
+  $('#width').vdsFieldChecker({rules: {nonegint:[true, '宽度必须是正整数'], maxlen:[4, '宽度不能超过4位数']}});
+  $('#height').vdsFieldChecker({rules: {nonegint:[true, '高度必须是正整数'], maxlen:[4, '高度不能超过4位数']}});
+  $('#codes').vdsFieldChecker({rules: {required:[true, '模板代码不能为空']}, tipsPos: 'br'});
+  $('form').vdsFormChecker();
+}
+</script>
+</head>
+<body>
+<{if $_GET['a'] == 'add'}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>添加新广告位</h2></div>
+  <form method="post" action="<{url m=$MOD c='adv_position' a='add' step='submit'}>">
+    <div class="box">
+      <div class="module">
+        <table class="dataform">
+          <tr>
+            <th width="110">广告位名称</th>
+            <td><input class="w200 txt" name="name" id="name" type="text" /></td>
+          </tr>
+          <tr>
+            <th>宽度</th>
+            <td><input class="w100 txt" name="width" id="width" type="text" /><font class="c999 ml5">像素(px)</font></td>
+          </tr>
+          <tr>
+            <th>高度</th>
+            <td>
+              <input class="w100 txt" name="height" id="height" type="text" /><font class="c999 ml5">像素(px)</font>
+              <p class="mt10 caaa">宽高留空或为0则表示不限制, 否则需输入0~9999之间的整数</p>
+            </td>
+          </tr>
+          <tr>
+            <th>模板代码</th>
+            <td><textarea class="txtarea" name="codes" id="codes" cols="120" rows="15"></textarea></td>
+          </tr>
+        </table>
+      </div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并提交</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{else}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>编辑广告位:<font class="ml5">[<{$rs.id}>]</font></h2></div>
+  <form method="post" action="<{url m=$MOD c='adv_position' a='edit' step='submit' id=$rs.id}>">
+    <div class="box">
+      <div class="module">
+        <table class="dataform">
+          <tr>
+            <th width="110">广告位名称</th>
+            <td><input class="w200 txt" name="name" id="name" type="text" value="<{$rs.name}>" /></td>
+          </tr>
+          <tr>
+            <th>宽度</th>
+            <td><input class="w100 txt" name="width" id="width" type="text" value="<{$rs.width}>" /><font class="c999 ml5">像素(px)</font></td>
+          </tr>
+          <tr>
+            <th>高度</th>
+            <td>
+              <input class="w100 txt" name="height" id="height" type="text" value="<{$rs.height}>" /><font class="c999 ml5">像素(px)</font>
+              <p class="mt10 caaa">宽高留空或为0则表示不限制, 否则需输入0~9999之间的整数</p></td>
+          </tr>
+          <tr>
+            <th>模板代码</th>
+            <td><textarea class="txtarea" name="codes" id="codes" cols="120" rows="15"><{$rs.codes nofilter}></textarea></td>
+          </tr>
+        </table>
+      </div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并更新</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{/if}>
+</body>
+</html>

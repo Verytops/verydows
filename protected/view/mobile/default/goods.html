@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<meta name="keywords" content="<{$goods.meta_keywords}>" />
+<meta name="description" content="<{$goods.meta_description}>" />
+<title><{$goods.goods_name}> - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/goods.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/goods.js"></script>
+<script type="text/javascript">
+$(function(){
+  viewCartbar();
+  preserveSpace('footfixed');
+  $('#showMenuBtn').vdsTapSwapper(
+    function(){$('#topMenu').height(50);},
+    function(){$('#topMenu').height(0);}
+  );
+  albumSlider();
+});
+
+function addFavorite(goods_id){
+  $.asynInter("<{url c='api/favorite' a='add'}>", {goods_id:goods_id}, function(res){
+    if(res.status == 'success'){
+      $.vdsPrompt({content:'加入收藏夹成功!'});
+    }else if(res.status == 'unlogined'){
+      $.vdsPrompt({
+        content:res.msg,
+        clicked:function(){
+          window.location.href = "<{url c='mobile/user' a='login'}>";
+        }
+      });
+    }
+    else{
+      $.vdsPrompt({content:res.msg});
+    }
+  });
+}
+</script>
+</head>
+<body>
+<div class="wrapper" id="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>商品详情</h2>
+    <div class="op rt"><a class="pointer" id="showMenuBtn"><i class="f28 iconfont">&#xe60e;</i></a></div>
+  </div>
+  <!-- header end -->
+  <div class="absmu latent" id="topMenu">
+    <a href="<{url c='mobile/main' a='index'}>"><i class="home iconfont">&#xe606;</i><span>首页</span></a>
+    <a href="<{url c='mobile/category' a='index'}>"><i class="home iconfont">&#xe60b;</i><span>商品分类</span></a>
+    <a href="<{url c='mobile/cart' a='index'}>"><i class="home iconfont">&#xe603;</i><span>购物车</span></a>
+    <a href="<{url c='mobile/user' a='index'}>"><i class="home iconfont">&#xe632;</i><span>我的</span></a>
+  </div>
+  <!-- goods imgs start -->
+  <div class="gims" id="gims">
+    <div class="slider">
+      <a><img src="<{$common.baseurl}>/upload/goods/prime/350x350/<{$goods.goods_image}>" /></a>
+      <{foreach $album_list as $v}>
+      <a><img src="<{$common.baseurl}>/upload/goods/album/350x350/<{$v.image}>"></a>
+      <{/foreach}>
+    </div>
+    <div class="clearfix"></div>
+    <div class="trigger"><b>1</b><span>/</span><font>1</font></div>
+  </div>
+  <!-- goods imgs end -->
+  <div class="gth">
+    <h2><{$goods.goods_name}></h2>
+    <h3 class="mt8 c888"><{$goods.goods_brief nofilter}></h3>
+    <div class="pri mt8">
+      <{if $goods.original_price > 0}><span class="ori cny mr10">¥<{$goods.original_price}></span><{/if}>
+      <span class="cny"><i>¥</i><font id="nowprice" data-price="<{$goods.now_price}>"><{$goods.now_price}></font></span>
+    </div>
+  </div>
+  <div class="gopts mt10" id="buyopts">
+    <{if !empty($opt_list)}>
+    <{foreach $opt_list as $v}>
+    <dl class="ck">
+      <dt data-name="<{$v.type_name}>"><{$v.type_name}>：</dt>
+      <dd>
+        <{foreach $v.children as $vv}>
+        <a data-key="<{$vv.id}>" data-price="<{$vv.opt_price}>"><{$vv.opt_text}></a>
+        <{/foreach}>
+      </dd>
+    </dl>
+    <{/foreach}>
+    <{/if}>
+    <dl class="qty">
+      <dt>数量：</dt>
+      <dd>
+        <a class="minus" onclick="changeBuyQty('decr')">-</a><input id="buy-qty" type="text" readonly value="1" data-stock='<{$goods.stock_qty}>' /><a class="plus" onclick="changeBuyQty('incr')">+</a>
+        <{if($GLOBALS.cfg.show_goods_stock)}>
+        <span class="stock">剩余<b class="pink"><{$goods.stock_qty}></b>件</span>
+        <{/if}>
+      </dd>
+    </dl>
+  </div>
+  <div class="gdata mt10 cut">
+    <a href="<{url c='mobile/goods' a='illustrated' id=$goods.goods_id}>">
+      <span class="fl"><font class="f14">图文详情</font></span>
+      <i class="fr iconfont">&#xe614;</i>
+      <span class="hint fr">建议在WIFI环境下使用</span>
+    </a>
+    <a href="<{url c='mobile/goods' a='specs' id=$goods.goods_id}>">
+      <span class="fl"><font class="f14">规格参数</font></span>
+      <i class="fr iconfont">&#xe614;</i>
+    </a>
+    <a href="<{url c='mobile/goods' a='reviews' id=$goods.goods_id}>">
+      <span class="fl"><font class="f14">商品评价</font><font class="total ml5">(<{$review_rating.total}>)</font></span>
+      <i class="fr iconfont">&#xe614;</i>
+      <{if $review_rating.total > 0}><span class="hint fr">满意度<{$review_rating.satis}>%</span><{/if}>
+    </a>
+  </div>
+  <{if !empty($related)}>
+  <div class="lateral mt10">
+    <div class="th"><h2><i class="icon"></i><font>相关推荐</font></h2></div>
+    <div class="gli">
+      <div class="slider">
+        <div class="col">
+          <ul>
+            <{foreach $related as $v}>
+            <li>
+              <div class="im"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/150x150/<{$v.goods_image}>" /></a></div>
+              <h3 class="mustrcut"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><{$v.goods_name}></a></h3>
+              <p class="price"><i>¥</i><{$v.now_price}></p>
+            </li>
+            <{/foreach}>
+          </ul>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <{/if}>
+  <{if !empty($bestseller)}>
+  <div class="lateral mt10">
+    <div class="th"><h2><i class="icon"></i><font>热销榜</font></h2></div>
+    <div class="gli">
+      <div class="slider">
+        <div class="col">
+          <ul>
+            <{foreach $bestseller as $v}>
+            <li>
+              <div class="im"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/150x150/<{$v.goods_image}>" /></a></div>
+              <h3 class="mustrcut"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><{$v.goods_name}></a></h3>
+              <p class="sold">已售出<b><{$v.count}></b>件</p>
+              <p class="price"><i>¥</i><{$v.now_price}></p>
+            </li>
+            <{/foreach}>
+          </ul>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <{/if}>
+</div>
+<div class="footact" id="footfixed">
+  <div class="iact fl cut">
+    <a href="javascript:void(0)" onclick="addFavorite('<{$goods.goods_id}>')"><i class="iconfont">&#xe605;</i><span>收藏</span></a>
+    <a id="cartbar" href="<{url c='mobile/cart' a='index'}>"><i class="iconfont">&#xe603;</i><span>购物车</span><em class="hide">0</em></a>
+  </div>
+  <div class="bact cut"><a class="add" id="addcartbtn" onclick="addToCart('<{$goods.goods_id}>')">加入购物车</a><a class="buy" onclick="toBuy('<{$goods.goods_id}>', '<{url c='mobile/cart' a='index'}>')">立即购买</a></div>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

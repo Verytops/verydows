@@ -1,0 +1,72 @@
+<script type="text/javascript">
+$(function(){
+  $('#theme-form dl').hover(
+    function(){
+      $(this).addClass('hover');
+    },
+    function(){
+      $(this).removeClass('hover');
+    }
+  );
+  $('#theme-form dl').click(function(){
+    $('#theme-form dl').removeClass('selected').find('dd.tick').remove();
+    $(this).addClass('selected').append('<dd class="tick"><i></i></dd>');
+    $('#theme-form input[name="theme"]').val($(this).data('theme'));
+  });
+});
+
+function updateTheme(){
+  if($('#theme-form input[name="theme"]').val() == ''){
+    $('body').vdsAlert({msg:"请选择您想启用的模板主题"});
+    return false;
+  }
+  $('#theme-form').submit();
+}
+</script>
+<div class="bw-row pad10 cut">
+  <h2 class="th ta-c">当前模板主题</h2>
+  <dl class="curtheme bw-row pad10 cut">
+    <dt class="pad10 fl ta-c"><img src="public/theme/frontend/<{$rs.enabled_theme.dirname}>/thumbnail.jpg" /></dt>
+    <dd>
+      <table class="dataform">
+        <tr>
+          <th>名称</th>
+          <td><a href="<{$rs.enabled_theme.link}>" target="_blank" class="blue"><{$rs.enabled_theme.name}></a></td>
+        </tr>
+        <tr>
+          <th>版本</th>
+          <td><{$rs.enabled_theme.version}></td>
+        </tr>
+        <tr>
+          <th>作者</th>
+          <td><{$rs.enabled_theme.author}></td>
+        </tr>
+        <tr>
+          <th>日期</th>
+          <td><{$rs.enabled_theme.date}></td>
+        </tr>
+        <tr>
+          <th>简介</th>
+          <td><{$rs.enabled_theme.describe}></td>
+        </tr>
+      </table>
+    </dd>
+  </dl>
+</div>
+<div class="bw-row mt5 pad10">
+  <h2 class="th ta-c">全部可用模板主题</h2>
+  <form method="post" action="<{url m=$MOD c='setting' a='update' step='theme'}>" id="theme-form">
+    <input type="hidden" name="theme" value="" />
+    <div class="themes module mt10 cut">
+      <{foreach $rs.themes as $v}>
+      <dl class="ta-c" title="点击选中" data-theme="<{$v.dirname}>">
+        <dt><{$v.name}></dt>
+        <dd class="mt10"><img src="public/theme/frontend/<{$v.dirname}>/thumbnail.jpg" /></dd>
+        <dd class="mt10 c888"><{$v.describe}></dd>
+        <dd class="tick"><i></i></dd>
+      </dl>
+      <{/foreach}>
+    </div>
+  </form>
+</div>
+<div class="bw-row mt5 pad10 ta-c"><button type="button" class="cbtn btn" onclick="updateTheme()">启 用</button></div>

@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/poper.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('#pop-reply').vdsMidst({wrapper:$(window)});
+  $('#pop-status').vdsMidst({wrapper:$(window)});
+});
+
+function popOperate(pop_id){
+  $('#'+pop_id).show();
+  $.vdsMasker(true);
+}
+
+function closeOperate(pop_id){
+  $('#'+pop_id).hide().find('span.vdsfielderr').remove();
+  $('#'+pop_id).find('form')[0].reset();
+  $.vdsMasker(false);
+}
+
+function submitReply(){
+  var form = $('#pop-reply form');
+  form.find('textarea[name="content"]').vdsFieldChecker({
+    rules: {required:[true, '内容不能为空'], maxlen:[500, '内容不能超过500个字节']},
+    tipsPos: 'br'
+  });
+  form.vdsFormChecker();
+}
+
+function deleteFeedback(e){
+  $(e).vdsConfirm({
+    text: '您确定要删除该条反馈信息吗?',
+    top: -30,
+    confirmed: function(){
+      window.location.href= "<{url m=$MOD c='feedback' a='delete' id=$rs.fb_id}>";
+    },
+  });
+}
+</script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>咨询反馈:<font class="ml5">[<{$rs.fb_id}>]</font></h2></div>
+  <div class="box">
+    <div class="ta-c bw-row pad10 c888 cut">
+      <p class="f14">用户<a class="blue ml5 mr5 f14" href="<{url m=$MOD c='user' a='view' id=$rs.user_id}>"><{$rs.username}></a>于<font class="ml5 mr5 c333"><{date('Y年m月d日 H:i:s', $rs.created_date)}></font>提交的问题反馈：</p>
+    </div>
+    <div class="ta-c bw-row mt5 pad10 cut">
+      <table class="dataform">
+        <tr>
+          <th width="110">问题主题</th>
+          <td colspan="5"><div class="max500 pad5 lh150"><{$rs.subject}></div></td>
+        </tr>
+        <tr>
+          <th>类型</th>
+          <td width="20%"><{$type_map[$rs.type]}></td>
+          <th width="110">联系手机</th>
+          <td width="20%"><b class="c666"><{$rs.mobile}></b></td>
+          <th width="110">状态</th>
+          <td><font class="<{if $rs.status == 2}>green<{else}>red<{/if}>"><{$status_map[$rs.status]}></font></td>
+        </tr>
+        <tr>
+          <th>问题描述</th>
+          <td colspan="5"><div class="as-srow lh150"><{$rs.content}></div></td>
+        </tr>
+      </table>
+    </div>
+    <div class="opbtn bw-row mt5 pad10 ta-c cut">
+      <button type="button" class="cbtn sm btn" onclick="popOperate('pop-reply')">回复消息</button><span class="sep20"></span>
+      <button type="button" class="cbtn sm btn" onclick="popOperate('pop-status')">设置状态</button><span class="sep20"></span>
+      <button type="button" class="cbtn sm btn" onclick="deleteFeedback(this)">删除</button>
+    </div>
+    <{if !empty($message_list)}>
+    <script type="text/javascript" src="public/theme/backend/js/list.js"></script>
+    <form method="post" id="msg-form">
+      <div class="ta-l bw-row mt5 pad10 cut">
+        <{foreach $message_list as $v}>
+        <dl class="pad5 max500 lh150">
+          <dt class="c888">
+            <input class="mr5" name="id[]" type="checkbox" value="<{$v.id}>" />
+            <{if !empty($v.admin_id)}>
+            管理员<b class="ml5 mr5 c666"><{$admin_list[$v.admin_id]['username']}></b>在<font class="ml5 mr5 c333"><{date('Y年m月d日 H:i:s', $v.dateline)}></font>的回复消息：
+            <{else}>
+            用户<b class="ml5 mr5 c666"><{$rs.username}></b>在<font class="ml5 mr5 c333"><{date('Y年m月d日 H:i:s', $v.dateline)}></font>的消息：
+            <{/if}>
+          </dt>
+          <dd class="mt10 c666"><{$v.content}></dd>
+        </dl>
+        <div class="dashed mt10 mb10"></div>
+        <{/foreach}>
+        <div class="module"> <a class="ae btn" onclick="domulent('<{url m=$MOD c='feedback' a='delete' step='message'}>', 'msg-form')"><i class="remove"></i><font>删除选中消息</font></a> </div>
+      </div>
+    </form>
+    <{/if}>
+  </div>
+</div>
+<!-- 弹出回复开始 -->
+<div class="poper cut" id="pop-reply"> <a class="close" onclick="closeOperate('pop-reply')"></a>
+  <div class="poper-hd"><h3 class="f14 ta-c">回复消息</h3></div>
+  <div class="pad10 cut">
+    <form method="post" action="<{url m=$MOD c='feedback' a='reply' fb_id=$rs.fb_id}>">
+      <div class="ta-c"><textarea name="content" cols="100" rows="6" class="txtarea"></textarea></div>
+    </form>
+  </div>
+  <div class="poper-bom ta-c">
+    <button type="button" class="ubtn btn" onclick="submitReply()">确定并发送</button><span class="sep40"></span>
+    <button type="button" class="fbtn btn" onclick="closeOperate('pop-reply')">取消</button>
+  </div>
+</div>
+<!-- 弹出回复结束 -->
+<!-- 弹出状态设置开始 -->
+<div class="poper cut hide" id="pop-status"> <a class="close" onclick="closeOperate('pop-status')"></a>
+  <div class="poper-hd"><h3 class="f14 ta-c">设置状态</h3></div>
+  <form method="post" action="<{url m=$MOD c='feedback' a='status' id=$rs.fb_id}>">
+    <div class="pad10 cut">
+      <div class="ta-c">
+        <ul>
+          <{foreach $status_map as $k => $v}>
+          <li class="pad10">
+            <label><input name="status" type="radio" value="<{$k}>" <{if $rs.status == $k}>checked="checked"<{/if}> /><font class="c666 ml5"><{$v}></font></label>
+          </li>
+          <{/foreach}>
+        </ul>
+        <p class="mt10 caaa">设置为"已完成"状态，则将不再允许用户继续发送消息</p>
+      </div>
+    </div>
+    <div class="poper-bom pad10 ta-c"><button type="submit" class="ubtn sm btn">确定设置</button></div>
+  </form>
+</div>
+<!-- 弹出状态设置结束 -->
+</body>
+</html>

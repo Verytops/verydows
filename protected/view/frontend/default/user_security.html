@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="verydows-baseurl" content="<{$common.baseurl}>">
+<title>安全设置 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/jquery.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/general.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('#oauth_list dd a').on('click', function(){
+    var btn = $(this);
+    btn.vdsConfirm({
+      text: '确定要解除绑定该授权账号吗？',
+      ok: function(){
+        $.getJSON("<{url c='api/oauth' a='unbind'}>", {party:btn.data('party')}, function(res){
+          if(res.status == 'success'){
+            btn.remove();
+            if($('#oauth_list dd a').size() == 0) $('#oauth_list').remove();
+          }else{
+            $.vdsPopDialog({type:'err', text:res.msg});
+          }
+        });
+      }
+    });
+  });
+});
+</script>
+</head>
+<body>
+<!-- 顶部开始 -->
+<{layout_topper common=$common}>
+<!-- 顶部结束 -->
+<!-- 头部开始 -->
+<{layout_header common=$common}>
+<!-- 头部结束 -->
+<div class="loc w1100">
+  <div><a href="<{url c='main' a='index'}>">网站首页</a><b>&gt;</b><font>用户面板</font></div>
+</div>
+<!-- 主体开始 -->
+<div class="container w1100 mt10">
+  <div class="module cut">
+    <!-- 左侧开始 -->
+    <div class="w180 fl cut">
+      <!-- 用户菜单开始 -->
+      <{layout_usermenu}>
+      <!-- 用户菜单结束 -->
+    </div>
+    <!-- 左侧结束 -->
+    <!-- 右侧开始 -->
+    <div class="w910">
+      <div class="profile mcter">
+        <h2>安全设置</h2>
+        <div class="form cut">
+          <dl>
+            <dt><label>登录用户：</label></dt>
+            <dd><font class="c666"><{$user.username}></font></dd>
+          </dl>
+          <dl>
+            <dt><label>邮箱账号：</label></dt>
+            <dd><font class="c666"><{$user.email}></font><a class="ml10 pointer" href="<{url c='security' a='setting' field='email'}>">[ 更改 / 验证 ]</a></dd>
+          </dl>
+          <dl>
+            <dt><label>手机号码：</label></dt>
+            <{if !empty($user.mobile)}>
+            <dd><font class="c666"><{$user.mobile}></font><a class="ml10 pointer" href="<{url c='security' a='setting' field='mobile'}>">[ 更改 ]</a></dd>
+            <{else}>
+            <dd><font class="caaa">未设置</font><a class="ml10 pointer" href="<{url c='security' a='setting' field='mobile'}>">[ 设置 ]</a></dd>
+            <{/if}>
+          </dl>
+          <{if !empty($user.oauth_list)}>
+          <dl id="oauth_list">
+            <dt><label>第三方账号：</label></dt>
+            <dd>
+              <{foreach $user.oauth_list as $v}>
+              <a class="mr10" title="解除绑定" href="javascript:void(0)" data-party="<{$v.party}>"><img src="<{$common.baseurl}>/plugin/oauth/icon/<{$v.party}>.png" border="0" /></a>
+              <{/foreach}>
+            </dd>
+          </dl>
+          <{/if}>
+          <dl>
+            <dt>上次登录：</dt>
+            <dd>
+              <p class="c666"><{date('Y年m月d日 H:i', $_SESSION.USER.LAST_DATE)}> <font class="c888 ml5">[IP：<{$_SESSION.USER.LAST_IP}>]</font></p>
+              <p class="c888">不是您登录的？请立即<a class="ml5 pointer" href="<{url c='security' a='setting' field='password'}>">[ 更改密码 ]</a></p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <!-- 右侧结束 -->
+  </div>
+  <div class="cl"></div>
+  <{layout_helper}>
+</div>
+<!-- 主体结束 -->
+<div class="cl"></div>
+<!-- 页脚开始 -->
+<{layout_footer}>
+<!-- 页脚结束 -->
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+</body>
+</html>

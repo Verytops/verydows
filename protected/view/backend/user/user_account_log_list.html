@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/list.js"></script>
+<script type="text/javascript">
+$(function(){searchRes(1);});
+
+function searchRes(page_id){
+  var dataset = {user_id:'<{$user.user_id}>', page:page_id, pernum:10};
+  
+  $.asynList("<{url m=$MOD c='user_account_log' a='index' step='search'}>", dataset, function(data){
+    if(data.status == 'success'){
+      juicer.register('format_date', function(v){return formatTimestamp(v, 'y-m-d<br />h:i:s');});
+      $('#rows').append(juicer($('#row-tpl').html(), data));
+      $('#rows tr').vdsRowHover();
+      $('#rows tr:even').addClass('even');
+      if(data.paging != null) $('#rows').append(juicer($('#paging-tpl').html(), data));
+    }else{
+      $('#rows').append("<div class='nors mt5'>未找到相关数据记录...</div>");	
+    }     
+  });
+}
+
+function pageturn(page_id){searchRes(page_id);}
+</script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>用户账户日志</h2></div>
+  <div class="box">
+    <div class="ta-c bw-row pad10 c888 cut">
+      <h3 class="f14 c666"><{$user.username}><font class="ml10 c888">[<{$user.email}>]</font></h3>
+      <p class="mt10">
+        账户余额：<b class="c666"><{$account.balance}></b> <span class="sep20"></span>
+        账户积分：<b class="c666"><{$account.points}></b> <span class="sep20"></span>
+        账户经验：<b class="c666"><{$account.exp}></b>
+      </p>
+      <p class="mt10">
+        <a class="blue" href="<{url m=$MOD c='user' a='index'}>">返回用户列表</a><span class="sep20 c999">|</span>
+        <a class="blue" href="<{url m=$MOD c='user' a='view' id=$user.user_id}>">返回用户信息</a><span class="sep20 c999">|</span>
+        <a class="blue" href="<{url m=$MOD c='user_account_log' a='index'}>">返回全部日志列表</a>
+      </p>
+    </div>
+    <div class="module mt5" id="rows"></div>
+    <{include file='backend/lib/paging.html'}>
+  </div>
+</div>
+<script type="text/template" id="row-tpl">
+<form method="post" id="mulentform">
+  <table class="datalist">
+    <tr>
+      <th width="120">余额变动</th>
+      <th width="120">积分变动</th>
+      <th width="120">经验变动</th>
+      <th class="ta-l">原因备注</th>
+      <th width="110">日期</th>
+      <th width="130">操作者</th>
+    </tr>
+    {@each list as v}
+    <tr>
+      <td>{@if v.balance > 0}<font class="red">+${v.balance}</font>{@else if v.balance < 0}<font class="green">${v.balance}</font>{@else}<font class="c888">${v.balance}</font>{@/if}</td>
+      <td>{@if v.points > 0}<font class="red">+${v.points}</font>{@else if v.points < 0}<font class="green">${v.points}</font>{@else}<font class="c888">${v.points}</font>{@/if}</td>
+      <td>{@if v.exp > 0}<font class="red">+${v.exp}</font>{@else if v.exp < 0}<font class="green">${v.exp}</font>{@else}<font class="c888">${v.exp}</font>{@/if}</td>
+      <td class="ta-l"><p class="pad5 c666">${v.cause}</p></td>
+      <td class="c888">$${v.dateline|format_date}</td>
+      <td>{@if v.admin_id != 0}<font class="c999">管理员:</font> ${v.admin}{@else}<font class="c999">系统自动</font>{@/if}</td>
+    </tr>
+    {@/each}
+  </table>
+</form>
+</script>
+<script type="text/javascript" src="public/script/juicer.js"></script>
+</body>
+</html>

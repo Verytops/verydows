@@ -1,0 +1,37 @@
+.srow {background:#fff;}
+.srow a {display:block;line-height:40px;padding:10px;border-bottom:1px solid #e9e9e9;overflow:hidden}
+.srow a:last-child {border:none;}
+.srow a h3.fl {font-size:14px;width:80px;color:#6c6c6c;}
+.srow a span.fl {display:block;color:#555;}
+.srow a span.fr {display:block;padding-right:8px;text-align:right;font-size:14px;color:#93a0ae;}
+.srow a span.fr font.noset {color:#ccc}
+.srow a .iconfont.fr {display:block;font-size:18px;color:#ccc;}
+.srow a .hint {color:#93a0ae;}
+.srow a .total {color:#f15353;}
+.srow a.avatar {height:60px;line-height:60px;}
+.srow a.avatar span.fr {width:60px;height:60px;}
+.srow a.avatar span.fr img {width:100%;height:100%;border-radius:100px;}
+.srow a.signature span.fr {max-width:190px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+.fedit {padding:10px 15px;}
+.fedit dt input.field {width:100%;height:38px;line-height:38px;color:#666;font-size:14px;border:1px solid #dadada;border-top-color:#c5c5c5;border-left-color:#c5c5c5;border-radius:3px;}
+.fedit dd.split {font-size:0;height:0;line-height:0;margin:10px 0;padding:0;border-top:1px solid #f9f9f9;border-bottom:1px solid #e2e2e2;}
+.fedit .redbtn {display:block;width:99%;height:40px;line-height:40px;color:#fff;background:#f15353;border-radius:3px;}
+.fedit .bluebtn {display:block;width:99%;height:40px;line-height:40px;color:#fff;background:#3caaff;border-radius:3px;}
+.fedit .skbtn {display:block;color:#fff;font-size:14px;width:130px;height:36px;line-height:36px;background:#0083EC;border:3px solid #C6E2FF;border-radius:130px;}
+.fedit .disbtn {display:block;width:99%;height:38px;line-height:38px;color:#aaa;background:#ececec;border:1px solid #e0e0e0;border-radius:3px;}
+.fedit.avatar dt span {display:block;width:60px;height:60px;border:5px solid #e9e9e9;border-radius:100%;overflow:hidden}
+.fedit.avatar dt img {width:100%;height:100%;border-radius:100%;}
+.fedit.canvas dd.split {margin:15px 0;}
+.fedit.canvas dt span {display:block;width:180px;height:180px;border:5px solid #e9e9e9;border-radius:100%;overflow:hidden}
+.fedit.canvas dt img {border-radius:100%;}
+.fedit ul.radios {padding:0 8px;overflow:hidden;}
+.fedit ul.radios li {display:block;padding:12px 0;overflow:hidden;}
+.fedit ul.radios li span.fl {display:block;font-size:14px;}
+.fedit ul.radios li a.fr {display:block;width:22px;height:22px;border:2px solid #ddd;border-radius:50%;}
+.fedit ul.radios li a.fr i {font-size:0;}
+.fedit ul.radios li.checked a.fr {border-color:#33cc99;line-height:22px;text-align:center}
+.fedit ul.radios li.checked a.fr i {font-size:16px;color:#33cc99;}
+.fedit div.vslt {width:99%;height:35px;margin-left:auto;margin-right:auto;}
+.fedit div.vslt select {height:35px;font-size:14px;}
+.fedit div.vslt span {height:35px;line-height:35px;}
+.fedit textarea.vtextarea {min-width:280px;}

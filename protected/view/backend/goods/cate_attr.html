@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript">
+function addOpt(){
+  var opt = $.trim($('#input-opt').val());
+  if(opt.length > 0){
+    if($("#opts:has(option[value='"+opt+"'])").size() == 0){
+      $('#opts').append("<option value='"+opt+"'>"+opt+"</option>");  
+      $('#input-opt').val('');
+    }else{
+      $('body').vdsAlert({msg:'可选值列表中已存在此项', time:1});
+    }
+  }else{
+    $('body').vdsAlert({msg:'请输入新增的可选值', time:1});
+  }
+}
+
+function removeOpt(){
+  var opt = $("#opts option:selected");
+  if(opt.length > 0){
+    opt.remove();
+  }else{
+    $('body').vdsAlert({msg:'请选中需要删除的可选值', time:0.5});
+  }
+}
+
+function submitForm(){
+  $('#name').vdsFieldChecker({rules:{required:[true, '属性名称不能为空'], maxlen:[60, '属性名称不能超过60个字符']}});
+  $('#seq').vdsFieldChecker({rules: {required:[true, '排序不能为空'], seq:[true, '排序只能填写0到99之间的整数']}});
+  $('form').vdsFormChecker();
+}
+</script>
+</head>
+<body>
+<{if $_GET['a'] == 'add'}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>新增分类属性</h2></div>
+  <form method="post" action="<{url m=$MOD c='goods_cate_attr' a='add' step='submit'}>" onsubmit="$('#opts option').prop('selected', true)">
+    <input type="hidden" name="cate_id" value="<{$cate_id}>" />
+    <div class="box">
+      <div class="module">
+        <table class="dataform">
+          <tr>
+            <th width="110">属性名称</th>
+            <td><input class="w200 txt" name="name" id="name" type="text" /></td>
+          </tr>
+          <tr>
+            <th>属性可选值</th>
+            <td>
+              <div class="pad5">
+                <table class="datalist">
+                  <tr>
+                    <td width="150" class="ta-c"><input class="w150 txt" type="text" id="input-opt" /></td>
+                    <td width="50" class="ta-c"><p>
+                        <button class="cbtn sm btn" type="button" onclick="addOpt()">增加</button>
+                      </p>
+                      <p class="mt10">
+                        <button class="cbtn sm btn" type="button" onclick="removeOpt()">移除</button>
+                      </p></td>
+                    <td><select name="opts[]" multiple="multiple" class="mult w300" id="opts">
+                      </select></td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>作为筛选</th>
+            <td>
+              <div class="pad5">
+                <label><input type="radio" name="filtrate" value="1" /><font class="green ml5">是</font></label>
+                <label class="ml20"><input type="radio" name="filtrate" value="0"  checked="checked" /><font class="red ml5">否</font></label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>计量单位</th>
+            <td>
+              <input name="uom" class="w100 txt" type="text" />
+              <font class="ml10 caaa">例如"英寸"、"像素"、"Kg"等等，如该属性不使用计量单位，请留空</font></td>
+          </tr>
+          <tr>
+            <th>排序</th>
+            <td><input class="w50 txt" name="seq" id="seq" type="text" value="99" /></td>
+          </tr>
+        </table>
+      </div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并提交</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{else}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>编辑分类属性</h2></div>
+  <form method="post" action="<{url m=$MOD c='goods_cate_attr' a='edit' step='submit' id=$rs.attr_id}>" onsubmit="$('#opts option').prop('selected', true)">
+    <input type="hidden" name="cate_id" value="<{$rs.cate_id}>" />
+    <div class="box">
+      <div class="module">
+        <table class="dataform">
+          <tr>
+            <th width="110">属性名称</th>
+            <td><input class="w200 txt" name="name" id="name" type="text" value="<{$rs.name}>" /></td>
+          </tr>
+          <tr>
+            <th>属性可选值</th>
+            <td>
+              <div class="pad5">
+                <table class="datalist">
+                  <tr>
+                    <td width="150" class="ta-c"><input class="w150 txt" type="text" id="input-opt" /></td>
+                    <td width="50" class="ta-c">
+                      <p><button class="cbtn sm btn" type="button" onclick="addOpt()">增加</button></p>
+                      <p class="mt10"><button class="cbtn sm btn" type="button" onclick="removeOpt()">移除</button></p>
+                    </td>
+                    <td>
+                      <select name="opts[]" multiple="multiple" class="mult w300" id="opts">
+                        <{if !empty($rs.opts)}>
+                        <{foreach $rs.opts as $v}><option value="<{$v}>"><{$v}></option><{/foreach}>
+                        <{/if}>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>作为筛选</th>
+            <td>
+             <div class="pad5">
+                <label><input type="radio" name="filtrate" value="1" <{if $rs.filtrate == 1}>checked="checked"<{/if}> /><font class="green ml5">是</font></label>
+                <label class="ml20"><input type="radio" name="filtrate" value="0"  <{if $rs.filtrate == 0}>checked="checked"<{/if}> /><font class="red ml5">否</font></label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>计量单位</th>
+            <td><input name="uom" class="w100 txt" type="text" value="<{$rs.uom}>" /><font class="ml10 caaa">例如"英寸"、"像素"、"Kg"等等，如该属性不使用计量单位，请留空</font></td>
+          </tr>
+          <tr>
+            <th>排序</th>
+            <td><input class="w50 txt" name="seq" id="seq" type="text" value="<{$rs.seq}>" /></td>
+          </tr>
+        </table>
+      </div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并更新</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{/if}>
+</body>
+</html>

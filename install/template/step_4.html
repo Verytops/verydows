@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>第4步 - 安装 Verydows</title>
+<link rel="stylesheet" type="text/css" href="template/style.css" />
+<style type="text/css">
+.run {height:400px;overflow-y:auto;margin:10px 20px;padding:5px;border:1px solid #ddd;background:#F4FAFF;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px}
+.run p {padding:4px 8px;color:#777;border-bottom:1px dotted #ddd;}
+.run p b {color:#888;margin-left:5px;}
+.run p font {float:right; padding-right:5px;}
+</style>
+<script type="text/javascript" src="../public/script/jquery.js"></script>
+<script type="text/javascript">
+function showTableStatus(error, tbl_name){
+  var html = "<p><font class=\"green\">成功</font>创建数据表<b>"+tbl_name+"</b></p>";
+  if(error == 1) html = "<p><font class=\"red\">失败</font>创建数据表<b>"+tbl_name+"</b></p>";
+  $('#run').prepend(html);
+}
+function showAdminStatus(error, username){
+  var html = "<p><font class=\"green\">成功</font>创建管理员<b>"+username+"</b></p>";
+  if(error == 1) html = "<p><font class=\"red\">失败</font>创建管理员<b>"+username+"</b></p>";
+  $('#run').prepend(html);
+}
+function showConfigStatus(error, filename){
+  var html = "<p><font class=\"green\">成功</font>创建系统配置文件<b>"+filename+"</b></p>";
+  if(error == 1) html = "<p><font class=\"red\">失败</font>创建系统配置文件<b>"+filename+"</b></p>";
+  $('#run').prepend(html);
+}
+function showSettingStatus(error, filename){
+  var html = "<p><font class=\"green\">成功</font>初始化系统设置缓存<b>"+filename+"</b></p>";
+  if(error == 1) html = "<p><font class=\"red\">失败</font>初始化系统设置缓存<b>"+filename+"</b></p>";
+  $('#run').prepend(html);
+}
+function showDemoStatus(error, tbl_name){
+  var html = "<p><font class=\"green\">成功</font>创建数据表<b>"+tbl_name+"</b> 样本数据</p>";
+  if(error == 1) html = "<p><font class=\"red\">失败</font>创建数据表<b>"+tbl_name+"</b> 样本数据</p>";
+  $('#run').prepend(html);
+}
+function finished(status, text){
+  $('#run').prepend("<p><span class=\"green\">安装完成</span></p>");
+  if(status == 'success'){
+    $('#next-btn').show();
+    $('.iwbox h3.th').text(text);
+  }else{
+    $('.iwbox h3.th').text(text);
+  }
+}
+</script>
+</head>
+<body>
+<!-- header start -->
+<?php include('template'.DS.'header.html') ?>
+<!-- header end -->
+<!-- container start -->
+<div class="container mt20">
+  <?php include('template'.DS.'progressbar.html') ?>
+  <div class="iwbox mt40">
+    <h3 class="th">正在安装</h3>
+    <div class="run" id="run"></div>
+  </div>
+  <div class="mt30 ta-c hide" id="next-btn"><a class="sbtn btn" href="index.php?step=completed">下一步</a></div>
+</div>
+<!-- container end -->
+</body>
+</html>

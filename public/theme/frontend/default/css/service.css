@@ -1,0 +1,17 @@
+div.line.ce5 {border-color:#e5e5e5;}
+td.qty input {width:40px;padding:5px 0;border:1px solid #aaa; border-right:none; border-left:none}
+td.qty button {color:#555;padding:5px;border:1px solid #aaa;background:#f2f2f2}
+.ptform th {text-align:right;padding:10px 8px;color:#666;font-weight:normal;}
+.ptform td {text-align:left;padding:10px 8px;}
+.ptform td label input {vertical-align:middle;}
+.ptform td input.w150 {width:150px;}
+.ptform td input.w350 {width:350px;}
+.ptform-btn {margin-left:140px;}
+.chatting dl {padding:10px;}
+.chatting dl dt {color:#006633;padding-left:5px;}
+.chatting dl dt font {margin-left:10px;color:#999;}
+.chatting dl dd {color:#555;line-height:150%;margin-top:5px;padding:8px 15px;border:1px solid #ddd;background:#f6f6f6;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+.chatting dl.csad dt {color:#006699}
+.chatting dl.csad dd {background:#DDEEFF;border-color:#A2D0FF}
+.reply-form dl dt {width:110px;color:#888; font-weight:bold}
+.reply-form dl dd {margin-left:125px;}

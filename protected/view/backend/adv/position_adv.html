@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/datetimepicker.css"/>
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/list.js"></script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>广告位[<{$position.id}>]:<font class="ml5"><{$position.name}></font></h2></div>
+  <div class="box">
+    <div class="doacts"> <a class="ae add btn" href="<{url m=$MOD c='adv' a='add' position=$position.id}>"><i></i><font>添加广告</font></a> <a class="ae btn" onclick="doslvent('<{url m=$MOD c='adv' a='edit'}>')"><i class="edit"></i><font>编辑</font></a> <a class="ae btn" onclick="domulent('<{url m=$MOD c='adv' a='delete'}>')"><i class="remove"></i><font>删除</font></a> </div>
+    <{if !empty($adv_list)}>
+    <div class="module mt5">
+      <form method="post" id="mulentform">
+        <table class="datalist">
+          <tr>
+            <th width="50">选择</th>
+            <th class="ta-l">名称</th>
+            <th width="100">类型</th>
+            <th width="220" colspan="3">有效日期</th>
+            <th width="80">显示顺序</th>
+            <th width="90">启用状态</th>
+          </tr>
+          <{foreach $adv_list as $v}>
+          <tr>
+            <td><input name="id[]" type="checkbox" value="<{$v.adv_id}>" /></td>
+            <td class="ta-l"><a class="blue" href="<{url m=$MOD c='adv' a='edit' id=$v.adv_id}>"><{$v.name}></a></td>
+            <td><{$type_map[$v.type]}></td>
+            <td width="100" class="ta-r"><{if $v.start_date == 0}><font class="c888">不限</font><{else}><{date('Y-m-d', $v.start_date)}><{/if}></td>
+            <td width="20" class="c999">~</td>
+            <td width="100" class="ta-l"><{if $v.end_date == 0}><font class="c888">不限</font><{else}><{date('Y-m-d', $v.end_date)}><{/if}></td>
+            <td><{$v.seq}></td>
+            <td><{if $v.status == 1}><i class="icon yes"></i><{else}><i class="icon no"></i><{/if}></td>
+          </tr>
+          <{/foreach}>
+        </table>
+      </form>
+    </div>
+    <{else}>
+    <div class="nors mt5">该广告位暂未添加任何广告数据...</div>
+    <{/if}>
+  </div>
+</div>
+<script type="text/javascript" src="public/theme/backend/js/datetimepicker.js"></script>
+</body>
+</html>

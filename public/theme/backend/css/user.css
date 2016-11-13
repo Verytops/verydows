@@ -1,0 +1,10 @@
+.exp {width:auto;height:auto;margin:0 auto;background:#e5e5e5;border-radius:6px;-moz-border-radius:6px;-webkit-border-radius:6px;}
+.exp .bar {height:10px;line-height:10px;font-size:10px;width:0;background:#4DC5FF;border:1px solid #0BAFFF;border-radius:6px;-moz-border-radius:6px;-webkit-border-radius:6px;}
+.exp .vals {line-height:12px;padding-left:5px;}
+.adj button {width:20px;height:20px;padding:0;font-size:14px;font-family:"Courier New", Courier, monospace}
+.adj button.incr {color:#cc3300}
+.adj button.minus {color:#009900}
+.adj button.disabled {color:#bbb;}
+dl.avatar {display:block;}
+dl.avatar dt {width:62px;height:62px;}
+dl.avatar dt img {border:1px solid #eee;-moz-border-radius:30px;-webkit-border-radius:30px;border-radius:30px;}

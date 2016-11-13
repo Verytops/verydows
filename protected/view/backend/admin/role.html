@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('div.ckrow h4 label').click( function(){
+    var cbs = $(this).parent().next('ul').children('li').find('input[type="checkbox"]');
+    if($(this).find('input[type="checkbox"]').prop('checked')){
+      cbs.prop('checked', true);
+    }else{
+      cbs.prop('checked', false);
+    }
+  });
+});
+
+function submitForm(){
+  $('#role_name').vdsFieldChecker({rules:{required:[true, '角色名不能为空'], maxlen:[50, '角色名不能超过50个字符']}});
+  $('#role_desc').vdsFieldChecker({rules:{maxlen:[240, '角色描述不能超过240个字符']}, tipsPos:'br'});
+  $('form').vdsFormChecker();
+}
+</script>
+</head>
+<body>
+<{if $_GET['a'] == 'add'}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>添加新管理角色</h2></div>
+  <form method="post" action="<{url m=$MOD c='role' a='add' step='submit'}>">
+    <div class="box">
+      <div class="module">
+        <table class="dataform">
+          <tr>
+            <th width="110">角色名</th>
+            <td><input class="w200 txt" name="role_name" id="role_name" type="text" /></td>
+          </tr>
+          <tr>
+            <th>角色描述</th>
+            <td><textarea name="role_desc" id="role_desc" class="txtarea" cols="68" rows="4"></textarea></td>
+          </tr>
+          <tr>
+            <th>分配权限</th>
+            <td>
+              <{foreach $uri_list as $v}>
+              <div class="ckrow pad5 cut">
+                <h4 class="c666"><label><input type="checkbox" /><font class="ml5"><{$v.name}></font></label></h4>
+                <ul class="c666 mult">
+                  <{foreach $v.uri as $kk => $vv}>
+                  <li><label><input type="checkbox" name="role_acl[]" value="<{$kk}>" /><font class="ml5"><{$vv}></font></label></li>
+                  <{/foreach}>
+                </ul>
+              </div>
+              <{/foreach}>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并提交</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{else}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>编辑角色:<font class="ml5">[<{$rs.role_id}>]</font></h2></div>
+  <form method="post" action="<{url m=$MOD c='role' a='edit' step='submit' id=$rs.role_id }>">
+    <div class="box">
+      <div class="module">
+        <table class="dataform">
+          <tr>
+            <th width="110">角色名</th>
+            <td><input class="w200 txt" name="role_name" id="role_name" type="text" value="<{$rs.role_name}>" /></td>
+          </tr>
+          <tr>
+            <th>角色描述</th>
+            <td><textarea name="role_desc" id="role_desc" class="txtarea" cols="68" rows="4"><{$rs.role_desc}></textarea></td>
+          </tr>
+          <tr>
+            <th>分配权限</th>
+            <td>
+              <{foreach $uri_list as $v}>
+              <div class="ckrow pad5 cut">
+                <h4 class="c666"><label><input type="checkbox" /><font class="ml5"><{$v.name}></font></label></h4>
+                <ul class="c666 mult">
+                  <{foreach $v.uri as $kk => $vv}>
+                  <{if is_array($rs.role_acl) && in_array($kk, $rs.role_acl)}>
+                  <li><label><input checked="checked" type="checkbox" name="role_acl[]" value="<{$kk}>" /><font class="ml5"><{$vv}></font></label></li>
+                  <{else}>
+                  <li><label><input type="checkbox" name="role_acl[]" value="<{$kk}>" /><font class="ml5"><{$vv}></font></label></li>
+                  <{/if}>
+                  <{/foreach}>
+                </ul>
+              </div>
+              <{/foreach}>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并更新</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{/if}>
+</body>
+</html>

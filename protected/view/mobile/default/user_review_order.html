@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>评价 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('div.stars i').click(function(){
+    var container = $(this).parent(), i = $(this).index() + 1;
+    container.find('i').removeClass('checked');
+    container.find('i:nth-child(-1n+'+i+')').addClass('checked');
+    container.closest('form').find('input[name="rating"]').val(i);
+  });
+  
+  $('.reviform a.submit').click(function(){
+    var container = $(this).closest('.reviform'), form = container.find('form'), rating = form.find('input[name="rating"]'), content = form.find('textarea[name="content"]');
+    rating.vdsFieldChecker({rules: {stars:[/[1-5]/.test(rating.val()), '请选择满意度评分']}});
+    content.vdsFieldChecker({rules: {required:[true, '请填写评价内容'], minlen:[15, '评价内容不能少于15字'], maxlen:[500, '评价内容不能超过500字']}});
+    if(form.vdsFormChecker({isSubmit:false}) == false) return false;
+    
+    $.asynInter("<{url c='api/review' a='submit'}>", {order_id:form.data('order'), goods_id:form.data('goods'), rating:rating.val(), content:content.val()}, function(res){
+      if(res.status == 'success'){
+        $.vdsPrompt({
+          content: '评价成功',
+          clicked: function(){
+            form.remove();
+            container.append('<div class="completed">已评价</div>');
+         }
+       });
+      }
+      else{
+        $.vdsPrompt({content:res.msg});
+      }
+    });
+  });
+});
+</script>
+</head>
+<body>
+<div class="wrapper">
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>评价</h2>
+  </div>
+  <{foreach $goods_list as $v}>
+  <div class="reviform">
+    <dl class="goods cut">
+      <dt><a class="im"><img src="<{$common.baseurl}>/upload/goods/prime/50x50/<{$v.goods_image}>" /></a></dt>
+      <dd>
+        <a><{$v.goods_name}></a>
+        <{if !empty($v.goods_opts)}>
+        <p class="c999 mt5"><{foreach $v.goods_opts as $o}><span class="mr5">[<{$o.opt_type}>: <font class="c666"><{$o.opt_text}></font>]</span><{/foreach}></p>
+        <{/if}>
+      </dd>
+    </dl>
+    <{if $v.is_reviewed == 0}>
+    <form data-order="<{$v.order_id}>" data-goods="<{$v.goods_id}>">
+    <div class="rating center mt10 cut">
+      <p class="f14 c888">满意度评分</p>
+      <div class="stars mt8">
+        <i class="iconfont">&#xe612;</i>
+        <i class="iconfont">&#xe612;</i>
+        <i class="iconfont">&#xe612;</i>
+        <i class="iconfont">&#xe612;</i>
+        <i class="iconfont">&#xe612;</i>
+      </div>
+      <input type="hidden" name="rating" value="0" />
+    </div>
+    <div class="content mt10 center cut">
+      <p class="f14 c888">评价内容</p>
+      <div class="mt8"><textarea name="content" placeholder="请填写15-500字之间的评价内容"></textarea></div>
+    </div>
+    <a class="submit">提 交</a>
+    </form>
+    <{else}>
+    <div class="completed">已评价</div>
+    <{/if}>
+  </div>
+  <{/foreach}>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/poper.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript">
+function doApprove(status){
+  window.location.href = "<{url m=$MOD c='goods_review' a='approval' id=$rs.review_id}>&status="+status;
+}
+
+function popReply(){
+  $.vdsMasker(true);
+  $('#pop-reply').vdsMidst({wrapper:$(window)}).show();
+}
+
+function closeReply(){
+  $.vdsMasker(false);
+  $('#pop-reply').hide().find('span.vdsfielderr').remove();
+}
+
+function deleteReview(e){
+  $(e).vdsConfirm({
+    text: '您确定要删除该条商品评价吗?',
+    top: -30,
+    confirmed: function(){
+      window.location.href= "<{url m=$MOD c='goods_review' a='delete' id=$rs.review_id}>";
+    },
+  });
+}
+</script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>商品评价:<font class="ml5">[<{$rs.review_id}>]</font></h2></div>
+  <div class="box">
+    <div class="ta-c bw-row pad10 c666 cut">
+      <p>用户<b class="ml5"><a class="blue" href="<{url m=$MOD c='user' a='view' id=$rs.user_id}>"><{$rs.username}></a></b><font class="c999 ml5 mr5">[<{$rs.email}>]</font>对其订单<a class="blue ml5 mr5" href="<{url m=$MOD c='order' a='view' id=$rs.order_id}>"><{$rs.order_id}></a>中的商品：
+      </p>
+      <div class="mt5 x-auto as-srow">
+        <p><a href="<{url c='goods' a='index' id=$rs.goods_id}>"><img width="60" height="60" src="upload/goods/prime/0/<{$rs.goods_image}>" /></a></p>
+        <p class="mt5"><a class="blue" href="<{url c='goods' a='index' id=$rs.goods_id}>"><{$rs.goods_name}></a></p>
+      </div>
+      <p class="mt8">给予了<span class="ml5 mr5"><b class="red"><{$rs.rating}></b> 分 <b><{$rating_map[$rs.rating]}></b></span>的评价：</p>
+      <div class="pad10">
+        <p><{$rs.content}></p>
+        <p class="mt10 c888">
+          发表时间：<{date('Y年m月d日 H:i:s', $rs.created_date)}> <span class="sep20"></span>
+          当前状态：<{if $rs.status == 2}><font class="red">未通过审核</font><{elseif $rs.status == 1}><font class="green">通过审核</font><{else}><font class="c999">尚未审核</font><{/if}>
+        </p>
+      </div>
+    </div>
+    <{if !empty($rs.replied)}>
+    <div class="ta-c bw-row mt5 pad10 c888 cut">
+      <p>管理员<b class="ml5 mr5 c666"><{$rs.replied.admin}></b>对该评价回复：</p>
+      <p class="mt10 c666"><{$rs.replied.content}></p>
+      <p class="mt10">回复时间：<{date('Y年m月d日 H:i:s', $rs.replied.dateline)}></p>
+    </div>
+    <{/if}>
+    <div class="ta-c mt5 pad10 cut">
+      <{if $rs.status == 1}>
+      <button type="button" class="cbtn sm btn" onclick="doApprove(2)">更改审核为: 未通过(×)</button>
+      <{elseif $rs.status == 2}>
+      <button type="button" class="cbtn sm btn" onclick="doApprove(1)">更改审核为: 通过(√)</button>
+      <{else}>
+      <button type="button" class="cbtn sm btn" onclick="doApprove(1)">审核通过(√)</button>
+      <span class="sep20"></span>
+      <button type="button" class="cbtn sm btn" onclick="doApprove(2)">审核未通过(×)</button>
+      <{/if}> <span class="sep20"></span> <{if !empty($rs.replied)}>
+      <button type="button" class="cbtn sm btn" onclick="popReply()">编辑回复</button>
+      <{else}>
+      <button type="button" class="cbtn sm btn" onclick="popReply()">回复评价</button>
+      <{/if}> <span class="sep20"></span>
+      <button type="button" class="cbtn sm btn" onclick="deleteReview(this)">删除评价</button>
+    </div>
+  </div>
+</div>
+<!-- 弹出回复评价开始 -->
+<div class="poper cut" id="pop-reply"> <a class="close" onclick="closeReply()"></a>
+  <div class="poper-hd"><h3 class="f14 ta-c">回复评价</h3></div>
+  <form method="post" action="<{url m=$MOD c='goods_review' a='reply' id=$rs.review_id}>">
+    <div class="pad10 ta-c cut"><textarea title="回复内容" name="content" cols="90" rows="6" class="txtarea"><{if !empty($rs.replied)}><{$rs.replied.content}><{/if}></textarea></div>
+    <div class="poper-bom ta-c">
+      <button type="submit" class="ubtn btn">保存并提交</button>
+      <span class="sep40"></span>
+      <button type="reset" class="fbtn btn">重置内容</button>
+    </div>
+  </form>
+</div>
+<!-- 弹出回复评价结束 -->
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>购买评价 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/goods.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  showReviews();
+  $('#rating_type li').on('click', function(){
+    if(!$(this).hasClass('cur')){
+      $('#rating_type').find('li.cur').removeClass('cur');
+      $(this).addClass('cur');
+      $('#reviews').empty().data('cur', 1).data('next', 1);
+      $('#nomore').hide();
+      showReviews();
+    }
+  });
+  $.vdsTouchScroll({
+    touchOff: 40,
+    onBottom: function(){
+      var obj = $('#reviews');
+      if(obj.data('cur') != obj.data('next')){
+        showReviews();
+      }else{
+        $('#nomore').show();
+      }
+    },
+  });
+});
+
+function showReviews(rating_type){
+  var container = $('#reviews'), goods_id = container.data('pk'), page_id = container.data('next'), rating_type = $('#rating_type').find('li.cur').index();
+  $.asynList("<{url c='api/goods' a='reviews'}>", {goods_id:goods_id, rating_type:rating_type, page:page_id, pernum:8}, function(data){
+    if(data.list){
+      container.append(juicer($('#review-tpl').html(), data));
+      if(data.paging){
+        container.data('cur', page_id);
+        container.data('next', data.paging.next_page);
+      }
+    }else{
+      container.append('<div class="nodata">暂无数据...</div>');
+    }
+  });
+}
+</script>
+</head>
+<body>
+<div class="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1)"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>购买评价</h2>
+  </div>
+  <!-- header end -->
+  <div class="grevli cut">
+    <div class="gsubth"><h2 class="xauto"><{$goods.goods_name}></h2></div>
+    <div class="satis cut">
+      <div class="total"><p class="f14"><font><{$rating.satis}></font>%</p><p class="f14">满意度</p></div>
+      <div class="rate">
+        <dl><dt>好评</dt><dd class="bar"><span style="width:<{$rating.good.ratio}>%"></span></dd><dd><{$rating.good.ratio}>%</dd></dl>
+        <dl><dt>中评</dt><dd class="bar"><span style="width:<{$rating.medi.ratio}>%"></span></dd><dd><{$rating.medi.ratio}>%</dd></dl>
+        <dl><dt>差评</dt><dd class="bar"><span style="width:<{$rating.poor.ratio}>%"></span></dd><dd><{$rating.poor.ratio}>%</dd></dl>
+      </div>
+    </div>
+    <div class="rli">
+      <ul class="tabs mt8 cut" id="rating_type">
+        <li class="cur"><a><h3>全部</h3><p><{$rating.total}></p></a></li>
+        <li><a><h3>好评</h3><p><{$rating.good.qty}></p></a></li>
+        <li><a><h3>中评</h3><p><{$rating.medi.qty}></p></a></li>
+        <li><a><h3>差评</h3><p><{$rating.poor.qty}></p></a></li>
+      </ul>
+      <div class="module cut" id="reviews" data-pk='<{$goods.goods_id}>' data-cur='1' data-next='1'></div>
+      <div class="nomore mt8 center hide" id="nomore">没有更多内容了</div>
+    </div>
+  </div>
+</div>
+<!-- 评价模板开始 -->
+<script type="text/template" id="review-tpl">
+{@each list as v}
+<dl>
+  <dt>
+    <div class="fr">
+      <font>${v.satis}</font>
+      <span class="star-${v.rating}"><i class="iconfont">&#xe612;</i><i class="iconfont">&#xe612;</i><i class="iconfont">&#xe612;</i><i class="iconfont">&#xe612;</i><i class="iconfont">&#xe612;</i></span>
+    </div>
+    <span class="ruser">${v.username}<font class="ml5 c999">的评价</font></span>
+  </dt>
+  <dd class="rcon">${v.content}</dd>
+  <dd class="rdate">${v.created_date}</dd>
+  {@if v.replied != ''}
+  <dd class="reply mt5">
+    <p class="c666"><b class="c888">客服回复：</b>${v.replied.content}</p>
+    <p>${v.replied.dateline}</p>
+  </dd>
+  {@/if}
+</dl>
+{@/each}
+</script>
+<!-- 评价模板结束 -->
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

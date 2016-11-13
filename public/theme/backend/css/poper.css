@@ -1,0 +1,7 @@
+.poper {width:auto;height:auto;position:fixed;z-index:9999;border:2px solid #fff;background:#fff;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;-moz-box-shadow:0 0 10px #666;-webkit-box-shadow:0 0 10px #666;box-shadow:0 0 10px #666;display:none;}
+.poper-hd {font-size:14px;color:#3399aa;padding:10px 8px;background:#f6f6f6;border-bottom:1px solid #e9e9e9;}
+.poper .th {padding:10px 0 5px 0;color:#3399aa;font-size:12px;}
+.poper .th.f14 {font-size:14px;}
+.poper a.close {display:block;width:10px;height:10px;line-height:0;font-size:0;position:absolute;right:10px;top:10px;background:url(../images/icons.png) no-repeat -270px -120px;overflow:hidden}
+.poper a.close:hover {background-position:-270px -140px;}
+.poper-bom {padding:10px;background:#f6f6f6;border-top:1px solid #e9e9e9;}

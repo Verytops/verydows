@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>收件地址 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/consignee.js"></script>
+<script type="text/javascript">
+var areaApi = "<{url c='api/area' a='children'}>";
+
+$(function(){
+  getAreaSelect();
+});
+
+function saveConsignee(){
+  var form = $('#consignee-form');
+  if(checkCsnForm(form)){
+    $.asynInter("<{url c='api/consignee' a='save'}>", form.serialize(), function(res){
+      if(res.status == 'success'){
+        window.location.href = "<{url c='mobile/consignee' a='list'}>";
+      }else{
+        $.vdsPrompt({content:res.msg});
+      }
+    });
+  }
+}
+</script>
+</head>
+<body>
+<div class="wrapper">
+  <{if !empty($_GET['id'])}>
+  <script type="text/javascript">
+  $(function(){
+    setArea('province', null, '<{$consignee.province}>');
+    setArea('city', {province:'<{$consignee.province}>'}, '<{$consignee.city}>');
+    setArea('borough', {province:'<{$consignee.province}>', city:'<{$consignee.city}>'}, '<{$consignee.borough}>');
+  });
+  
+  function setArea(type, dataset, selected){
+    var container = $('#areaslt-'+type);
+    $.getJSON("<{url c='api/area' a='children'}>", dataset, function(data){
+      var opts = '';
+      for(i in data){
+        if(selected == i) opts += "<option value='"+i+"' selected='selected'>"+data[i]+"</option>"; else opts += "<option value='"+i+"'>"+data[i]+"</option>";
+      }
+      container.children().first().siblings().remove();
+      container.append(opts);
+    });
+  }
+  </script>
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>编辑收件地址</h2>
+  </div>
+  <div class="address uform module">
+    <form id="consignee-form">
+    <input type="hidden" name="id" value="<{$consignee.id}>" />
+    <div class="main cut">
+      <dl>
+        <dt>收件人</dt>
+        <dd><input name="receiver" type="text" class="vinput" value="<{$consignee.receiver}>"></dd>
+      </dl>
+      <dl>
+        <dt>手机号码</dt>
+        <dd><input name="mobile" type="number" pattern="[0-9]*" class="vinput" value="<{$consignee.mobile}>"></dd>
+      </dl>
+      <dl>
+        <dt>选择省份</dt>
+        <dd>
+          <div class="vslt">
+            <select name="province" id="areaslt-province" onchange="getAreaSelect('province')">
+              <option value="">选择省份</option>
+            </select>
+            <span><i class="iconfont">&#xe615;</i></span>
+          </div>
+        </dd>
+      </dl>
+      <dl>
+        <dt>选择城市</dt>
+        <dd>
+          <div class="vslt">
+            <select name="city" id="areaslt-city" onchange="getAreaSelect('city')">
+              <option value="">选择城市</option>
+            </select>
+            <span><i class="iconfont">&#xe615;</i></span>
+          </div>
+        </dd>
+      </dl>
+      <dl>
+        <dt>选择区/县</dt>
+        <dd>
+          <div class="vslt">
+            <select name="borough" id="areaslt-borough">
+              <option value="">选择区/县</option>
+            </select>
+            <span><i class="iconfont">&#xe615;</i></span>
+          </div>
+        </dd>
+      </dl>
+      <dl>
+        <dt>详细地址</dt>
+        <dd><textarea name="address" class="vtextarea"><{$consignee.address}></textarea></dd>
+      </dl>
+      <dl>
+        <dt>邮编</dt>
+        <dd><input name="zip" type="number" pattern="[0-9]*" class="vinput" value="<{$consignee.zip}>"></dd>
+      </dl>
+    </div>
+    </form>
+    <a class="submit xauto mt15 f14 center" onclick="saveConsignee()">保 存</a>
+  </div>
+  <{else}>
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1)"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>新建收件地址</h2>
+  </div>
+  <div class="address uform module">
+    <form id="consignee-form">
+    <div class="main cut">
+      <dl>
+        <dt>收件人</dt>
+        <dd><input name="receiver" type="text" class="vinput"></dd>
+      </dl>
+      <dl>
+        <dt>手机号码</dt>
+        <dd><input name="mobile" type="number" pattern="[0-9]*" class="vinput"></dd>
+      </dl>
+      <dl>
+        <dt>选择省份</dt>
+        <dd>
+          <div class="vslt">
+            <select name="province" id="areaslt-province" onChange="getAreaSelect('province')">
+              <option value="">选择省份</option>
+            </select>
+            <span><i class="iconfont">&#xe615;</i></span>
+         </div>
+        </dd>
+      </dl>
+      <dl>
+        <dt>选择城市</dt>
+        <dd>
+          <div class="vslt">
+            <select name="city" id="areaslt-city" onChange="getAreaSelect('city')">
+              <option value="">选择城市</option>
+            </select>
+            <span><i class="iconfont">&#xe615;</i></span>
+          </div>
+        </dd>
+      </dl>
+      <dl>
+        <dt>选择区/县</dt>
+        <dd>
+          <div class="vslt">
+            <select name="borough" id="areaslt-borough">
+              <option value="">选择区/县</option>
+            </select>
+            <span><i class="iconfont">&#xe615;</i></span>
+          </div>
+        </dd>
+      </dl>
+      <dl>
+        <dt>详细地址</dt>
+        <dd><textarea name="address" class="vtextarea"></textarea></dd>
+      </dl>
+      <dl>
+        <dt>邮编</dt>
+        <dd><input name="zip" type="number" pattern="[0-9]*" class="vinput"></dd>
+      </dl>
+    </div>
+    </form>
+    <a class="submit xauto mt15 f14 center" onClick="saveConsignee()">保 存</a>
+  </div>
+  <{/if}>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

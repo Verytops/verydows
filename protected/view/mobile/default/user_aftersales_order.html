@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8" />
+<{include file='mobile/default/lib/meta.html'}>
+<title>售后申请 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+</head>
+<body>
+<div class="wrapper">
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>售后申请</h2>
+  </div>
+  <div class="aftsgs cut">
+    <{foreach $goods_list as $v}>
+    <dl>
+      <dt><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><img src="<{$common.baseurl}>/upload/goods/prime/100x100/<{$v.goods_image}>" /></a></dt>
+      <dd>
+        <p class="c555"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><{$v.goods_name}></a></p>
+        <{if !empty($v.goods_opts)}>
+        <p class="mt5"><{foreach $v.goods_opts as $o}><span class="c999 mr5">[<{$o.opt_type}>: <font class="c666"><{$o.opt_text}></font>]</span><{/foreach}></p>
+        <{/if}>
+        <div class="act mt5 cut">
+          <span class="c999">数量：<font class="c666"><{$v.goods_qty}></font></span>
+          <a class="fr" href="<{url c='mobile/aftersales' a='apply' order_id=$v.order_id goods_id=$v.goods_id}>">报修/退换货</a>
+        </div>
+      </dd>
+    </dl>
+    <{/foreach}>
+  </div>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

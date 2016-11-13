@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>收件地址 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('#consignees dl dd.l i').click(function(){
+    var cur = $(this).closest('dl').addClass('checked');
+    if(cur.find('p.isdef').size() > 0){
+      $('#setdefbtn').hide();
+    }else{
+      $('#setdefbtn').show();
+    }
+    $('#popact').height(Math.max($(document).height(), $(window).height())).show().on('click', function(){
+      $(this).hide();
+      $('#consignees dl.checked').removeClass('checked');
+    });
+  });
+});
+
+function setDefaulted(){
+  var selected = $('#consignees dl.checked');
+  $.asynInter("<{url c='api/consignee' a='defaulted'}>", {id:selected.data('key')}, function(res){
+    if(res.status == 'success'){
+      $('#consignees p.isdef').remove();
+      selected.find('dd.m').append('<p class="isdef mt5 red">[默认地址]</p>');
+    }else{
+      $.vdsPrompt({content:res.msg});
+    }
+  });
+}
+
+function delConsignee(){
+  var container = $('#consignees'), selected = container.find('dl.checked');
+  $.asynInter("<{url c='api/consignee' a='delete'}>", {id:selected.data('key')}, function(res){
+    if(res.status == 'success'){
+      selected.remove();
+      if(container.find('dl').size() == 0){
+        container.html($('#nodata-tpl').html());
+      }else{
+        var saved = container.find('div.total b').eq(0), remaining = container.find('div.total b').eq(1);
+        saved.text(parseInt(saved.text()) - 1);
+        remaining.text(parseInt(remaining.text()) + 1);
+      }
+    }else{
+      $.vdsPrompt({content:res.msg});
+    }
+  });
+}
+</script>
+</head>
+<body>
+<div class="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="<{url c='mobile/user' a='index'}>"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>收件地址</h2>
+    <div class="op rt"><a href="<{url c='mobile/consignee' a='add'}>"><i class="f18 iconfont">&#xe63e;</i></a></div>
+  </div>
+  <!-- header end -->
+  <{if !empty($consignee_list)}>
+  <div class="csgli" id="consignees">
+    <div class="total">您已保存了<b><{$total.saved}></b>条收件人地址，还能再保存<b><{$total.remaining}></b>条</div>
+    <{foreach $consignee_list as $v}>
+    <dl data-key="<{$v.id}>">
+      <dd class="l"><i class="iconfont">&#xe61a;</i></dd>
+      <dd class="r"><a href="<{url c='mobile/consignee' a='edit' id=$v.id}>"><i class="iconfont">&#xe617;</i></a></dd>
+      <dd class="m">
+        <h4 class="c666"><{$v.receiver}><span class="ml10"><{$v.mobile}></span></h4>
+        <p class="mt5 c888"><{$v.area.province}> <{$v.area.city}> <{$v.area.borough}> <{$v.address}><{if !empty($v.zip)}><br /><{$v.zip}><{/if}></p>
+        <{if $v.is_default == '1'}><p class="isdef mt5 red">[默认地址]</p><{/if}>
+      </dd>
+    </dl>
+    <{/foreach}>
+  </div>
+  <{else}>
+  <div class="nodata">
+    <div class="th"><span><i class="iconfont">&#xe625;</i></span><div class="line"></div></div>
+    <p>暂无任何收件人地址</p>
+  </div>
+  <{/if}>
+</div>
+<div class="popact hide" id="popact">
+  <div class="fixed">
+    <a class="b1" id="setdefbtn" onclick="setDefaulted()">设为默认</a>
+    <a onClick="delConsignee()">删 除</a>
+  </div>
+</div>
+<script type="text/template" id="nodata-tpl">
+<div class="nodata">
+  <div class="th"><span><i class="iconfont">&#xe625;</i></span><div class="line"></div></div>
+  <p>暂无任何收件人地址</p>
+</div>
+</script>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

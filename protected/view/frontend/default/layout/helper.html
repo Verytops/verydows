@@ -1,0 +1,49 @@
+<div class="helpper cut">
+  <div class="guarantee radius4 cut">
+    <dl>
+      <dt><i class="g-1 icon"></i></dt>
+      <dt class="mt5">放心购物</dt>
+      <dd class="mt5">正品保障，付款安全</dd>
+    </dl>
+    <span class="sep"></span>
+    <dl>
+      <dt><i class="g-2 icon"></i></dt>
+      <dt class="mt5">闪电发货</dt>
+      <dd class="mt5">当日处理，极速配货</dd>
+    </dl>
+    <span class="sep"></span>
+    <dl>
+      <dt><i class="g-3 icon"></i></dt>
+      <dt class="mt5">退换承诺</dt>
+      <dd class="mt5">7日以内，尊享退换</dd>
+    </dl>
+    <span class="sep"></span>
+    <dl>
+      <dt><i class="g-4 icon"></i></dt>
+      <dt class="mt5">售后无忧</dt>
+      <dd class="mt5">贴心服务，快速响应</dd>
+    </dl>
+    <span class="sep"></span>
+    <dl>
+      <dt><i class="g-5 icon"></i></dt>
+      <dt class="mt5">畅想低价</dt>
+      <dd class="mt5">每日促销，折扣不停</dd>
+    </dl>
+  </div>
+  <div class="cl"></div>
+  <div class="helpli cut">
+    <{if !empty($helper_list)}>
+    <{foreach $helper_list as $v}>
+    <dl>
+      <dt><{$v.cate_name}></dt>
+      <{if !empty($v.children)}>
+      <{foreach $v.children as $vv}>
+      <dd><a title="<{$vv.title}>" href="<{if !empty($vv.link)}><{$vv.link}><{else}><{url c='help' a='view' id=$vv.id}><{/if}>"><{$vv.title}></a></dd>
+      <{/foreach}>
+      <{/if}>
+    </dl>
+    <{/foreach}>
+    <{/if}>
+    <div class="qrcode fr"><i class="fl"></i><div class="qrtxt"><h4>官方微信公众号</h4><p class="c999 mt5">扫描二维码，随手关注最新动态</p></div></div>
+  </div>
+</div>

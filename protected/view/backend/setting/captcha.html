@@ -1,0 +1,57 @@
+<div class="ta-c bw-row pad10 cut">
+  <h3 class="th">图片验证码</h3>
+  <p class="mt10"><img src="<{url c='api/captcha' a='image'}>" onclick="$(this).attr('src', '<{url c='api/captcha' a='image'}>&random=?'+Math.random());" /></p>
+  <p class="c666 mt10">启用验证码是对系统安全防护的一个重要的方法, 它是用来保护系统避免自动提交、垃圾邮件、黑客攻击或其他类型的欺诈活动等等。</p>
+</div>
+<form method="post" action="<{url m=$MOD c='setting' a='update' step='captcha'}>">
+  <div class="bw-row mt5 pad10">
+    <table class="dataform">
+      <tr>
+        <th width="110">后台管理登陆</th>
+        <td>
+          <div class="pad10">
+            <label><input type="radio" name="captcha_admin_login" value="0" <{if $rs.captcha_admin_login == 0}>checked="checked"<{/if}> /><font class="red ml5">关闭</font></label>
+            <label class="ml20"><input type="radio" name="captcha_admin_login" value="1" <{if $rs.captcha_admin_login == 1}>checked="checked"<{/if}> /><font class="green ml5">始终启用</font></label>
+            <label class="ml20"><input type="radio" name="captcha_admin_login" value="2" <{if $rs.captcha_admin_login == 2}>checked="checked"<{/if}> /><font class="green ml5">连续3次登陆失败后启用</font></label>
+            <p class="c999 mt10">如果选择 "关闭" 此项, 将会加大您后台管理系统的安全风险</p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>用户登录</th>
+        <td>
+          <div class="pad10">
+            <label><input type="radio" name="captcha_user_login" value="0" <{if $rs.captcha_user_login == 0}>checked="checked"<{/if}> /><font class="red ml5">关闭</font></label>
+            <label class="ml20"><input type="radio" name="captcha_user_login" value="1" <{if $rs.captcha_user_login == 1}>checked="checked"<{/if}> /><font class="green ml5">始终启用</font></label>
+            <label class="ml20"><input type="radio" name="captcha_user_login" value="2" <{if $rs.captcha_user_login == 2}>checked="checked"<{/if}> /><font class="green ml5">连续3次登陆失败后启用</font></label>
+            <p class="c999 mt10">如果选择 "关闭" 此项, 将会加大前端用户的账户安全风险</p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>用户注册</th>
+        <td>
+          <div class="pad10">
+            <label><input type="radio" name="captcha_user_register" value="0" <{if $rs.captcha_user_register == 0}>checked="checked"<{/if}> /><font class="red ml5">关闭</font></label>
+            <label class="ml20"><input type="radio" name="captcha_user_register" value="1" <{if $rs.captcha_user_register == 1}>checked="checked"<{/if}> /><font class="green ml5">启用</font></label>
+            <p class="c999 mt10">如果选择 "开启" 此项, 将会有效的防止自动提交注册网站会员</p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>咨询反馈</th>
+        <td>
+          <div class="pad10">
+            <label><input type="radio" name="captcha_feedback" value="0" <{if $rs.captcha_feedback == 0}>checked="checked"<{/if}> /><font class="red ml5">关闭</font></label>
+            <label class="ml20"><input type="radio" name="captcha_feedback" value="1" <{if $rs.captcha_feedback == 1}>checked="checked"<{/if}> /><font class="green ml5">启用</font></label>
+            <p class="c999 mt10">如果选择 "开启" 此项, 将会有效的防止用户恶意自动提交垃圾反馈信息</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div class="submitbtn">
+      <button type="submit" class="ubtn btn">保存并更新验证码设置</button>
+      <button type="reset" class="fbtn btn">重置表单</button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/list.js"></script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>支付方式</h2></div>
+  <div class="box">
+    <{if !empty($results)}>
+    <div class="module">
+      <table class="datalist">
+        <tr>
+          <th width="50" colspan="2">编号</th>
+          <th width="200" class="ta-l">名称</th>
+          <th class="ta-l">使用说明</th>
+          <th width="90">排序</th>
+          <th width="90">启用</th>
+        </tr>
+        <{foreach $results as $v}>
+        <tr>
+          <td width="20"><input name="id" type="checkbox" value="<{$v.id}>" /></td>
+          <td width="30"><{$v.id}></td>
+          <td class="ta-l"><p class="pad5"><a class="blue" href="<{url m=$MOD c='payment_method' a='edit' id=$v.id}>"><{$v.name}></a></p></td>
+          <td class="ta-l c666"><{if !empty($v.instruction)}><{$v.instruction}><{else}><font class="c999">未设置</font><{/if}></td>
+          <td><{$v.seq}></td>
+          <td><{if $v.enable == 1}><i class="icon yes"></i><{else}><i class="icon no"></i><{/if}></td>
+        </tr>
+        <{/foreach}>
+      </table>
+    </div>
+    <{else}>
+    <div class="nors mt5">未找到相关数据记录...</div>
+    <{/if}>
+  </div>
+</div>
+</body>
+</html>

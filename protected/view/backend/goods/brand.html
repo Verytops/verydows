@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript">
+$(function(){
+  //切换上传还是URL
+  $('dl.upsw dt a').click(function(){
+    $(this).siblings().removeClass('cur').parent().next('dd').children('div').addClass('hide');
+    $(this).addClass('cur').parent().next('dd').find('div').eq($(this).index()).removeClass('hide');
+  });
+});
+function submitForm(){
+  $('#brand_name').vdsFieldChecker({rules: {required:[true, '品牌名称不能为空'], maxlen:[60, '品牌名称不能超过60个字符']}});
+  $('#seq').vdsFieldChecker({rules: {required:[true, '排序不能为空'], seq:[true, '排序只能填写0到99之间的整数']}});
+  $('form').vdsFormChecker();
+}
+</script>
+</head>
+<body>
+<{if $_GET['a'] == 'add'}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>添加新品牌</h2></div>
+  <form method="post" enctype="multipart/form-data" action="<{url m=$MOD c='brand' a='add' step='submit'}>">
+    <div class="box">
+      <div class="module">
+        <table class="dataform">
+          <tr>
+            <th width="110">品牌名称</th>
+            <td><input class="w200 txt" name="brand_name" id="brand_name" type="text" /></td>
+          </tr>
+          <tr>
+            <th>品牌LOGO</th>
+            <td>
+              <dl class="upsw pad5">
+                <dt class="pad5"><a class="cur ml5 mr5">上传文件</a><a class="ml10">输入URL</a></dt>
+                <dd class="mt5 pad5">
+                  <div><input name="logo_file" type="file" /><p class="caaa mt10">仅允许上传 "png"、"jpg"、"jpeg"、"gif" 类型的图片</p></div>
+                  <div class="hide"><input name="logo_src" class="w500 txt" type="text" /></div>
+                </dd>
+              </dl>
+            </td>
+          </tr>
+          <tr>
+            <th>排序</th>
+            <td><input value="99" class="w50 txt" name="seq" id="seq" type="text" /></td>
+          </tr>
+        </table>
+      </div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并提交</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{else}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>编辑品牌:<font class="ml5">[<{$rs.brand_id}>]</font></h2></div>
+  <form method="post" enctype="multipart/form-data" action="<{url m=$MOD c='brand' a='edit' step='submit' id=$rs.brand_id}>">
+    <div class="box">
+      <div class="module">
+        <table class="dataform">
+          <tr>
+            <th width="110">品牌名称</th>
+            <td><input class="w200 txt" name="brand_name" id="brand_name" value="<{$rs.brand_name}>" type="text" /></td>
+          </tr>
+          <tr>
+            <th>品牌LOGO</th>
+            <td><dl class="upsw pad5">
+                <{if !empty($rs.brand_logo)}>
+                <dt class="pad5"><a class="ml5 mr5">上传文件</a><a class="cur ml10">输入URL</a></dt>
+                <dd class="mt5 pad5">
+                  <div class="hide">
+                    <label><input name="logo_file" type="file" /></label>
+                    <p class="caaa mt10">仅允许上传 "png"、"jpg"、"jpeg"、"gif" 类型的图片</p>
+                  </div>
+                  <p><label><input name="logo_src" class="w500 txt" type="text" value="<{$rs.brand_logo}>" /></label><a title="查看图片" class="picflag icon ml5" onclick="$(this).vdsPopMedia({src:'<{$rs.brand_logo}>'})"></a></p>
+                </dd>
+                <{else}>
+                <dt class="pad5"><a class="cur ml5 mr5">上传文件</a><a class="ml10">输入URL</a></dt>
+                <dd class="mt5 pad5">
+                  <div><input name="logo_file" type="file" /><p class="caaa mt10">仅允许上传 "png"、"jpg"、"jpeg"、"gif" 类型的图片</p></div>
+                  <div class="hide"><input name="logo_src" class="w500 txt" type="text" /></div>
+                </dd>
+                <{/if}>
+              </dl>
+            </td>
+          </tr>
+          <tr>
+            <th>排序</th>
+            <td><input class="w50 txt" name="seq" id="seq" value="<{$rs.seq}>" type="text" /></td>
+          </tr>
+        </table>
+      </div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并更新</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{/if}>
+</body>
+</html>

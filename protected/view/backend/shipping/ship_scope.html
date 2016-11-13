@@ -1,0 +1,62 @@
+<div class="poper scope" id="popscope"> <a title="取消" class="close" onclick="closeScope()">×</a>
+  <h3 class="f14 th ta-c">增加配送区域</h3>
+  <form>
+    <div class="casing">
+      <div class="pad10 segline">
+        <div><b class="c666 vtcmid">选择地区:</b><label class="ml10"><input type="checkbox" id="nationwide" onclick="checkWideSelected()" /><font class="ml5">全国范围</font></label></div>
+        <div class="areasel mt8 cut" id="areasel">
+          <{foreach $area_select as $k => $v}>
+          <label><input type="checkbox" value="<{$k}>" /><font class="ml5"><{$v}></font></label>
+          <{/foreach}>
+        </div>
+      </div>
+      <div class="pad10 segline">
+        <label><b class="c666 mr10">计费类型:</b>
+        <select id="chargetypesel" class="slt" onchange="changeChargeType()">
+          <option value="fixed">固定收费</option>
+          <option value="weight">计重收费</option>
+          <option value="piece">计件收费</option>
+        </select>
+        </label>
+      </div>
+      <div class="module cut" id="charge-box">
+        <div class="pad10 segline hide" id="charge-fixed">
+          <p class="c666"><label><b class="mr10">固定运费:</b><input class="w150 txt" data-key="charges" /><font class="caaa">元</font></label></p>
+        </div>
+        <div class="pad10 segline hide" id="charge-weight">
+          <p class="c666">
+            <label><b class="mr10">首重重量:</b><input class="w100 txt" data-key="first_weight" /><font class="caaa">Kg</font></label>
+            <label class="ml20"><b class="mr10">首重费用:</b><input class="w100 txt" data-key="first_charges" /><font class="caaa">元</font></label>
+          </p>
+          <p class="c666 mt10">
+            <label><b class="mr10">续重重量:</b><input class="w100 txt" data-key="added_weight" /><font class="caaa">Kg</font></label>
+            <label class="ml20"><b class="mr10">续重费用:</b><input class="w100 txt" data-key="added_charges" /><font class="caaa">元</font></label>
+          </p>
+        </div>
+        <div class="pad10 segline hide" id="charge-piece">
+          <p class="c666">
+            <label><b class="mr10">起始件数:</b><input class="w100 txt" data-key="first_piece" /><font class="caaa">件</font></label>
+            <label class="ml20"><b class="mr10">起始费用:</b><input class="w100 txt" data-key="first_charges" /><font class="caaa">元</font></label>
+          </p>
+          <p class="c666 mt10">
+            <label><b class="mr10">续增件数:</b><input class="w100 txt" data-key="added_piece" /><font class="caaa">件</font></label>
+            <label class="ml20"><b class="mr10">续增费用:</b><input class="w100 txt" data-key="added_charges" /><font class="caaa">元</font></label>
+          </p>
+        </div>
+      </div>
+      <div class="mt20 ta-c">
+        <button type="button" class="ubtn btn" onclick="saveScope()">确 定</button>
+        <span class="sep60"></span>
+        <button type="reset" class="fbtn btn">重 置</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- 弹出配送区域结束 -->
+<script type="text/template" id="scoperow-tpl">
+<dl>
+  <dt>{$area}</dt>
+  <dd>{$charge}</dd>
+  <a class="remove" onclick="removeScope(this)">×</a>
+</dl>
+</script>

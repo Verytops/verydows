@@ -1,0 +1,28 @@
+<script type="text/javascript">
+function submitCancelForm(){
+  var form = $('#pop-cancel form');
+  form.find('textarea[name="cause"]').vdsFieldChecker({
+    rules: {required:[true, '取消原因不能为空'], maxlen:[240, '取消原因不能超过240个字符']},
+    tipsPos: 'br'
+  });
+  form.vdsFormChecker();
+}
+</script>
+<div class="poper cut" id="pop-cancel"> <a class="close" onclick="closeOperate('pop-cancel')"></a>
+  <h3 class="f14 th ta-c">取消交易</h3>
+  <div class="pad10 cut">
+    <form method="post" action="<{url m=$MOD c='order' a='operate' step='cancel' id=$order.order_id}>">
+      <table class="dataform">
+        <tr>
+          <th width="80">取消原因</th>
+          <td><textarea class="txtarea" name="cause" cols="80" rows="4"></textarea></td>
+        </tr>
+      </table>
+      <div class="ta-c mt5 pad10">
+        <button type="button" class="ubtn btn" onclick="submitCancelForm()">确定并提交</button>
+        <span class="sep40"></span>
+        <button type="button" class="fbtn btn" onclick="closeOperate('pop-cancel')">取消</button>
+      </div>
+    </form>
+  </div>
+</div>

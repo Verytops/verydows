@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript">
+function submitForm(){
+  $('#group_name').vdsFieldChecker({rules: {required:[true, '用户组名称不能为空'], maxlen:[60, '用户组名称不能超过60个字符']}});
+  $('#min_exp').vdsFieldChecker({rules: {required:[true, '经验值下限不能为空'], nonegint:[true, '经验值下限必须为非负整数']}});
+  $('#discount_rate').vdsFieldChecker({rules: {format:[/^(?:0|[1-9][0-9]?|100)$/.test($('#discount_rate').val()), '折扣率必须为0-100之间的整数']}});
+  $('form').vdsFormChecker();
+}
+</script>
+</head>
+<body>
+<{if $_GET['a'] == 'add'}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>添加新用户组</h2></div>
+  <form method="post" action="<{url m=$MOD c='user_group' a='add' step='submit'}>">
+    <div class="box">
+      <div class="module">
+        <table class="dataform">
+          <tr>
+            <th width="110">用户组名称</th>
+            <td><input class="w200 txt" name="group_name" id="group_name" type="text" /></td>
+          </tr>
+          <tr>
+            <th>经验值下限</th>
+            <td><input class="w100 txt" name="min_exp" id="min_exp" type="text" /><p class="mt10 c999">必须为纯数字且为非负整数</p></td>
+          </tr>
+          <tr>
+            <th>折扣率</th>
+            <td>
+              <input class="w50 txt" name="discount_rate" id="discount_rate" type="text" value="100" /><font class="c999 ml5">%</font>
+              <p class="mt10 c999">必须为0-100之间的整数, 例如为88, 则表示享受8.8折的商品折扣率</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并提交</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{else}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>编辑用户组:<font class="ml5">[<{$rs.group_id}>]</font></h2></div>
+  <form method="post" action="<{url c='backend/user_group' a='edit' id=$rs.group_id step='submit'}>">
+    <div class="box">
+      <div class="module">
+        <table class="dataform">
+          <tr>
+            <th width="110">用户组名称</th>
+            <td><input class="w200 txt" name="group_name" id="group_name" type="text" value="<{$rs.group_name}>" /></td>
+          </tr>
+          <tr>
+            <th>经验值下限</th>
+            <td>
+              <input placeholder="下限" class="w100 txt" name="min_exp" id="min_exp" type="text" value="<{$rs.min_exp}>" />
+              <p class="mt10 c999">必须为纯数字且为非负整数</p>
+            </td>
+          </tr>
+          <tr>
+            <th>折扣率</th>
+            <td>
+              <input class="w50 txt" name="discount_rate" id="discount_rate" type="text" value="<{$rs.discount_rate}>" />
+              <font class="c999 ml5">%</font>
+              <p class="mt10 c999">必须为0-100之间的整数, 例如为88, 则表示享受8.8折的商品折扣率</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并更新</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{/if}>
+</body>
+</html>

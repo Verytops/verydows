@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="verydows-baseurl" content="<{$common.baseurl}>">
+<title>安全设置 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/jquery.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/general.js"></script>
+</head>
+<body>
+<div class="vds-waiting"
+<!-- 顶部开始 -->
+<{layout_topper common=$common}>
+<!-- 顶部结束 -->
+<!-- 头部开始 -->
+<{layout_header common=$common}>
+<!-- 头部结束 -->
+<div class="loc w1100">
+  <div><a href="<{url c='main' a='index'}>">网站首页</a><b>&gt;</b><font>用户面板</font></div>
+</div>
+<!-- 主体开始 -->
+<div class="container w1100 mt10">
+  <div class="module cut">
+    <!-- 左侧开始 -->
+    <div class="w180 fl cut">
+      <!-- 用户菜单开始 -->
+      <{layout_usermenu}>
+      <!-- 用户菜单结束 -->
+    </div>
+    <!-- 左侧结束 -->
+    <!-- 右侧开始 -->
+    <div class="w910">
+      <div class="profile mcter">
+        <{if $field == 'email'}>
+        <script type="text/javascript">
+          var _countdown = 180;
+          
+          $(function(){
+            $('#sendbtn').on('click', function(){sendCaptcha()});
+          });
+          
+          function sendCaptcha(){
+            var email = $('#email');
+            if(email.vdsFieldChecker({rules:{required:[true, '请设置邮箱'], email:[true, '无效的邮箱地址'], maxlen:[60, '邮箱地址不能超过60个字符']}})) return false;
+             
+            $.ajax({
+              type: 'post',
+              dataType: 'json',
+              url: "<{url c='api/sendmail' a='auth'}>",
+              data: {email:email.val()},
+              beforeSend: function(){$.vdsPopWaiting({sw:true, text:'正在向您的邮箱发送验证码, 请等待...'})},
+              success: function(res){
+                $.vdsPopWaiting({sw:false});
+                if(res.status == 'success'){
+                  email.prop('disabled', true);
+                  $('#sendbtn').off().removeClass('sm-blue').addClass('sm-disb');
+                  _countdown = 180;
+	  resendCounting();
+                }else{
+                  $.vdsPopDialog({type:'err', text:res.msg});
+                }
+              }
+            });
+          }
+          
+          function resendCounting(){
+            var timer = window.setInterval(function(){	
+              if(_countdown >= 0){
+                $('#sendbtn').text(_countdown+'秒后重新获取');
+                _countdown --;
+              }else{
+                clearInterval(timer);
+                email.prop('disabled', false);
+                $('#sendbtn').text('重新发送验证码到邮箱').removeClass('sm-disb').addClass('sm-blue').on('click', function(){sendCaptcha()});
+                return false;
+              }
+            }, 1000);
+          }
+          
+          function updateField(){
+            var form = $('#upform');
+            var checker = form.find('input[name="email_captcha"]').vdsFieldChecker({rules: {required:[true, '请输入验证码']}});
+            form.vdsFormChecker();
+          }
+        </script>
+        <h2>设置邮箱账户</h2>
+        <div class="form mt10 cut">
+          <form method="post" action="<{url c='security' a='update' field='email'}>" id="upform">
+          <dl>
+            <dt>邮箱账户：</dt>
+            <dd><input name="email" id="email" class="txt" type="text" value="<{$email}>" /></dd>
+          </dl>
+          <dl>
+            <dt>验证码：</dt>
+            <dd><input name="email_captcha" class="w100 txt" type="text" /><a class="sm-blue ml5" id="sendbtn">发送邮件验证码</a></dd>
+          </dl>
+          <div class="profile-btn mt15"><button type="button" class="sm-red" onclick="updateField()">确 定</button></div>
+          </form>
+        </div>
+        <{elseif $field == 'mobile'}>
+        <script type="text/javascript">
+          function updateField(){
+            var form = $('#upform');
+            form.find('input[name="mobile"]').vdsFieldChecker({rules:{required:[true, '请设置手机号码'], mobile:[true, '手机号码无效']}});
+            form.vdsFormChecker();
+          }
+        </script>
+        <h2>设置手机号码</h2>
+        <div class="form mt10 cut">
+          <form method="post" action="<{url c='security' a='update' field='mobile'}>" id="upform">
+          <dl>
+            <dt>手机号码：</dt>
+            <dd><input name="mobile" class="txt" type="text" value="<{$mobile}>" /><a class="sm-red ml5" onclick="updateField()">确 定</a></dd>
+          </dl>
+          </form>
+        </div>
+        <{elseif $field == 'password'}>
+        <script type="text/javascript">
+          function updateField(){     
+            var form = $('#upform');
+            form.find('input[name="old_password"]').vdsFieldChecker({
+              rules:{required:[true, '请输入原密码']}, 
+            });
+            form.find('input[name="password"]').vdsFieldChecker({
+              rules:{required:[true, '请设置密码'], password:[true, '密码不符合格式要求']}, 
+            });
+            form.find('input[name="repassword"]').vdsFieldChecker({
+              rules:{equal:[form.find('input[name="password"]').val(), '两次密码不一致']}, 
+            });
+            form.vdsFormChecker();
+          }
+        </script>
+        <h2>设置密码</h2>
+        <div class="form mt10 ml10 cut">
+          <form method="post" action="<{url c='security' a='update' field='password'}>" id="upform">
+          <dl>
+            <dt>原密码：</dt>
+            <dd><input name="old_password" class="txt" type="password" /></dd>
+          </dl>
+          <dl>
+            <dt>新密码：</dt>
+            <dd><input name="password" class="txt" type="password" /></dd>
+          </dl>
+          <dl>
+            <dt>确认新密码：</dt>
+            <dd><input name="repassword" class="txt" type="password" /></dd>
+          </dl>
+          <div class="profile-btn mt15"><button type="button" class="sm-red" onclick="updateField()">确 定</button></div>
+          </form>
+        </div>
+        <{/if}>
+      </div>
+    </div>
+    <!-- 右侧结束 -->
+  </div>
+  <div class="cl"></div>
+  <{layout_helper}>
+</div>
+<!-- 主体结束 -->
+<div class="cl"></div>
+<!-- 页脚开始 -->
+<{layout_footer}>
+<!-- 页脚结束 -->
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+</body>
+</html>

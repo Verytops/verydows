@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<meta name="keywords" content="<{$help.meta_keywords}>" />
+<meta name="description" content="<{$help.meta_description}>" />
+<title><{$help.title}> - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/article.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+</head>
+<body>
+<div class="wrapper" id="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1)"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h1>Verydows</h1>
+  </div>
+  <!-- header end -->
+  <div class="details">
+    <div class="th"><h2 class="xauto"><{$help.title}></h2></div>
+    <div class="con mt10"><{$help.content nofilter}></div>
+  </div>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<meta name="keywords" content="商品搜索" />
+<meta name="description" content="商品搜索" />
+<title>商品搜索 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/search.css">
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/search.js"></script>
+<script type="text/javascript">
+var searchApi = "<{url c='api/goods' a='search'}>";
+</script>
+</head>
+<body>
+<{include file='mobile/default/lib/searcher.html'}>
+<div class="wrapper" id="wrapper">
+  <div class="searcher">
+    <div class="main">
+      <a class="back pointer" href="javascript:history.back(-1)"><i class="iconfont">&#xe638;</i></a>
+      <a class="latsw pointer" id="latsw"><i class="f18 iconfont">&#xe637;</i></a>
+      <div class="scfake in cut"><input id="kwfake" type="text" value="<{$u.kw}>" /></div>
+    </div>
+  </div>
+  <div class="absmu latent hide" id="top-menus">
+    <a href="<{url c='mobile/main' a='index'}>"><i class="iconfont">&#xe606;</i><span>首页</span></a>
+    <a href="<{url c='mobile/category' a='index'}>"><i class="iconfont">&#xe60b;</i><span>商品分类</span></a>
+    <a href="<{url c='mobile/cart' a='index'}>"><i class="iconfont">&#xe603;</i><span>购物车</span></a>
+    <a href="<{url c='mobile/user' a='index'}>"><i class="iconfont">&#xe632;</i><span>我的</span></a>
+  </div>
+  <div class="module">
+    <{if !empty($goods_list)}>
+    <ul class="sortby">
+      <{if $u.sort == 0}>
+      <li class="cur"><a>默认</a></li>
+      <{else}>
+      <li><a href="<{url c='mobile/search' a='index' cate=$u.cate brand=$u.brand minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw}>">默认</a></li>
+      <{/if}>
+      <{if $u.sort == 1}>
+      <li class="cur"><a href="<{url c='mobile/search' a='index' cate=$u.cate brand=$u.brand minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw sort='2'}>">价格<i class="arrow iconfont">&#xe63c;</i></a></li>
+      <{elseif $u.sort == 2}>
+      <li class="cur"><a href="<{url c='mobile/search' a='index' cate=$u.cate brand=$u.brand minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw sort='1'}>">价格<i class="arrow iconfont">&#xe63b;</i></a></li>
+      <{else}>
+      <li><a href="<{url c='mobile/search' a='index' cate=$u.cate brand=$u.brand minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw sort='1'}>">价格</a></li>
+      <{/if}>
+      <{if $u.sort == 3}>
+      <li class="cur"><a href="<{url c='mobile/search' a='index' cate=$u.cate brand=$u.brand minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw sort='4'}>">时间<i class="arrow iconfont">&#xe63c;</i></a></li>
+      <{elseif $u.sort == 4}>
+      <li class="cur"><a href="<{url c='mobile/search' a='index' cate=$u.cate brand=$u.brand minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw sort='3'}>">时间<i class="arrow iconfont">&#xe63b;</i></a></li>
+      <{else}>
+      <li><a href="<{url c='mobile/search' a='index' cate=$u.cate brand=$u.brand minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw sort='3'}>">时间</a></li>
+      <{/if}>
+      <li onclick="showFilters()"><a>筛选</a></li>
+    </ul>
+    <div class="srli" id="srli" data-cur='1' data-next='2'>
+      <{foreach $goods_list as $v}>
+      <div class="item">
+        <a class="gim" href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><img src="<{$common.baseurl}>/upload/goods/prime/100x100/<{$v.goods_image}>" /></a>
+        <div class="gin">
+          <a class="gn" href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><{$v.goods_name}></a>
+          <div class="st mt5 mustrcut"><{$v.goods_brief nofilter}></div>
+          <p class="pri mt5"><i class="cny">¥</i><font class="f14"><{$v.now_price}></font></p>
+        </div>
+      </div>
+      <{/foreach}>
+    </div>
+    <div class="nomore hide" id="nomore">—— 没有更多内容了 ——</div>
+    <{else}>
+    <div class="nodata"><div class="th"><span><i class="iconfont">&#xe639;</i></span><div class="line"></div></div><p class="mt8">抱歉没有找到符合条件的商品</p></div>
+    <{/if}>
+  </div>
+</div>
+<div class="filters hide" id="filters">
+  <div class="mask"></div>
+  <div class="main">
+    <div class="th cut">
+      <a class="lt" onclick="closeFilters()"><i class="f18 iconfont">&#xe62d;</i></a>
+      <h2>筛选</h2>
+    </div>
+    <div class="elm cut">
+      <{if !empty($filters.cate)}>
+      <p class="ek"><span><i class="iconfont">&#xe614;</i></span>分类</p>
+      <div class="ev">
+        <{if $u.cate == 0}>
+        <a class="cur"><i class="iconfont">&#xe61a;</i>不限</a>
+        <{else}>
+        <a href="<{url c='mobile/search' a='index' brand=$u.brand att=$u.att minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw sort=$u.sort}>">不限</a>
+        <{/if}>
+        <{foreach $filters.cate as $v}>
+        <{if $u.cate == $v.cate_id}>
+        <a class="cur"><i class="iconfont">&#xe61a;</i><{$v.cate_name}></a>
+        <{else}>
+        <a href="<{url c='mobile/search' a='index' cate=$v.cate_id brand=$u.brand att=$u.att minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw sort=$u.sort}>"><{$v.cate_name}></a>
+        <{/if}>
+        <{/foreach}>
+      </div>
+      <{/if}>
+      <{if !empty($filters.brand)}>
+      <p class="ek"><span><i class="iconfont">&#xe614;</i></span>品牌</p>
+      <div class="ev">
+        <{if $u.brand == 0}>
+        <a class="cur"><i class="iconfont">&#xe61a;</i>不限</a>
+        <{else}>
+        <a href="<{url c='mobile/search' a='index' cate=$u.cate att=$u.att minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw sort=$u.sort}>">不限</a>
+        <{/if}>
+        <{foreach $filters.brand as $v}>
+        <{if $u.brand == $v.brand_id}>
+        <a class="cur"><i class="iconfont">&#xe61a;</i><{$v.brand_name}></a>
+        <{else}>
+        <a href="<{url c='mobile/search' a='index' cate=$u.cate brand=$v.brand_id att=$u.att minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw sort=$u.sort}>"><{$v.brand_name}></a>
+        <{/if}>
+        <{/foreach}>
+      </div>
+      <{/if}>
+      <{if !empty($filters.attr)}>
+      <{foreach $filters.attr as $v}>
+      <p class="ek"><span><i class="iconfont">&#xe614;</i></span><{$v.name}></p>
+      <div class="ev">
+        <{if $v.unlimit.checked == 1}>
+        <a class="cur"><i class="iconfont">&#xe61a;</i>不限</a>
+        <{else}>
+        <a href="<{url c='mobile/search' a='index' cate=$u.cate brand=$u.brand att=$v.unlimit.att minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw sort=$u.sort}>">不限</a>
+        <{/if}>
+        <{foreach $v.opts as $vv}>
+        <{if $vv.checked == 1}>
+        <a class="cur"><i class="iconfont">&#xe61a;</i><{$vv.name}></a>
+        <{else}>
+        <a href="<{url c='mobile/search' a='index' cate=$u.cate brand=$u.brand att=$vv.att minpri=$u.minpri maxpri=$u.maxpri kw=$u.kw sort=$u.sort}>"><{$vv.name}></a>
+        <{/if}>
+        <{/foreach}>
+      </div>
+      <{/foreach}>
+      <{/if}>
+      <{if !empty($filters.price)}>
+      <p class="ek"><span><i class="iconfont">&#xe614;</i></span>价格</p>
+      <div class="ev">
+        <{if $u.minpri == 0 && $u.maxpri == 0}>
+        <a class="cur"><i class="iconfont">&#xe61a;</i>不限</a>
+        <{else}>
+        <a href="<{url c='mobile/search' a='index' cate=$u.cate brand=$u.brand att=$u.att kw=$u.kw sort=$u.sort}>">不限</a>
+        <{/if}>
+        <{foreach $filters.price as $v}>
+        <{if $u.minpri == $v.min && $u.maxpri == $v.max}>
+        <a class="cur"><i class="iconfont">&#xe61a;</i><{$v.str}></a>
+        <{else}>
+        <a href="<{url c='mobile/search' a='index' cate=$u.cate brand=$u.brand att=$u.att minpri=$v.min maxpri=$v.max kw=$u.kw sort=$u.sort}>"><{$v.str}></a>
+        <{/if}>
+        <{/foreach}>
+      </div>
+      <{/if}>
+    </div>
+  </div>
+</div>
+<script type="text/template" id="goods-tpl">
+{@each list as v}
+<div class="item">
+  <a class="gim" href="<{url c='mobile/goods' a='index' id='${v.goods_id}'}>"><img src="<{$common.baseurl}>/upload/goods/prime/100x100/${v.goods_image}" /></a>
+  <div class="gin">
+    <a class="gn" href="<{url c='mobile/goods' a='index' id='${v.goods_id}'}>">${v.goods_name}</a>
+    <p class="st mt5 mustrcut">$${v.goods_brief}</p>
+    <p class="pri mt5"><i class="cny">¥</i><font class="f14">${v.now_price}</font></p>
+  </div>
+</div>
+{@/each}
+</script>
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

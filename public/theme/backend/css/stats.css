@@ -1,0 +1,21 @@
+.chart-btnopt {width:59%;height:auto;}
+.chart-dateopt {width:39%;height:auto;}
+.linewrap .foldline {height:400px;}
+.linewrap .column {height:400px;}
+.linewrap .loading {margin-top:180px;}
+.linewrap .hint {height:398px;line-height:386px;border:1px solid #e9e9e9;background:#fcfcfc;}
+.linewrap .legend label {padding:0 10px;}
+.linewrap .legend i {width:10px;height:10px;background:#ccc;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+.linewrap .legend font {margin-left:5px;color:#666;vertical-align:middle;}
+.linewrap .legend label.pv i {background:#0099cc}
+.linewrap .legend label.uv i {background:#ffcc33}
+.linewrap .legend label.ip i {background:#009900}
+.chartwrap .equal {width:50%;height:auto;}
+.chartwrap .equal.eq2 {margin-left:50%;}
+.chartwrap .pie {height:398px;border:1px solid #eee;}
+.chartwrap .pie h3 {padding:10px 0 5px 0;}
+.chartwrap .pie .chart {width:100%;height:386px;padding:15px 0;}
+.chartwrap .pie .loading, .chartwrap .pie .hint {margin-top:160px;}
+.chartwrap .area {height:500px;border:1px solid #eee;}
+.chartwrap .area .chart {height:500px;}
+.chartwrap .area .loding, .chartwrap .area .hint {margin-top:240px;}

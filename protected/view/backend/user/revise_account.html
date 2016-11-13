@@ -1,0 +1,113 @@
+<script type="text/javascript">
+function popRevise(){
+  $.vdsMasker(true);
+  $('#pop-revise').vdsMidst({wrapper:$(window)}).show();
+}
+function closeRevise(){
+  var e = $('#pop-revise');
+  $.vdsMasker(false);
+  e.hide().find('span.vdsfielderr').remove();
+  e.find('button').removeClass('disabled');
+  e.find('form')[0].reset();
+}
+
+function selectSym(e){
+  sym = $(e).data('val'), input = $(e).siblings('input[type="text"]');
+  $(e).addClass('disabled').siblings('button').removeClass('disabled');
+  $(e).siblings('input[type="hidden"]').val(sym);
+  if(sym == 1) input.css('color', '#cc3300');else input.css('color', '#009900');
+  input.focus();
+}
+
+function submitRevise(){
+  var e = $('#pop-revise'),
+      balance = e.find('input[name="balance"]'),
+      points = e.find('input[name="points"]'),
+      exps = e.find('input[name="exp"]'),
+      revise = (function(){
+        return (exps.val() != 0 && exps.val().length != 0) || (balance.val() != 0 && balance.val().length != 0) || (points.val() != 0 && points.val().length != 0)
+      })();
+      
+  balance.vdsFieldChecker({
+    rules: {
+      decimal:[true, '格式不符合要求'],
+      sym:[e.find('input[name="sym_balance"]').val() != '' || (balance.val() == '' || balance.val() == 0), '请选择是增加还是减少'],
+      atleast:[revise, '经验、余额或积分至少输入一项']
+    }
+  });
+  
+  points.vdsFieldChecker({
+    rules: {
+      nonegint:[true, '格式不符合要求'],
+      sym:[e.find('input[name="sym_points"]').val() != '' || (points.val() == '' || points.val() == 0), '请选择是增加还是减少'],
+      atleast:[revise, '经验、余额或积分至少输入一项']
+    }
+  });
+  
+  exps.vdsFieldChecker({
+    rules: {
+      nonegint:[true, '格式不符合要求'],
+      sym:[e.find('input[name="sym_exp"]').val() != '' || (exps.val() == '' || exps.val() == 0), '请选择是增加还是减少'],
+      atleast:[revise, '经验、余额或积分至少输入一项']
+    }
+  });
+  
+  e.find('textarea[name="cause"]').vdsFieldChecker({
+    rules: {required:[true, '原因备注不能为空']},
+    tipsPos: 'br'
+  });
+  e.find('form').vdsFormChecker();
+}
+</script>
+<div class="poper cut" id="pop-revise"> <a class="close" onclick="closeRevise()"></a>
+  <div class="poper-hd"><h3 class="f14 ta-c">调整用户账户数据</h3></div>
+  <div class="pad10 cut">
+    <form method="post" action="<{url m=$MOD c='user' a='revise_account' id=$user.user_id}>">
+      <table class="dataform">
+        <tr>
+          <th width="90">调整余额</th>
+          <td>
+            <div class="adj">
+              <button class="incr mbtn btn" type="button" data-val="1" onclick="selectSym(this)">+</button>
+              <button class="minus mbtn btn" type="button" data-val="-1" onclick="selectSym(this)">-</button>
+              <input type="hidden" name="sym_balance" />
+              <input class="w100 txt" name="balance" type="text" />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>调整积分</th>
+          <td>
+            <div class="adj">
+              <button class="incr mbtn btn" type="button" data-val="1" onclick="selectSym(this)">+</button>
+              <button class="minus mbtn btn" type="button" data-val="-1" onclick="selectSym(this)">-</button>
+              <input type="hidden" name="sym_points" />
+              <input class="w100 txt" name="points" type="text" />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>调整经验</th>
+          <td>
+            <div class="adj">
+              <button class="incr mbtn btn" type="button" data-val="1" onclick="selectSym(this)">+</button>
+              <button class="minus mbtn btn" type="button" data-val="-1" onclick="selectSym(this)">-</button>
+              <input type="hidden" name="sym_exp" />
+              <input class="w100 txt" name="exp" type="text" />
+            </div>
+            <p class="caaa mt10">账户经验值对应不同的用户组, 调整经验值可改变用户所属用户组</p>
+          </td>
+        </tr>
+        <tr>
+          <th>原因备注</th>
+          <td><textarea class="txtarea" name="cause" cols="68" rows="5"></textarea></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div class="poper-bom ta-c">
+    <button type="button" class="ubtn btn" onclick="submitRevise()">提交</button>
+    <span class="sep40"></span>
+    <button type="reset" class="fbtn btn" onclick="closeRevise()">取消</button>
+  </div>
+</div>

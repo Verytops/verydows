@@ -1,0 +1,15 @@
+.sysprompt {width:100%;height:auto;}
+.sysprompt .main {padding:15px;background:#fff;}
+.sysprompt .main h3 {display:table;font-size:14px;color:#666;font-weight:normal;line-height:150%;}
+.sysprompt .main h3.success {color:#009933}
+.sysprompt .main h3.error {color:#ff3333}
+.sysprompt .main h3 p {display:table;margin:5px auto;}
+.sysprompt .main i.type-default {display:block;height:72px;background:url(../images/prompt-default.gif) no-repeat center;}
+.sysprompt .main i.type-success {display:block;height:57px;background:url(../images/prompt-success.gif) no-repeat center;}
+.sysprompt .main i.type-error {display:block;height:77px;background:url(../images/prompt-error.gif) no-repeat center;}
+.sysprompt .main .countdown {color:#cc3366;margin:0 3px;}
+.sysprompt .main .iconbg {height:128px;}
+.sysprompt .main .err-400 {background:url(../images/400.png) no-repeat center;}
+.sysprompt .main .err-404 {background:url(../images/404.png) no-repeat center;}
+.sysprompt h2 {display:table;color:#888;font-weight:normal;}
+.sysprompt .act a {display:inline-block;color:#5badff;margin:0 10px;padding:5px 16px;border:1px solid #e2e2e2;background:#fff;border-radius:100px;}

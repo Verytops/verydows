@@ -1,0 +1,35 @@
+.eform {padding:20px 8px;}
+.eform div.tr {height:40px;line-height:40px;background:#fff;position:relative;}
+.eform div.tr input.field {width:99%;height:40px;line-height:40px;text-indent:8px;font-size:14px;border:none;background:none;outline:none;}
+.eform div.tr span {display:block;height:40px;position:absolute;}
+.eform div.tr .icopos i {font-size:20px;color:#c5c5c5;}
+.eform div.tr.user {border-bottom:1px solid #e8e8e8;border-top-left-radius:5px;border-top-right-radius:5px;}
+.eform div.tr.pwd {border-bottom-left-radius:5px;border-bottom-right-radius:5px;}
+.eform div.tr.pwd i.vinclrbtn {right:32px;}
+.eform div.tr.puff {border-radius:5px;}
+.eform div.tr.captcha input.field {width:160px;}
+.eform div.tr.captcha span.img {padding:0 5px;height:40px;border-left:1px solid #eee;top:0;right:0;}
+.eform div.tr.captcha a.fr {display:block;height:40px;padding-left:10px;border-left:1px solid #eee;overflow:hidden;}
+.eform div.tr.captcha a.fr img {height:100%;border-radius:5px;}
+.login div.tr input.field {text-indent:40px;}
+.eform div.tr span.icopos {top:0;left:8px;}
+.eform div.slck {height:33px;padding:5px 8px;background:#fff;border-radius:5px;}
+.eform div.slck div.fl {line-height:33px;}
+.eform div.bypass {height:14px;line-height:14px;padding:0 10px;}
+.eform div.bypass a {color:#3399ff;}
+.eform div.submit a {display:block;font-size:14px;font-weight:bold;color:#fff;height:42px;line-height:42px;word-spacing:10px;text-align:center;background:#F33;border-radius:3px;}
+.eform div.submit a.disabled {background:#d8d8d8;color:#f6f6f6;}
+.eform div.oauthli h3 {font-size:12px;padding-bottom:8px;font-weight:normal;border-bottom:1px solid #ddd;}
+.eform div.oauthli div a {margin:0 15px;}
+.retrieve {padding:8px;}
+.retrieve .bsrow {padding:12px 8px;background:#fff;border-radius:3px;}
+.retrieve .bsbtn {display:block;width:90%;height:40px;line-height:40px;text-align:center;border-radius:3px;}
+.retrieve .bluebtn {color:#fff;background:#3caaff;}
+.retrieve .redbtn {color:#fff;background:#f15353;}
+.retrieve .disbtn {width:90%;height:38px;line-height:38px;color:#aaa;background:#ececec;border:1px solid #e0e0e0;}
+.retrieve .split {font-size:0;height:0;line-height:0;margin:15px 0;padding:0;border-top:1px solid #f9f9f9;border-bottom:1px solid #e2e2e2;}
+.retrieve .bsrow input {width:99%;height:22px;line-height:22px;font-size:14px;border:none;background:none;}
+.retrieve .bsrow i.vineyebtn {right:15px;}
+.oauth .tabs {margin:0 8px;padding:15px 0;display:-webkit-flex;display:flex;flex-wrap:wrap; border-bottom:1px solid #e8e8e8;}
+.oauth .tabs a {display:block;flex:1;margin:0 5px;font-size:14px;height:40px;line-height:40px;text-align:center;color:#fff;background:#4992F3;border-radius:3px;}
+.oauth .tabs a.cur {color:#bbb;background:#fefefe;}

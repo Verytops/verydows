@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title><{$title}> - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/info.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+</head>
+<body>
+<div class="wrapper">
+  <div class="header">
+    <div class="op lt"><a href="<{url c='mobile/user' a='profile'}>"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2><{$title}></h2>
+  </div>
+  <{if $field == 'avatar'}>
+  <script type="text/javascript" src="<{$common.theme}>/js/image.js"></script>
+  <script type="text/javascript">
+    $(function(){
+      $('#avatarfile').on('change', function(){
+        $(this).vdsGetImage({
+          input:this,
+          width: 180,
+          height: 180,
+          minWidth: 60,
+          minHeight: 60,
+          success:function(res){
+            $('#avatar').hide();
+            $('#canvas').show().find('dt img').attr('src', res.base64);
+          }
+        });
+        this.value = '';
+      });
+    });
+    
+    function changeAvatar(){
+      $('#avatarfile').trigger('click');
+    }
+    
+    function reSelect(){
+      $('#canvas').hide().find('dt img').attr('src', '');
+      $('#avatar').show();
+    }
+    
+    function updateAvatar(){
+      var streams = $('#canvas dt img').attr('src').split(';base64,'), mime = streams[0].replace('data:', '');
+      $.asynList("<{url c='api/user' a='edit'}>", {field:'avatar', streams:streams[1], mime:mime, w:180, h:180}, function(res){
+        if(res.status == 'success'){
+          window.location.href = "<{url c='mobile/user' a='profile'}>";
+        }else{
+          $.vdsPrompt({content:res.msg});
+        }
+      });
+    }
+  </script>
+  <dl class="fedit avatar center cut" id="avatar">
+    <dt class="center"><span class="xauto"><img src="<{if !empty($avatar)}><{$common.baseurl}>/upload/user/avatar/<{$avatar}><{else}><{$common.baseurl}>/public/image/noavatar_m.gif<{/if}>" /></span></dt>
+    <dd class="split"></dd>
+    <dd class="mt20"><a class="f14 skbtn xauto" onclick="changeAvatar()">选 择</a></dd>
+    <input id="avatarfile" class="hide" type="file" accept="image/*;capture=camera" />
+  </dl>
+  <dl class="fedit canvas center cut hide" id="canvas">
+    <dt class="center"><span class="xauto"><img /></span></dt>
+    <dd class="split"></dd>
+    <dd class="mt20"><a class="f14 redbtn xauto" onclick="updateAvatar()">保 存</a></dd>
+    <dd class="mt20"><a class="f14 bluebtn xauto" onclick="reSelect()">重新选择</a></dd>
+  </dl>
+  <{elseif $field == 'email'}>
+  <script type="text/javascript">
+    var countdown = 180;
+    $(function(){
+      $('#sendbtn').on('click', function(){sendCaptcha()});
+    });
+    
+    function sendCaptcha(){
+      var email = $('#email'), checker = email.vdsFieldChecker({rules: {required:[true, '邮箱地址不能为空'], email:[true, '邮箱地址无效']}});
+      if(checker){
+        $.vdsPrompt({content:checker});
+        return false;
+      }
+      $.asynInter("<{url c='api/sendmail' a='auth'}>", {email:email.val()}, function(res){
+        if(res.status == 'success'){
+          email.prop('disabled', true);
+          $('#sendbtn').off().removeClass('bluebtn').addClass('disbtn');
+          countdown = 180;
+          resendCounting();
+          $('#verform').show();
+        }else{
+          $.vdsPrompt({content:res.msg});
+        }
+      });
+    }
+    
+    function resendCounting(){
+      var timer = window.setInterval(function(){	
+        if(countdown >= 0){
+          $('#sendbtn').text(countdown+'秒后重新获取');
+          countdown --;
+        }else{
+          clearInterval(timer);
+          email.prop('disabled', false);
+          $('#sendbtn').text('重新发送验证码到邮箱').removeClass('disbtn').addClass('bluebtn').on('click', function(){sendCaptcha()});
+          return false;
+        }
+      }, 1000);
+    }
+    
+    function updateField(){
+      var checker = $('#email_captcha').vdsFieldChecker({rules: {required:[true, '请输入验证码']}});
+      if(checker){
+        $.vdsPrompt({content:checker});
+        return false;
+      }
+      $.asynInter("<{url c='api/user' a='edit'}>", {field:'email', email:$('email').val(), email_captcha:$('#email_captcha').val()}, function(res){
+        if(res.status == 'success'){
+          window.location.href = "<{url c='mobile/user' a='profile'}>";
+        }else{
+          $.vdsPrompt({content:res.msg});
+        }
+      });
+    }
+  </script>
+  <dl class="fedit center cut">
+    <dt class="center"><input name="email" id="email" type="text" class="center field" value="<{$email}>" placeholder="输入邮箱地址" /></dt>
+    <dd class="split"></dd>
+    <dd class="mt10"><a class="bluebtn f14" id="sendbtn">发送验证码到邮箱</a></dd>
+  </dl>
+  <dl class="fedit center cut hide" id="verform">
+    <dt class="center"><input name="email_captcha" id="email_captcha" type="text" class="center field" value="" placeholder="输入您所接收的验证码" /></dt>
+    <dd class="split"></dd>
+    <dd><a class="redbtn f14" onClick="updateField()">保 存</a></dd>
+  </dl>
+  <{elseif $field == 'mobile'}>
+  <script type="text/javascript">
+    function updateField(){
+      var checker = $('#mobile').vdsFieldChecker({rules: {required:[true, '请输入手机号码'], mobile:[true, '手机号码无效']}});
+      if(checker){
+        $.vdsPrompt({content:checker});
+        return false;
+      }
+      $.asynInter("<{url c='api/user' a='edit'}>", {field:'mobile', mobile:$('#mobile').val()}, function(res){
+        if(res.status == 'success'){
+          window.location.href = "<{url c='mobile/user' a='profile'}>";
+        }else{
+          $.vdsPrompt({content:res.msg});
+        }
+      });
+    }
+  </script>
+  <dl class="fedit center cut">
+    <dt class="center"><input name="mobile" id="mobile" type="number" pattern="[0-9]*" class="center field" value="<{$mobile}>" placeholder="输入手机号码" /></dt>
+    <dd class="split"></dd>
+    <dd class="mt10"><a class="redbtn f14" onClick="updateField()">保 存</a></dd>
+  </dl>
+  <{elseif $field == 'nickname'}>
+  <script type="text/javascript">
+    function updateField(){
+      var checker = $('#nickname').vdsFieldChecker({rules: {required:[true, '请输入您的昵称'], maxlen:[30, '昵称不能超过30个字']}});
+      if(checker){
+        $.vdsPrompt({content:checker});
+        return false;
+      }
+      $.asynInter("<{url c='api/user' a='edit'}>", {field:'nickname', nickname:$('#nickname').val()}, function(res){
+        if(res.status == 'success'){
+          window.location.href = "<{url c='mobile/user' a='profile'}>";
+        }else{
+          $.vdsPrompt({content:res.msg});
+        }
+      });
+    }
+  </script>
+  <dl class="fedit center cut">
+    <dt class="center"><input name="nickname" id="nickname" type="text" class="center field" value="<{$nickname}>" placeholder="输入您的昵称" /></dt>
+    <dd class="split"></dd>
+    <dd class="mt10"><a class="redbtn f14" onClick="updateField()">保 存</a></dd>
+  </dl>
+  <{elseif $field == 'gender'}>
+  <script type="text/javascript">
+    $(function(){
+      $('#radios li').click(function(){
+        if(!$(this).hasClass('checked')){
+          $('#radios li.checked').removeClass('checked');
+          $(this).addClass('checked');
+        }
+      });
+    });
+    
+    function updateField(){
+      $.asynInter("<{url c='api/user' a='edit'}>", {field:'gender', gender:$('#radios li.checked').data('gender')}, function(res){
+        if(res.status == 'success'){
+          window.location.href = "<{url c='mobile/user' a='profile'}>";
+        }else{
+          $.vdsPrompt({content:res.msg});
+        }
+      });
+    }
+  </script>
+  <dl class="fedit center cut">
+    <dt>
+      <ul class="radios" id="radios">
+        <li<{if $gender == 0}> class="checked"<{/if}> data-gender="0"><span class="fl c888"><b>保密</b></span><a class="fr"><i class="iconfont">&#xe61a;</i></a></li>
+        <li<{if $gender == 1}> class="checked"<{/if}> data-gender="1"><span class="fl blue"><b>男性</b></span><a class="fr"><i class="iconfont">&#xe61a;</i></a></li>
+        <li<{if $gender == 2}> class="checked"<{/if}> data-gender="2"><span class="fl pink"><b>女性</b></span><a class="fr"><i class="iconfont">&#xe61a;</i></a></li>
+      </ul>
+    </dt>
+    <dd class="split"></dd>
+    <dd class="mt10"><a class="redbtn f14" onClick="updateField()">保 存</a></dd>
+  </dl>
+  <{elseif $field == 'qq'}>
+  <script type="text/javascript">
+    function updateField(){
+      var checker = $('#qq').vdsFieldChecker({rules: {required:[true, '请输入您的QQ号'], format:[/^[1-9][0-9]{4,12}$/.test($('#qq').val()), 'QQ号码无效']}});
+      if(checker){
+        $.vdsPrompt({content:checker});
+        return false;
+      }
+      $.asynInter("<{url c='api/user' a='edit'}>", {field:'qq', qq:$('#qq').val()}, function(res){
+        if(res.status == 'success'){
+          window.location.href = "<{url c='mobile/user' a='profile'}>";
+        }else{
+          $.vdsPrompt({content:res.msg});
+        }
+      });
+    }
+  </script>
+  <dl class="fedit center cut">
+    <dt class="center"><input name="qq" id="qq" type="number" pattern="[0-9]*" class="center field" value="<{$qq}>" placeholder="输入您的QQ号" /></dt>
+    <dd class="split"></dd>
+    <dd class="mt10"><a class="redbtn f14" onClick="updateField()">保 存</a></dd>
+  </dl>
+  <{elseif $field == 'birthdate'}>
+  <script type="text/javascript">
+    function updateField(){
+      $.asynInter("<{url c='api/user' a='edit'}>", {field:'birthdate', birth_year:$('#birth_year').val(), birth_month:$('#birth_month').val(), birth_day:$('#birth_day').val()}, function(res){
+        if(res.status == 'success'){
+          window.location.href = "<{url c='mobile/user' a='profile'}>";
+        }else{
+          $.vdsPrompt({content:res.msg});
+        }
+      });
+    }
+  </script>
+  <dl class="fedit center cut">
+    <dt>
+      <div class="vslt">
+        <select name="birth_year" id="birth_year">
+          <{html_date_options type="year" default=$birthdate.birth_year}>
+        </select>
+        <span><i class="iconfont">&#xe615;</i></span>
+      </div>
+      <div class="vslt mt15">
+        <select name="birth_month" id="birth_month">
+          <{html_date_options type="month" default=$birthdate.birth_month}>
+        </select>
+        <span><i class="iconfont">&#xe615;</i></span>
+      </div>
+      <div class="vslt mt15">
+        <select name="birth_day" id="birth_day">
+          <{html_date_options type="day" default=$birthdate.birth_day}>
+        </select>
+        <span><i class="iconfont">&#xe615;</i></span>
+      </div>
+    </dd>
+    <dd class="split"></dd>
+    <dd class="mt10"><a class="redbtn f14" onClick="updateField()">保 存</a></dd>
+  </dl>
+  <{elseif $field == 'signature'}>
+  <script type="text/javascript">
+    function updateField(){
+      var checker = $('#signature').vdsFieldChecker({rules: {required:[true, '请输入个性签名'], maxlen:[120, '个性签名不能超过120个字']}});
+      if(checker){
+        $.vdsPrompt({content:checker});
+        return false;
+      }
+      $.asynInter("<{url c='api/user' a='edit'}>", {field:'signature', signature:$('#signature').val()}, function(res){
+        if(res.status == 'success'){
+          window.location.href = "<{url c='mobile/user' a='profile'}>";
+        }else{
+          $.vdsPrompt({content:res.msg});
+        }
+      });
+    }
+  </script>
+  <dl class="fedit center cut">
+    <dt class="center"><textarea name="signature" class="vtextarea c666" id="signature" placeholder="输入您的个性签名"><{$signature}></textarea></dt>
+    <dd class="split"></dd>
+    <dd class="mt10"><a class="redbtn f14" onClick="updateField()">保 存</a></dd>
+  </dl>
+  <{/if}>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

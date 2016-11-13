@@ -1,0 +1,13 @@
+.curtheme {display:block;width:500px;height:auto;margin:0 auto;background:#fff;}
+.curtheme dt {width:120px;border:1px solid #def6ff;background:#fff;}
+.curtheme dd {margin-left:150px;}
+.curtheme dd p {padding:5px 0;color:#888;}
+.curtheme dd p font {color:#333;font-weight:normal;margin-left:10px;}
+.themes dl {float:left;position:relative;width:138px;margin-right:10px;padding:10px;border:1px solid #e5e5e5;background:#fff;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;cursor:pointer}
+.themes dl dt {color:#44768E;font-weight:bold;}
+.themes dl dd img {border:1px solid #eee;}
+.themes dl.hover {border-color:#cc3300}
+.themes dl.selected {border-color:#339999}
+.themes dl.selected dd.tick {position:absolute;top:36%;left:0;display:block;width:100%;z-index:999;}
+.themes dl.selected dd.tick i {display:block;width:40px;height:40px;margin:0 auto;background:url(../images/tick.png) no-repeat;}
+input.ta-r {padding-left:0;padding-right:5px;}

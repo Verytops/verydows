@@ -1,0 +1,66 @@
+<div class="searcher module hide" id="searcher">
+  <div class="main">
+    <a class="close pointer" href="#home" onclick="outSearch()"><i class="iconfont">&#xe62d;</i></a>
+    <div class="scin cut">
+      <a class="fr" onclick="searchGoods()"><i class="iconfont">&#xe600;</i></a>
+      <div class="in cut"><input id="kwenter" name="kw" type="text" class="variseclear" value="<{if !empty($_GET['kw'])}><{$_GET['kw']}><{/if}>" required="required" /><i class="vinclrbtn iconfont">&#xe62d;</i></div>
+    </div>
+  </div>
+  <{if !empty($searches.hot)}>
+  <dl class="hot">
+    <dt>热搜：</dt>
+    <dd>
+      <{foreach $searches.hot as $v}>
+      <a href="<{url c='mobile/search' a='index' kw=$v}>"><{$v}></a>
+      <{/foreach}>
+    </dd>
+  </dl>
+  <{/if}>
+</div>
+<script type="text/javascript">
+$(function(){
+  $('#kwfake').focus(function(){$('#wrapper').hide();$('#searcher').show();$(this).blur();$('#kwenter').focus();});
+  showHistory();
+});
+
+function searchGoods(){
+  var words = $('#kwenter').val(), target = "<{url c='mobile/search' a='index' kw='$words'}>";
+  if(words != ''){
+    var history = getJsonStorage('SEARCH_HISTORY');
+    if(history == null) history = [];
+    if($.inArray(words, history) < 0){
+      if(history.unshift(words) > 10) history.pop();
+    }
+    setJsonStorage('SEARCH_HISTORY', history);
+  }
+  window.location.href = target.replace('$words', words);
+}
+
+function showHistory(){
+  var history = getJsonStorage('SEARCH_HISTORY');
+  if(history != null){
+    $('#searcher').append(juicer($('#history-tpl').html(), {list:history}));
+  }
+}
+
+function clearHistory(){
+  $.vdsConfirm({
+    content: '您确定要清空吗?',
+    ok: function(){
+      localStorage.removeItem('SEARCH_HISTORY');
+      $('#history').remove();
+    }
+  });
+}
+</script>
+<script type="text/template" id="history-tpl">
+<dl class="history" id="history">
+  <dt>历史：</dt>
+  <dd>
+    {@each list as v}
+    <a href="<{url c='mobile/search' a='index' kw='${v}'}>">${v}</a>
+    {@/each}
+    <a class="clear" onclick="clearHistory()">清除历史记录</a>
+  </dd>
+</dl>
+</script>

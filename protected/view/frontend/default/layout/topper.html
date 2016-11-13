@@ -1,0 +1,29 @@
+<div class="topper">
+  <div class="w1100 x-auto">
+    <div class="topper-userbar fl" id="top-userbar"></div>
+    <div class="topper-links fr"><{foreach $nav as $v}><a href="<{$v.link}>" <{$v.target nofilter}>><{$v.name}></a><span class="sep">|</span><{/foreach}></div>
+  </div>
+</div>
+<script type="text/template" id="logined-userbar-tpl">
+<a class="m"><i class="icon"></i>${username}</span><b class="icon"></b></a><font class="c999 ml10">欢迎您回来!</font>
+<div class="m hide">
+  <div class="avatar fl">
+    {@if avatar != null}
+    <a href="<{url c='user' a='profile'}>"><img width="60" height="60" src="<{$common.baseurl}>/upload/user/avatar/${avatar}" /></a>
+    {@else}
+    <a href="<{url c='user' a='index'}>"><img width="60" height="60" href="<{url c='user' a='profile'}>" src="<{$common.baseurl}>/public/image/noavatar_m.gif" /></a>
+    {@/if}
+  </div>
+  <ul>
+    <li><a href="<{url c='user' a='index'}>">进入用户中心</a></li>
+    <li><a href="<{url c='user' a='profile'}>">编辑资料</a></li>
+    <li><a href="<{url c='user' a='logout'}>">退出</a></li>
+  </ul>
+</div>
+</script>
+<script type="text/template" id="unlogined-userbar-tpl">
+<font class="c666 mr20">嗨！欢迎来到 <{$GLOBALS.cfg.site_name}></font>
+<a href="<{url c='user' a='login'}>">登陆</a>
+<span class="sep">|</span>
+<a href="<{url c='user' a='register'}>" class="red">免费注册</a>
+</script>

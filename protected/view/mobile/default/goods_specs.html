@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>商品规格参数 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/goods.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+</head>
+<body>
+<div class="wrapper">
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>规格参数</h2>
+  </div>
+  <div class="specs cut">
+    <div class="main">
+      <{if !empty($specs)}>
+      <{foreach $specs as $v}>
+      <dl class="cut">
+        <dt><{$v.name}></dt>
+        <dd><{$v.value}><{$v.uom}></dd>
+      </dl>
+      <{/foreach}>
+      <{else}>
+      <p class="nodata caaa">暂无数据</p>
+      <{/if}>
+    </div>
+  </div>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

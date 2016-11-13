@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<meta name="keywords" content="<{$GLOBALS.cfg.home_keywords}>" />
+<meta name="description" content="<{$GLOBALS.cfg.home_description}>" />
+<title><{$GLOBALS.cfg.home_title}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/index.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  viewCartbar();
+  preserveSpace('footnav');
+  $('#latest').vdsTouchSlider({pernum:2});
+  $('#recommend').vdsTouchSlider({pernum:2});
+  $('#bargain').vdsTouchSlider({pernum:2});
+});
+
+function inSearch(){
+  $('#wrapper').hide();
+  $('#searcher').show();
+}
+
+function outSearch(){
+  $('#searcher').hide();
+  $('#wrapper').show();
+}
+</script>
+</head>
+<body>
+<{include file='mobile/default/lib/searcher.html'}>
+<div class="wrapper" id="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <h1>Verydows</h1>
+    <div class="op rt">
+      <a class="pointer" href="#search" onclick="inSearch()"><i class="f22 iconfont">&#xe609;</i></a>
+      <a class="pointer" href="<{url c='mobile/user' a='index'}>"><i class="f22 iconfont">&#xe60d;</i></a>
+    </div>
+  </div>
+  <!-- header end -->
+  <!-- banner start -->
+  <{layout_adv id='7'}>
+  <!-- banner end -->
+  <div class="wnav">
+    <a class="news" href="<{url c='mobile/article' a='index'}>"><div><i class="iconfont">&#xe61e;</i></div><span>资讯</span></a>
+    <a class="order" href="<{url c='mobile/order' a='list'}>"><div><i class="iconfont">&#xe619;</i></div><span>我的订单</span></a>
+    <a class="fav" href="<{url c='mobile/favorite' a='list'}>"><div><i class="iconfont">&#xe605;</i></div><span>收藏夹</span></a>
+    <a class="history" href="<{url c='mobile/user' a='footprint'}>"><div><i class="iconfont">&#xe613;</i></div><span>足迹</span></a>
+  </div>
+  <!-- newarrival start -->
+  <div class="lateral mt8">
+    <div class="th">
+      <h2><i class="icon"></i><font>新品上市</font></h2>
+    </div>
+    <{if !empty($newarrival)}>
+    <div class="gli">
+      <div class="slider" id="latest">
+        <ul>
+          <{foreach $newarrival as $v}>
+          <li>
+            <div class="im"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/150x150/<{$v.goods_image}>" /></a></div>
+            <h3><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><{truncate($v.goods_name, 40)}></a></h3>
+            <p class="price"><i>¥</i><{$v.now_price}></p>
+          </li>
+          <{/foreach}>
+        </ul>
+        <div class="clearfix"></div>
+        <div class="trigger mt5"></div>
+      </div>
+    </div>
+    <{/if}>
+  </div>
+  <!-- newarrival end -->
+  <!-- recommend start -->
+  <div class="lateral mt8">
+    <div class="th">
+      <h2><i class="icon"></i><font>推荐商品</font></h2>
+    </div>
+    <{if !empty($recommend)}>
+    <div class="gli">
+      <div class="slider" id="recommend">
+        <ul>
+          <{foreach $recommend as $v}>
+          <li>
+            <div class="im"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/150x150/<{$v.goods_image}>" /></a></div>
+            <h3><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><{truncate($v.goods_name, 40)}></a></h3>
+            <p class="price"><i>¥</i><{$v.now_price}></p>
+          </li>
+          <{/foreach}>
+        </ul>
+        <div class="clearfix"></div>
+        <div class="trigger mt5"></div>
+      </div>
+    </div>
+    <{/if}>
+  </div>
+  <!-- recommend end -->
+  <!-- bargain start -->
+  <div class="lateral mt8">
+    <div class="th">
+      <h2><i class="icon"></i><font>特价促销</font></h2>
+    </div>
+    <{if !empty($recommend)}>
+    <div class="gli">
+      <div class="slider" id="bargain">
+        <ul>
+          <{foreach $bargain as $v}>
+          <li>
+            <div class="im"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/150x150/<{$v.goods_image}>" /></a></div>
+            <h3><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><{truncate($v.goods_name, 40)}></a></h3>
+            <p class="price"><i>¥</i><{$v.now_price}></p>
+          </li>
+          <{/foreach}>
+        </ul>
+        <div class="clearfix"></div>
+        <div class="trigger mt5"></div>
+      </div>
+    </div>
+    <{/if}>
+  </div>
+  <!-- bargain end -->
+  <!-- footer start -->
+  <div class="footer mt8">
+    <div class="links">
+      <a href="<{url c='mobile/user' a='login'}>">登录</a>|
+      <a href="<{url c='mobile/user' a='register'}>">注册</a>|
+      <a href="<{url c='mobile/feedback' a='apply'}>">反馈</a>
+    </div>
+    <div class="devices mt15">
+      <a href="<{url c='main' a='index' display='pc'}>">电脑版</a>
+      <a href="<{url c='mobile/main' a='index'}>">触屏版</a>
+    </div>
+    <div class="copyright mt10 c999">
+      <p>Copyright © 2016 Verydows.com 版权所有</p>
+      <p class="powered mt8">Powered by Verydows</p>
+    </div>
+  </div>
+  <!-- footer end -->
+</div>
+<div class="footnav absmu" id="footnav">
+  <a class="cur"><i class="iconfont">&#xe606;</i><span>首页</span></a>
+  <a href="<{url c='mobile/category' a='index'}>"><i class="iconfont">&#xe60b;</i><span>商品分类</span></a>
+  <a id="cartbar" href="<{url c='mobile/cart' a='index'}>"><i class="iconfont">&#xe603;</i><span>购物车</span><em class="hide">0</em></a>
+  <a href="<{url c='mobile/user' a='index'}>"><i class="iconfont">&#xe632;</i><span>我的</span></a>
+</div>
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

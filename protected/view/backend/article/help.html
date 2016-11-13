@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/umeditor/themes/default/css/umeditor.min.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('#tabs').vdsTabsSwitch();
+  UM.getEditor('help_content', {textarea:'content', imageUrl: "<{url m=$MOD c='help' a='editor'}>", initialFrameWidth: '98%'});
+});
+
+function submitForm(){
+  $('#title').vdsFieldChecker({rules: {required:[true, '标题不能为空'], maxlen:[100, '标题不能超过100个字符']}});
+  $('#seq').vdsFieldChecker({rules: {seq:[true, '排序必须为0到99的整数']}});
+  $('#help-form').vdsFormChecker();
+}
+</script>
+</head>
+<body>
+<{if $_GET['a'] == "add"}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>添加新帮助</h2></div>
+  <form method="post" action="<{url m=$MOD c='help' a='add' step='submit'}>" id="help-form">
+    <div class="box">
+      <div class="tabs mt5"><ul id="tabs"><li class="cur">基本信息</li><li>详细内容</li></ul></div>
+      <div class="module swcon mt5">
+        <table class="dataform">
+          <tr>
+            <th width="110">标题</th>
+            <td><input class="w400 txt" name="title" id="title" type="text" /></td>
+          </tr>
+          <tr>
+            <th>分类</th>
+            <td>
+              <select name="cate_id" class="slt">
+                <option value="0">无分类</option>
+                <option disabled="disabled">------------------------------</option>
+                <{foreach $cate_list as $v}>
+                <option value="<{$v.cate_id}>"><{$v.cate_name}></option>
+                <{/foreach}>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>Meta 关键词</th>
+            <td><textarea class="txtarea" name="meta_keywords" cols="70" rows="4"></textarea></td>
+          </tr>
+          <tr>
+            <th>Meta 描述</th>
+            <td><textarea class="txtarea" name="meta_description" cols="70" rows="4"></textarea></td>
+          </tr>
+          <tr>
+            <th>链接地址</th>
+            <td><input class="w400 txt" name="link" type="text" placeholder="http://" /><p class="caaa mt10">站外链接地址或非系统自动构造的URL链接地址</p></td>
+          </tr>
+          <tr>
+            <th>排序</th>
+            <td><input class="w50 txt" name="seq" id="seq" type="text" value="99" /></td>
+          </tr>
+        </table>
+      </div>
+      <div class="module swcon mt5 hide"><script type="text/plain" id="help_content" style="height:300px;"></script></div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并提交</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{else}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>编辑帮助:<font class=" ml5">[<{$rs.id}>]</font></h2></div>
+  <form method="post" action="<{url m=$MOD c='help' a='edit' step='submit' id=$rs.id}>" id="help-form">
+    <div class="box">
+      <div class="tabs mt5"><ul id="tabs"><li class="cur">基本信息</li><li>详细内容</li></ul></div>
+      <div class="module swcon mt5">
+        <table class="dataform">
+          <tr>
+            <th width="110">标题</th>
+            <td><input class="w400 txt" name="title" id="title" type="text" value="<{$rs.title}>" /></td>
+          </tr>
+          <tr>
+            <th>分类</th>
+            <td>
+              <select name="cate_id" class="slt">
+                <option value="0">无分类</option>
+                <option disabled="disabled">------------------------------</option>
+                <{foreach $cate_list as $v}> <{if $v.cate_id == $rs.cate_id}>
+                <option selected="selected" value="<{$v.cate_id}>"><{$v.cate_name}></option>
+                <{else}>
+                <option value="<{$v.cate_id}>"><{$v.cate_name}></option>
+                <{/if}> <{/foreach}>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>Meta 关键词</th>
+            <td><textarea class="txtarea" name="meta_keywords" cols="70" rows="4"><{$rs.meta_keywords}></textarea></td>
+          </tr>
+          <tr>
+            <th>Meta 描述</th>
+            <td><textarea class="txtarea" name="meta_description" cols="70" rows="4"><{$rs.meta_description}></textarea></td>
+          </tr>
+          <tr>
+            <th>链接地址</th>
+            <td><input class="w400 txt" name="link" type="text" placeholder="http://" value="<{$rs.link}>" /><p class="caaa mt10">站外链接地址或非系统自动构造的URL链接地址</p></td>
+          </tr>
+          <tr>
+            <th>排序</th>
+            <td><input class="w50 txt" name="seq" id="seq" type="text" value="<{$rs.seq}>" /></td>
+          </tr>
+        </table>
+      </div>
+      <div class="module swcon mt5 hide"><script type="text/plain" id="help_content" style="height:300px;"><{$rs.content nofilter}></script></div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并更新</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{/if}>
+<script type="text/javascript" src="public/theme/backend/umeditor/umeditor.config.js"></script>
+<script type="text/javascript" src="public/theme/backend/umeditor/umeditor.min.js"></script>
+</body>
+</html>

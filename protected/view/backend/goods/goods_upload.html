@@ -1,0 +1,340 @@
+<div class="imul impoper cut hide" id="imulpoper">
+  <a class="close"></a>
+  <div class="th"><font class="c888">上传图片</font></div>
+  <div class="imuler cut">
+    <div class="imulqu"><ul></ul></div>
+    <div class="picker ta-c mt15"><a id="imuler-picker"></a><p class="f14 caaa mt15">支持直接将图片拖拽上传</p></div>
+  </div>
+  <div class="bom ta-c mt5 hide"><a class="fbtn btn">开始上传</a></div>
+</div>
+<div class="imsli impoper cut" id="imlipoper">
+  <a class="close"></a>
+  <div class="th"><font class="c888">选择图库文件</font></div>
+  <div class="lister cut"><div class="rows module cut"></div></div>
+  <div class="bom ta-c mt5 hide"><a class="fbtn btn">确 定</a></div>
+</div>
+<script type="text/javascript" src="public/theme/backend/webupload/webuploader.min.js"></script>
+<script type="text/javascript">
+function popUploadImg(){
+  $.vdsMasker(true);
+  $('#imulpoper').vdsMidst({wrapper:$(window), gotop:-100}).show().find('a.close').on('click', function(){
+    closeImgUploadPoper();
+  });
+  
+  var uploader = WebUploader.create({
+    swf: baseUrl + 'public/theme/backend/webupload/Uploader.swf',
+    server: "<{url m=$MOD c='goods' a='image' step='upload'}>",
+    formData: {dirtype:'prime'},
+    pick: {
+      id: '#imulpoper .picker a',
+      innerHTML: '点击选择图片'
+    },
+    dnd: '#imulpoper .picker',
+    resize: false
+  });
+
+  uploader.on('fileQueued', function(file){
+    var $li = $('<li id="' + file.id + '"><div class="remove"><a>删除</a></div><div class="m">' + '<img>' + '</div></li>'), 
+        $img = $li.find('img');
+    
+    $li.appendTo('#imulpoper .imulqu ul').hover(
+      function(){
+        $(this).find('.remove').slideDown();
+      },function(){
+        $(this).find('.remove').slideUp();
+      }
+    ).find('.remove a').on('click', function(){
+      $('#'+file.id).remove();
+      $('#imulpoper .picker').show();
+      $('#imulpoper .bom').hide().off();
+      uploader.reset();
+    });
+  
+    //创建缩略图
+    uploader.makeThumb(file, function(error, src){
+      if(error){
+        $img.replaceWith('<p class="noprev">无法预览</p>');
+        return;
+      }
+      $img.attr('src', src);
+    }, 90, 90);
+    
+    $('#imulpoper .picker a').off().parent().hide();
+    $('#imulpoper .bom').slideDown(500).find('a').on('click', function(){
+      uploader.upload();
+    });
+  });
+
+  uploader.on('uploadProgress', function(file, percentage){
+    var $li = $('#'+file.id),
+        $progress = $li.find('.pgs');
+    
+    if(!$progress.length){
+      $progress = $('<div class="pgs">' + '<div class="bar" role="progressbar">' + '</div>' + '<p>0%</p>' + '</div>').appendTo($li);
+    }else{
+      $progress.show();
+    }
+  
+    $progress.find('p').text(percentage * 100 + '%');
+    $progress.find('.bar').css('width', percentage * 100 + '%');
+  });
+
+  uploader.on('uploadSuccess', function(file, res){
+    if(res.error == 'success'){
+      $('<p class="hint">上传完毕</p>').appendTo('#'+file.id).fadeIn();
+      $('#imulpoper .bom a').off().text('确 定').on('click', function(){
+        showGim(res.url, res.name);
+        closeImgUploadPoper();
+      });
+    }else{
+      $('<p class="hint">' + res.error + '</p>').appendTo('#'+file.id).fadeIn();
+    }
+  });
+
+  uploader.on('uploadError', function(file){
+    $('<p class="hint">上传出错</p>').appendTo('#'+file.id).fadeIn();
+  });
+
+  uploader.on('uploadComplete', function(file){
+    $('#'+file.id ).find('.pgs').fadeOut();
+  });
+  
+  var closeImgUploadPoper = function(){
+    $.vdsMasker(false);
+    $('#imulpoper').hide().find('.imulqu ul').empty();
+    $('#imulpoper .picker').show();
+    $('#imulpoper .bom').hide().find('a').text('开始上传').off();
+    uploader.reset();
+  }
+}
+
+function popImgList(dir){
+  $.vdsMasker(true);
+  $('#imlipoper').css({left: ($(window).width() - $('#imlipoper').width()) / 2}).show().data('dir', dir).find('.bom a').off().on('click', function(){
+    var im = $('#imlipoper .lister .rows a.checked img');
+    if(dir == 'prime'){
+      if(im.size() > 0){
+        showGim(im.attr('src'), im.data('name'));
+      }
+    }else{
+      var container = $('#album'), exists = [];
+      if($('#imlipoper .rows a.checked').size() > 0){
+        container.show().find('input[type="hidden"]').each(function(){
+          exists.push($(this).val());
+        });
+        im.each(function(){
+          if($.inArray($(this).data('name'), exists) == -1){
+            container.append('<a><img src="'+$(this).attr('src')+'" /><i>×</i><input type="hidden" name="album[]" value="'+$(this).data('name')+'" /></a>');
+          }
+        });
+      }
+      container.find('a i').on('click', function(){
+        $(this).parent().remove();
+        if(container.find('a').size() == 0) container.hide();
+      });
+    }
+    closeImgLiPoper();
+  });
+  
+  $('#imlipoper a.close').on('click', function(){
+    closeImgLiPoper();
+  });
+  
+  getGoodsImgList(1);
+    
+  var closeImgLiPoper = function(){
+    $.vdsMasker(false);
+    $('#imlipoper').hide();
+  }
+}
+
+function getGoodsImgList(page_id){
+  var dir = $('#imlipoper').data('dir'), container = $('#imlipoper .lister'), rows = container.find('.rows');
+  $.ajax({
+    type: 'post',
+    dataType: 'json',
+    url: "<{url m=$MOD c='goods' a='image' step='list'}>",
+    data: {dir:dir, page:page_id, pernum:18},
+    beforeSend: function(){rows.empty().append('<div class="loading x-auto"></div>');},
+    success:function(res){
+      rows.find('.loading').remove();
+      container.find('.libom').remove();
+      if(res.status == 'success'){
+        $.each(res.list, function(){        
+          rows.append('<a><img src="'+this.url+'" data-name="'+this.name+'" /><i></i></a>');
+        });
+        rows.find('a').on('click', function(){
+          if($(this).hasClass('checked')){
+            $(this).removeClass('checked');
+          }else{
+            $(this).addClass('checked');
+            if(dir == 'prime') $(this).siblings('.checked').removeClass('checked');
+          }
+          if($('#imlipoper .rows a.checked').size() > 0){
+            $('#imlipoper .bom').slideDown();
+          }else{
+            $('#imlipoper .bom').slideUp();
+          }
+        });
+        if(res.paging != null) container.append(juicer($('#paging-tpl').html(), res));
+      }else{
+        rows.append('<p class="ta-c pad10 caaa">暂无图片数据</p>');
+      }
+    },
+    error: function(){
+      container.empty();
+      $('body').vdsAlert({msg:'处理请求时发生错误'});
+    }
+  });
+}
+
+function showGim(src, img_name){
+  $('#gim').show().find('img').attr('src', src).next('i').on('click', function(){
+    $('#gim').hide().find('img').attr('src', '');
+    $('#gimbtns').show();
+    $('#gim input[name="goods_image"]').val('');
+  });
+  $('#gim input[name="goods_image"]').val(img_name);
+  $('#gimbtns').hide();
+}
+
+function pageturn(page_id){getGoodsImgList(page_id);}
+</script>
+<div class="imul impoper cut hide" id="almulpoper">
+  <a class="close"></a>
+  <div class="th"><font class="c888">上传图片</font></div>
+  <div class="imuler cut">
+    <div class="imulqu"><ul></ul></div>
+    <div class="picker ta-c mt1 cut"><a></a><p class="f14 caaa mt15">支持直接将图片拖拽上传</p></div>
+    <div class="morepicker ta-c mt20 hide"></div>
+  </div>
+  <div class="bom ta-c mt5 hide"><a class="fbtn btn">开始上传</a></div>
+</div>
+<script type="text/javascript">
+function popUploadAlbum(){
+  $.vdsMasker(true);
+  $('#almulpoper').vdsMidst({wrapper:$(window), gotop:-100}).show().find('a.close').on('click', function(){
+    closeImgUploadPoper();
+  });
+  
+  var uploader = WebUploader.create({
+    swf: baseUrl + 'public/theme/backend/webupload/Uploader.swf',
+    server: "<{url m=$MOD c='goods' a='image' step='upload'}>",
+    formData: {dirtype:'album'},
+    pick: {
+      id: '#almulpoper .picker a',
+      label: '点击选择图片'
+    },
+    dnd: '#almulpoper .picker',
+    resize: false,
+  });
+  
+  uploader.on('fileQueued', function(file){
+    addFile(file);
+    $('#almulpoper .picker a').off().parent().hide().next('.morepicker').show();
+    uploader.addButton({
+      id: '#almulpoper .morepicker',
+      innerHTML: '添加更多'
+    });
+    $('#almulpoper .bom').slideDown(500).find('a').on('click', function(){
+      $('#almulpoper .morepicker a').off().hide();
+      $('#almulpoper .morepicker').off().hide();
+      uploader.upload();   
+    });
+  });
+
+  uploader.on('uploadProgress', function(file, percentage){
+    var $li = $('#'+file.id),
+        $progress = $li.find('.pgs');
+    
+    if(!$progress.length){
+      $progress = $('<div class="pgs">' + '<div class="bar" role="progressbar">' + '</div>' + '<p>0%</p>' + '</div>').appendTo($li);
+    }else{
+      $progress.show();
+    }
+  
+    $progress.find('p').text(percentage * 100 + '%');
+    $progress.find('.bar').css('width', percentage * 100 + '%');
+  });
+  
+  var success = 0;
+
+  uploader.on('uploadSuccess', function(file, res){
+    var $li = $('#'+file.id), hint;
+    if(res.error == 'success'){
+      hint = $('<p class="hint">上传完毕</p>');
+      $li.data('url', res.url);
+      $li.data('name', res.name);
+      success ++;
+      fileSelected();
+    }else{
+      hint = $('<p class="hint">' + res.error + '</p>');
+    }
+    hint.appendTo($li).fadeIn();
+  });
+
+  uploader.on('uploadError', function(file){
+    $('<p class="hint">上传出错</p>').appendTo('#'+file.id).fadeIn();
+  });
+
+  uploader.on('uploadComplete', function(file){
+    $('#'+file.id ).find('.pgs').fadeOut();
+  });
+  
+  var fileSelected = function(){
+    if(success != $('#almulpoper ul li').size()) return false;
+    var album = $('#album');
+    $('#almulpoper .bom a').text('确 定').off().on('click', function(){
+      $('#almulpoper ul li').each(function(){
+        album.append('<a><img src="'+$(this).data('url')+'" /><i>×</i><input type="hidden" name="album[]" value="'+$(this).data('name')+'" /></a>');
+      });
+      album.show().find('a i').on('click', function(){
+        $(this).parent().remove();
+        if(album.find('a').size() == 0) album.hide();
+      });
+      
+      $('#almulpoper .picker').show().next('.morepicker').hide();
+      closeImgUploadPoper();
+      success = 0;
+    });
+  }
+  
+  var addFile = function(file){
+    var $li = $('<li id="' + file.id + '"><div class="remove"><a>删除</a></div><div class="m">' + '<img>' + '</div></li>'),
+        $img = $li.find('img');
+    
+    $li.appendTo('#almulpoper .imulqu ul').hover(
+      function(){
+        $(this).find('.remove').slideDown();
+      },function(){
+        $(this).find('.remove').slideUp();
+      }
+    ).find('.remove a').on('click', function(){
+      $('#'+file.id).remove();
+      if($('#almulpoper .imulqu ul li').size() == 0){
+        $('#almulpoper .picker').show().next('.morepicker').hide();
+        uploader.reset();
+      }
+    });
+  
+    //创建缩略图
+    uploader.makeThumb(file, function(error, src){
+      if(error){
+        $img.replaceWith('<p class="noprev">无法预览</p>');
+        return;
+      }
+      $img.attr('src', src);
+    }, 90, 90);
+  }
+  
+  var closeImgUploadPoper = function(){
+    $.vdsMasker(false);
+    $('#almulpoper').hide().find('.imulqu ul').empty();
+    $('#almulpoper .picker').show().next('.morepicker').hide();
+    $('#almulpoper .bom').hide().find('a').text('开始上传').off();
+    uploader.reset();
+  }
+}
+</script>
+<{include file='backend/lib/paging.html'}>
+<script type="text/javascript" src="public/script/juicer.js"></script>

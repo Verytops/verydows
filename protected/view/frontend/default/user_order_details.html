@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>订单详情 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/jquery.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/general.js"></script>
+</head>
+<body>
+<!-- 顶部开始 -->
+<{layout_topper common=$common}>
+<!-- 顶部结束 -->
+<!-- 头部开始 -->
+<{layout_header common=$common}>
+<!-- 头部结束 -->
+<div class="loc w1100">
+  <div><a href="<{url c='main' a='index'}>">网站首页</a><b>></b><font>我的订单</font></div>
+</div>
+<!-- 主体开始 -->
+<div class="container w1100 mt10">
+  <div class="module cut">
+    <!-- 左侧开始 -->
+    <div class="w180 fl cut">
+      <!-- 用户菜单开始 -->
+      <{layout_usermenu}>
+      <!-- 用户菜单结束 -->
+    </div>
+    <!-- 左侧结束 -->
+    <!-- 右侧开始 -->
+    <div class="w910 cut">
+      <div class="mcter">
+        <h2>订单号：<{$order.order_id}></h2>
+        <div class="order cut">
+          <div class="order-step mt20 cut">
+            <ul id="order-step">
+              <{foreach $progress as $k => $v}>
+              <{if $v@iteration == $v@total}>
+              <li <{if $order.order_status == 4}>class="s-<{$k}> ok"<{else}>class="s-<{$k}>"<{/if}>><h4><{$v}></h4><i></i></li>
+              <{else}>
+              <li class="s-<{$k}> ok"><h4><{$v}></h4><i></i></li>
+              <li class="arrow ok"><i></i></li>
+              <{/if}>
+              <{/foreach}>
+            </ul>
+          </div>
+          <div class="sdcter mt20 cut">
+            <div class="w360 fl cut">
+              <dl>
+                <dt>下单时间：</dt>
+                <dd><{date('Y-m-d H:i:s', $order.created_date)}></dd>
+              </dl>
+              <dl class="mt5">
+                <dt>收件人信息：</dt>
+                <dd>
+                  <p><{$consignee.receiver}><font class="c666 ml10">(手机号码：<{$consignee.mobile}>)</font></p>
+                  <p class="mt5"><{$consignee.province}> <{$consignee.city}> <{$consignee.borough}> <{$consignee.address}></p>
+                  <{if !empty($consignee.zip)}><p class="mt5"><{$consignee.zip}></p><{/if}>
+                </dd>
+              </dl>
+              <dl class="mt5">
+                <dt>配送方式：</dt>
+                <dd><{$order.shipping_method_name}></dd>
+              </dl>
+              <dl class="mt5">
+                <dt>支付方式：</dt>
+                <dd><{$order.payment_method_name}></dd>
+              </dl>
+              <dl class="mt5">
+                <dt>订单金额：</dt>
+                <dd><b class="red"><font class="cny">¥</font><{$order.order_amount}></b><span class="c666 ml10">(含运费：<font class="cny">¥</font><{$order.shipping_amount}>)</span></dd>
+              </dl>
+              <dl class="mt5">
+                <dt>留言备注：</dt>
+                <dd><{if !empty($order.memos)}><font class="c777"><{$order.memos}></font><{else}><font class="c999">无</font><{/if}></dd>
+              </dl>
+            </div>
+            <div class="cdo aln-c cut">
+              <h3 class="f14 c666">订单状态：<font class="c333"><{array_pop($progress)}></font></h3>
+              <{if !empty($shipping)}>
+              <div class="module mt20">
+                <p class="c888"> 物流：<font class="c333"><{$carrier.name}></font><span class="ml5 mr5"></span> 运单号：<a href="<{$carrier.tracking_url}><{$shipping.tracking_no}>" target="_blank"><{$shipping.tracking_no}></a><span class="ml5 mr5"></span> 客服电话：<font class="c333"><{$carrier.service_tel}></font> </p>
+              </div>
+              <{if $order.order_status == 3}>
+              <p class="c666 mt10">还有 <font class="red" id="shipping-countdown" data-time="<{$shipping.countdown}>">0天0小时0分0秒</font> 来确认签收, 超时订单将自动确认签收</p>
+              <script type="text/javascript">
+                $(function(){
+                  var obj = $('#shipping-countdown'), remaining = parseInt(obj.data('time'));
+                  window.setInterval(function(){
+                    var _d = 0, _h = 0, _m = 0, _s = 0;
+                    if(remaining > 0){
+                      _d = Math.floor(remaining / (60 * 60 * 24));
+                      _h = Math.floor(remaining / (60 * 60)) - (_d * 24);
+                      _m = Math.floor(remaining / 60) - (_d * 24 * 60) - (_h * 60);
+                      _s = Math.floor(remaining) - (_d * 24 * 60 * 60) - (_h * 60 * 60) - (_m * 60);
+                    }
+                    if(_m <= 9) _m = '0' + _m;
+                    if(_s <= 9) _s = '0' + _s;
+                    obj.text(_d+'天'+_h+'小时'+_m+'分'+_s+'秒');
+                    remaining --;
+                    obj.data('time', remaining);
+                  }, 1000);
+                });
+              </script>
+              <{/if}>
+              <{/if}>
+              <div class="module mt20">
+                <{if $order.order_status == 1}>
+                <{if $order.payment_method != 2}>
+                <a class="sm-red mr10" href="<{url c='pay' a='index' order_id=$order.order_id}>">去付款</a>
+                <{/if}>
+                <a class="sm-gray ml10" href="<{url c='order' a='cancel' id=$order.order_id}>">取消订单</a>
+                <{elseif $order.order_status == 3}>
+                <a class="sm-red mr10" href="<{url c='order' a='delivered' id=$order.order_id}>">确认签收</a>
+                <{elseif $order.order_status == 4}>
+                <a class="sm-red mr10" href="<{url c='review' a='order' order_id=$order.order_id}>">评价</a>
+                <a class="sm-gray mr10" href="<{url c='aftersales' a='order' order_id=$order.order_id}>">申请售后</a>
+                <{elseif $order.order_status == 0}>
+                <a class="sm-blue mr10" href="<{url c='order' a='rebuy' id=$order.order_id}>">重新购买</a>
+                <{/if}>
+              </div>
+            </div>
+          </div>
+          <!-- 商品清单开始 -->
+          <div class="tli mt10">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <th colspan="2">商品</th>
+                <th width="18%">单价(元)</th>
+                <th width="18%">数量</th>
+                <th width="18%">小计(元)</th>
+              </tr>
+              <{foreach $goods_list as $v}>
+              <tr>
+                <td width="80"><a href="<{url c='goods' a='index' id=$v.goods_id}>" target="_blank"><img class="gim" src="<{$common.baseurl}>/upload/goods/prime/50x50/<{$v.goods_image}>" /></a></td>
+                <td>
+                  <div class="aln-l">
+                    <a href="<{url c='goods' a='index' id=$v.goods_id}>" target="_blank"><{$v.goods_name}></a>
+                    <{if !empty($v.goods_opts)}>
+                    <p class="c999 mt5"><{foreach $v.goods_opts as $o}><span class="mr5">[<{$o.opt_type}>: <font class="c666"><{$o.opt_text}></font>]</span><{/foreach}></p>
+                    <{/if}>
+                  </div>
+                </td>
+                <td><{$v.goods_price}></td>
+                <td><{$v.goods_qty}></td>
+                <td><{sprintf('%.2f', $v.goods_price*$v.goods_qty)}></td>
+              </tr>
+              <{/foreach}>
+              <tr>
+                <td colspan="5"><div class="total fr cut">
+                    <dl>
+                      <dt>运费：</dt>
+                      <dd><font class="cny">¥</font> <{$order.shipping_amount}></dd>
+                    </dl>
+                    <dl>
+                      <dt>应付款总额：</dt>
+                      <dd class="red"><font class="cny">¥</font> <{$order.order_amount}></dd>
+                    </dl>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- 商品清单结束 -->
+        </div>
+      </div>
+    </div>
+    <!-- 右侧结束 -->
+  </div>
+  <div class="cl"></div>
+  <{layout_helper}>
+</div>
+<!-- 主体结束 -->
+<div class="cl"></div>
+<!-- 页脚开始 -->
+<{layout_footer}>
+<!-- 页脚结束 -->
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+.loc i.dashboard {width:18px;height:20px;background-position:0 -120px;}
+.divid {width:25%;height:auto;float:left;overflow:hidden;}
+.divid h3 {background:#def6ff}
+.divid .module {height:245px;background:url(../images/loading-1.gif) no-repeat center;}
+.divid .actives {background:none;}
+table.stbl {width:100%;border:none;background:#fff;}
+table.stbl th, table.stbl td {padding:10px 8px;vertical-align:middle;border-bottom:1px solid #def6ff;}
+table.stbl th {color:#3399cc;text-align:left;font-weight:normal;}
+table.stbl td {color:#999;text-align:right;}
+table.stbl td b {color:#cc3366;margin-right:5px;}
+.actives {overflow-y:auto;}
+.actives table.stbl tr.thd th {padding:6px 10px;color:#aaa;background:#f8f8f8;border-bottom-color:#eee;}
+.actives table.stbl tr.thd th.ta-r {text-align:right}
+.actives table.stbl th font {color:#888;margin-left:5px;font-weight:normal;}
+.actives table.stbl th font.caaa {color:#aaa;}
+.couid {width:50%;height:auto;overflow:hidden;}
+table.dataform th {color:#444;font-weight:normal;}
+table.dataform.declare th, table.dataform.declare td {color:#999;}
+table.dataform.declare td a {color:#999;}
+table.dataform.declare td a:hover {text-decoration:underline;color:#333;}
+.notice {display:none;margin-bottom:5px;}
+.notice .item {padding:10px 15px;color:#D56A00;border:1px solid #ffcc00;background: #FFFFDD;}

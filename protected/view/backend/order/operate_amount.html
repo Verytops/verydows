@@ -1,0 +1,33 @@
+<script type="text/javascript">
+function submitAmountForm(){
+  var form = $('#pop-amount form');
+  form.find('input[name="order_amount"]').vdsFieldChecker({rules: {required:[true, '订单总额不能为空'], decimal:[true, '订单总额格式不正确']}});
+  form.find('textarea[name="cause"]').vdsFieldChecker({
+    rules: {required:[true, '原因不能为空'], maxlen:[240, '原因不能超过240个字符']},
+    tipsPos: 'br'
+  });
+  form.vdsFormChecker();
+}
+</script>
+<div class="poper cut" id="pop-amount"> <a class="close" onclick="closeOperate('pop-amount')"></a>
+  <h3 class="f14 th ta-c">更改订单金额</h3>
+  <div class="pad10 cut">
+    <form method="post" action="<{url m=$MOD c='order' a='operate' step='amount' id=$order.order_id}>">
+      <table class="dataform">
+        <tr>
+          <th width="90">订单总额</th>
+          <td><input name="order_amount" type="text" class="w100 txt" value="<{$order.order_amount}>" /></td>
+        </tr>
+        <tr>
+          <th>原因/备注</th>
+          <td><textarea class="txtarea" name="cause" cols="80" rows="4"></textarea></td>
+        </tr>
+      </table>
+      <div class="ta-c mt5 pad10">
+        <button type="button" class="ubtn btn" onclick="submitAmountForm()">确定并提交</button>
+        <span class="sep40"></span>
+        <button type="button" class="fbtn btn" onclick="closeOperate('pop-amount')">取消</button>
+      </div>
+    </form>
+  </div>
+</div>

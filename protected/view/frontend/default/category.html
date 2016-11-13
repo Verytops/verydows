@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="verydows-baseurl" content="<{$common.baseurl}>">
+<meta name="keywords" content="<{$cateinfo.meta_keywords}>" />
+<meta name="description" content="<{$cateinfo.meta_description}>" />
+<title><{$cateinfo.cate_name}> - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/category.css" />
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/jquery.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/general.js"></script>
+</head>
+<body>
+<!-- 顶部开始 -->
+<{layout_topper common=$common}>
+<!-- 顶部结束 -->
+<!-- 头部开始 -->
+<{layout_header common=$common}>
+<!-- 头部结束 -->
+<div class="loc w1100">
+  <div>
+    <a href="<{url c='main' a='index'}>">网站首页</a>
+    <b>&gt;</b>
+    <{foreach $breadcrumbs as $v}>
+    <{if $cateinfo.cate_id != $v.cate_id}><a href="<{url c='category' a='index' id=$v.cate_id}>"><{$v.cate_name}></a><b>&gt;</b><{else}><font><{$v.cate_name}></font><{/if}>
+    <{/foreach}>
+  </div>
+</div>
+<!-- 主体开始 -->
+<div class="container w1100 mt10">
+  <div class="module cut">
+    <!-- 左侧开始 -->
+    <div class="w210 fl cut">
+      <{if !empty($recommend)}>
+      <div class="sli mb10">
+        <h2>热门推荐</h2>
+        <{foreach $recommend as $v}>
+        <dl>
+          <dt class="fl"><a href="<{url c='goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/50x50/<{$v.goods_image}>" /></a></dt>
+          <dd class="lt"><a title="<{$v.goods_name}>" href="<{url c='goods' a='index' id=$v.goods_id}>"><{truncate($v.goods_name)}></a><p><i>¥</i> <{$v.now_price}></p></dd>
+        </dl>
+        <{/foreach}>
+      </div>
+      <{/if}>
+      <{if !empty($history)}>
+      <div class="sli mb10">
+        <h2>最近浏览</h2>
+        <{foreach $history as $v}>
+        <dl>
+          <dt class="fl"><a href="<{url c='goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/50x50/<{$v.goods_image}>" /></a></dt>
+          <dd class="lt"><a title="<{$v.goods_name}>" href="<{url c='goods' a='index' id=$v.goods_id}>"><{truncate($v.goods_name)}></a><p><i>¥</i> <{$v.now_price}></p></dd>
+        </dl>
+        <{/foreach}>
+      </div>
+      <{/if}>
+    </div>
+    <!-- 左侧结束 -->
+    <!-- 右侧开始 -->
+    <div class="w880">
+      <{if !empty($bargain)}>
+      <!-- 特价促销开始 -->
+      <div class="recommend mb10 cut">
+        <{foreach $bargain as $v}>
+        <dl>
+          <dt class="fl"><a href="<{url c='goods' a='index' id=$v.goods_id}>"><img width="100" height="100" alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/100x100/<{$v.goods_image}>" /></a></dt>
+          <dd>
+            <a title="<{$v.goods_name}>" href="<{url c='goods' a='index' id=$v.goods_id}>"><{truncate($v.goods_name, 40)}></a>
+            <{if $v.original_price > 0}>
+            <p class="ori mt10"><i>¥</i> <{$v.original_price}></p>
+            <{/if}>
+            <p class="mt2"><i>¥</i> <{$v.now_price}></p>
+          </dd>
+        </dl>
+        <{/foreach}>
+      </div>
+      <!-- 特价促销结束 -->
+      <{/if}>
+      <!-- 过滤筛选开始 -->
+      <div class="filter cut">
+        <{if !empty($filters.brand)}>
+        <div class="ftitem cut">
+          <h4 class="fl">品牌：</h4>
+          <div class="ftopt">
+            <div class="fl"><{if $u.brand == 0}><a class="cur">不限</a><{else}><a href="<{url c='category' a='index' id=$u.cate att=$u.att minpri=$u.minpri maxpri=$u.maxpri sort=$u.sort}>">不限</a><{/if}></div>
+            <dl>
+              <{foreach $filters.brand as $v}>
+              <{if $u.brand == $v.brand_id}><dd><a class="cur" title="<{$v.brand_name}>"><{$v.brand_name}></a></dd><{else}><dd><a title="<{$v.brand_name}>" href="<{url c='category' a='index' id=$u.cate brand=$v.brand_id att=$u.att minpri=$u.minpri maxpri=$u.maxpri sort=$u.sort}>"><{$v.brand_name}></a></dd><{/if}>
+              <{/foreach}>
+            </dl>
+          </div>
+        </div>
+        <{/if}>
+        <{if !empty($filters.attr)}>
+        <{foreach $filters.attr as $v}>
+        <div class="ftitem cut">
+          <h4 class="fl"><{$v.name}>：</h4>
+          <div class="ftopt">
+            <div class="fl"><{if $v.unlimit.checked == 1}><a class="cur">不限</a><{else}><a title="不限" href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$v.unlimit.att minpri=$u.minpri maxpri=$u.maxpri sort=$u.sort}>">不限</a><{/if}></div>
+            <dl>
+              <{foreach $v.opts as $vv}>	
+              <{if $vv.checked == 1}>
+              <dd><a class="cur" title="<{$vv.name}>"><{$vv.name}></a></dd><{else}><dd><a title="<{$vv.name}>" href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$vv.att minpri=$u.minpri maxpri=$u.maxpri sort=$u.sort}>"><{$vv.name}></a></dd><{/if}>
+              <{/foreach}>
+            </dl>
+          </div>
+        </div>
+        <{/foreach}>
+        <{/if}>
+        <{if !empty($filters.price)}>
+        <div class="ftitem cut">
+          <h4 class="fl">价格：</h4>
+          <div class="ftopt">
+            <div class="fl"><{if $u.minpri == 0 && $u.maxpri == 0}><a class="cur">不限</a><{else}><a href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$u.att sort=$u.sort}>">不限</a><{/if}></div>
+            <dl>
+              <{foreach $filters.price as $v}>	
+              <{if $u.minpri == $v.min && $u.maxpri == $v.max}><dd><a class="cur"><{$v.str}></a></dd><{else}><dd><a href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$u.att minpri=$v.min maxpri=$v.max sort=$u.sort}>"><{$v.str}></a></dd><{/if}>
+              <{/foreach}>
+            </dl>
+          </div>
+        </div>
+        <{/if}>
+      </div>
+      <!-- 过滤筛选结束 -->
+      <!-- 商品列表开始 -->
+      <{if !empty($goods_list)}>
+      <div class="module mt10">
+        <div class="display cut">
+          <div class="seq fl cut">
+            <ul>
+              <{if $u.sort == 0}>
+              <li class="cur"><a>默认排序</a></li>
+              <{else}>
+              <li><a href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$u.att minpri=$u.minpri maxpri=$u.maxpri sort='0'}>">默认排序</a></li>
+              <{/if}>
+              <{if $u.sort == 1}>
+              <li class="cur"><a href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$u.att minpri=$u.minpri maxpri=$u.maxpri sort='2'}>">价格<i class="up icon"></i></a></li>
+              <{elseif $u.sort == 2}>
+              <li class="cur"><a href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$u.att minpri=$u.minpri maxpri=$u.maxpri sort='1'}>">价格<i class="dw icon"></i></a></li>
+              <{else}>
+              <li><a href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$u.att minpri=$u.minpri maxpri=$u.maxpri sort='2'}>">价格<i class="up icon"></i></a></li>
+              <{/if}>
+              <{if $u.sort == 3}>
+              <li class="cur"><a href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$u.att minpri=$u.minpri maxpri=$u.maxpri sort='4'}>">上架时间<i class="dw icon"></i></a></li>
+              <{elseif $u.sort == 4}>
+              <li class="cur"><a href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$u.att minpri=$u.minpri maxpri=$u.maxpri sort='3'}>">上架时间<i class="up icon"></i></a></li>
+              <{else}>
+              <li><a href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$u.att minpri=$u.minpri maxpri=$u.maxpri sort='3'}>">上架时间<i class="dw icon"></i></a></li>
+              <{/if}>
+            </ul>
+          </div>
+          <div class="spt fr cut">
+            <ul>
+              <{if !empty($goods_paging)}>
+              <li class="sum c999">共<b class="red"><{$goods_paging.total_count}></b>件商品</li>
+              <li class="flip">
+                <{if $goods_paging.current_page == $goods_paging.first_page}>
+                <font>&lt;</font>
+                <{else}>
+                <a href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$u.att minpri=$u.minpri maxpri=$u.maxpri sort=$u.sort page=$goods_paging.prev_page}>">&lt;</a>
+                <{/if}>
+                <span><b class="red"><{$goods_paging.current_page}></b> / <{$goods_paging.total_page}></span>
+                <{if $goods_paging.current_page == $goods_paging.last_page}>
+                <font>&gt;</font>
+                <{else}>
+                <a href="<{url c='category' a='index' id=$u.cate brand=$u.brand att=$u.att minpri=$u.minpri maxpri=$u.maxpri sort=$u.sort page=$goods_paging.next_page}>">&gt;</a>
+                <{/if}>
+              </li>
+              <{else}>
+              <li class="sum c999">共<b class="red"><{count($goods_list)}></b>件商品</li>
+              <li class="flip"><font>&lt;</font><span class="c999">1 / 1</span><font>&gt;</font></li>
+              <{/if}>
+            </ul>
+          </div>
+        </div>
+        <div class="gli cut">
+          <ul>
+            <{foreach $goods_list as $v}>
+            <li>
+              <div class="im"><a href="<{url c='goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/150x150/<{$v.goods_image}>" /></a></div>
+              <h3><a title="<{$v.goods_name}>" href="<{url c='goods' a='index' id=$v.goods_id}>"><{truncate($v.goods_name, 40)}></a></h3>
+              <p class="price"><i>¥</i> <{$v.now_price}></p>
+            </li>
+            <{/foreach}>
+          </ul>
+        </div>
+        <!-- 页码开始 -->
+        <div class="module aln-c mt20">
+          <{layout_paging paging=$goods_paging class='paging' c='category' a='index' id=$u.cate brand=$u.brand att=$u.att minpri=$u.minpri maxpri=$u.maxpri sort=$u.sort}>
+        </div>
+        <!-- 页码结束 -->
+      </div>
+      <{else}>
+      <div class="nors mt10 pad10 aln-c c999">抱歉！未找到匹配的商品数据...</div>
+      <{/if}>
+      <!-- 商品列表结束 -->
+    </div>
+    <!-- 右侧结束 -->
+  </div>
+  <div class="cl"></div>
+  <{layout_helper}>
+</div>
+<!-- 主体结束 -->
+<div class="cl"></div>
+<!-- 页脚开始 -->
+<{layout_footer}>
+<!-- 页脚结束 -->
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+</body>
+</html>

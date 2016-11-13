@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript">
+function submitForm(){
+  $('#name').vdsFieldChecker({rules:{required:[true, '模板名称不能为空'], maxlen:[50, '模板名称不能超过50个字符']}});
+  $('#id').vdsFieldChecker({rules:{required:[true, '模板索引不能为空'], maxlen:[30, '模板索引不能超过50个字符']}});
+  $('#subject').vdsFieldChecker({rules:{required:[true, '邮件主题不能为空'], maxlen:[30, '邮件主题不能超过240个字符']}});
+  $('#body').vdsFieldChecker({rules:{required:[true, '邮件内容不能为空']}, tipsPos:'br'});
+  $('form').vdsFormChecker();
+}
+</script>
+</head>
+<body>
+<{if $_GET['a'] == 'add'}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>新建邮件模板</h2></div>
+  <form method="post" action="<{url m=$MOD c='email_tpl' a='add' step='submit'}>">
+    <div class="box">
+      <div class="module">
+        <table class="dataform">
+          <tr>
+            <th width="110">模板名称</th>
+            <td><input class="w200 txt" name="name" id="name" type="text" /></td>
+          </tr>
+          <tr>
+            <th>模板索引</th>
+            <td>
+              <input class="w200 txt" name="id" id="id" type="text" />
+              <p class="mt10 caaa">只能包含英文、数字或下划线，长度为1~30个字符，且不能与其他模板索引重名</p>
+              <p class="mt5 caaa">注：模板索引请勿随意更改，如若更改，请修改对应的程序代码中所引用的模板索引</p>
+            </td>
+          </tr>
+          <tr>
+            <th>邮件主题</th>
+            <td><input class="w400 txt" name="subject" id="subject" type="text" /></td>
+          </tr>
+          <tr>
+            <th>邮件类型</th>
+            <td>
+              <div class="pad5">
+                <label class="mr20"><input type="radio" name="is_html" value="0" checked="checked" /><font class="ml5">纯文本</font></label>
+                <label><input type="radio" name="is_html" value="1" /><font class="ml5">Html</font></label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>邮件内容</th>
+            <td><textarea id="body" class="txtarea" name="body" cols="150" rows="20"></textarea></td>
+          </tr>
+        </table>
+      </div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并提交</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{else}>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>新建邮件模板</h2></div>
+  <form method="post" action="<{url m=$MOD c='email_tpl' a='edit' step='submit' orgi_id=$rs.id}>">
+    <div class="box">
+      <div class="module">
+        <table class="dataform">
+          <tr>
+            <th width="110">模板名称</th>
+            <td><input class="w200 txt" name="name" id="name" type="text" value="<{$rs.name}>" /></td>
+          </tr>
+          <tr>
+            <th>模板索引</th>
+            <td>
+              <input class="w200 txt" name="id" id="id" type="text" value="<{$rs.id}>" />
+              <p class="mt10 caaa">只能包含英文、数字或下划线，长度为1~30个字符，且不能与其他模板索引重名</p>
+              <p class="mt5 caaa">注：模板索引请勿随意更改，如若更改，请修改对应的程序代码中所引用的模板索引</p>
+            </td>
+          </tr>
+          <tr>
+            <th>邮件主题</th>
+            <td><input class="w400 txt" name="subject" id="subject" type="text" value="<{$rs.subject}>" /></td>
+          </tr>
+          <tr>
+            <th>邮件类型</th>
+            <td>
+              <div class="pad5">
+                <label class="mr20"><input type="radio" name="is_html" value="0" <{if $rs.is_html == 0}>checked="checked"<{/if}> /><font class="ml5">纯文本</font></label>
+                <label><input type="radio" name="is_html" value="1" <{if $rs.is_html == 1}>checked="checked"<{/if}> /><font class="ml5">Html</font></label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>邮件内容</th>
+            <td><textarea id="body" class="txtarea" name="body" cols="150" rows="20"><{$rs.body}></textarea></td>
+          </tr>
+        </table>
+      </div>
+      <div class="submitbtn">
+        <button type="button" class="ubtn btn" onclick="submitForm()">保存并更新</button>
+        <button type="reset" class="fbtn btn">重置表单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<{/if}>
+</body>
+</html>

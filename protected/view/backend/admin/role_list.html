@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/list.js"></script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>管理员角色列表</h2></div>
+  <div class="box">
+    <div class="doacts">
+      <a class="ae add btn" href="<{url m=$MOD c='role' a='add'}>"><i></i><font>添加新角色</font></a>
+      <a class="ae btn" onclick="doslvent('<{url m=$MOD c='role' a='edit'}>', 'id')"><i class="edit"></i><font>编辑</font></a>
+      <a class="ae btn" onclick="doslvent('<{url m=$MOD c='role' a='delete'}>', 'id')"><i class="remove"></i><font>删除</font></a>
+    </div>
+    <{if !empty($results)}>
+    <div class="module mt5">
+      <table class="datalist">
+        <tr>
+          <th width="50" colspan="2">编号</th>
+          <th width="300" class="ta-l">角色名</th>
+          <th class="ta-l">描述</th>
+        </tr>
+        <{foreach $results as $v}>
+        <tr>
+          <td width="20"><input name="id" type="checkbox" value="<{$v.role_id}>" /></td>
+          <td width="30"><{$v.role_id}></td>
+          <td class="ta-l"><a class="blue" href="<{url m=$MOD c='role' a='edit' id=$v.role_id}>"><{$v.role_name}></a></td>
+          <td class="ta-l"><p class="c666"><{$v.role_desc}></p></td>
+        </tr>
+        <{/foreach}>
+      </table>
+    </div>
+    <{else}>
+    <div class="nors mt5">未找到匹配的数据记录...</div>
+    <{/if}>
+  </div>
+</div>
+</body>
+</html>

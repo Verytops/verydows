@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/stats.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/datetimepicker.css"/>
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/flot.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/stats.js"></script>
+<script type="text/javascript">
+$(function(){
+  showChart('site', '<{date("Y-m-d", $todaystamp - 86400 * 7)}>', '<{date("Y-m-d")}>');
+  showChart('cate', '<{date("Y-m-d", $todaystamp - 86400 * 7)}>', '<{date("Y-m-d")}>');
+  //预设周期切换
+  $('#preset-btn button').click(function(){
+    if(!$(this).hasClass('disabled')){
+      $('#preset-btn button.disabled').removeClass('disabled');
+      $(this).addClass('disabled').blur();
+      showChart('site', $(this).data('start'), '<{date("Y-m-d")}>');
+      showChart('cate', $(this).data('start'), '<{date("Y-m-d")}>');
+    }
+  });
+  //日期选择
+  $('#start_date').datetimepicker ({
+    format:'Y-m-d',
+    formatDate: 'Y-m-d',
+    allowBlank:true,
+    onShow:function(ct){
+      this.setOptions({maxDate:$('#end_date').val()? $('#end_date').val():false})
+    }, timepicker:false
+  });
+  $('#end_date').datetimepicker ({
+    format:'Y-m-d',
+    formatDate: 'Y-m-d',
+    allowBlank:true,
+    onShow:function(ct){
+      this.setOptions({minDate:$('#start_date').val()? $('#start_date').val():false})
+    }, timepicker:false
+  });
+});
+
+function showChart(type, start, end){
+  var chartbox = $('#'+type+'pie');
+  chartbox.find('.chart').hide();
+  $.ajax({
+    type: "post",
+    dataType: "json",
+    url: "<{url m=$MOD c='stats' a='visitor' col='referrer' search='async'}>",
+    data: {type:type, start_date:start, end_date:end},
+    beforeSend: function(){chartbox.find('.loading').show();},
+    success: function(res){
+      chartbox.find('.loading').hide();
+      if(res.status == 'success'){
+        var dataset = [];
+        $.each(res.data, function(k, v){
+          if(v.referrer == '') v.referrer = 'Unknown';
+          dataset.push({label: v.referrer, data: v.visits});
+        });
+        chartbox.find('.chart').show();
+        setChart(chartbox.find('.chart'), dataset);
+      }
+      else{
+        chartbox.find('.hint').text('暂无相关数据').show();
+      }
+    },
+    error: function(){
+      chartbox.find('.chart').hide();
+      chartbox.find('.loading').hide();
+      chartbox.find('.hint').text('查询超时或出错!').show();
+    }
+  });
+}
+
+function setChart(chart, dataset){
+  chart.plot(dataset, {
+    series: {
+      pie: { 
+        show: true,
+        innerRadius: 0.4,
+        combine: {
+          color: '#888',
+          threshold: 0.05,
+          label: '其他'
+        },
+        radius: 3/4,
+        label: {
+          show: true,
+          radius: 3/4,
+          formatter: labelFormatter,
+          background: {
+            opacity: 0.8
+          }
+        }
+      }
+    },
+    legend: {
+      show: false
+    }
+  });
+}
+
+function selectDate(){
+  var start = $('#start_date').val(), end = $('#end_date').val();
+  showChart('site', start, end);
+  showChart('cate', start, end);
+}
+</script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>访问统计</h2></div>
+  <div class="box">
+    <div class="bw-row pad10 ta-c cut">
+      <a class="sbtn sm btn" href="<{url m=$MOD c='stats' a='visitor' col='traffic'}>">流量分析</a><span class="sep20"></span>
+      <a class="sbtn sm disabled btn">来源分析</a><span class="sep20"></span>
+      <a class="sbtn sm btn" href="<{url m=$MOD c='stats' a='visitor' col='terminal'}>">终端分析</a><span class="sep20"></span>
+      <a class="sbtn sm btn" href="<{url m=$MOD c='stats' a='visitor' col='area'}>">地区分析</a>
+    </div>
+    <{if !empty($lastest)}>
+    <div class="module mt5">
+      <table class="datalist">
+        <tr>
+          <th>日期</th>
+          <th width="21%">搜索引擎</th>
+          <th width="21%">直接进入</th>
+          <th width="21%">站内来源</th>
+          <th width="21%">其他来源</th>
+        </tr>
+        <{foreach $latest as $k => $v}>
+        <tr>
+          <td class="c666"><{$k}></td>
+          <{foreach $v as $vv}>
+          <td><{$vv.visits}></td>
+          <{/foreach}>
+	</tr>
+        <{/foreach}>
+      </table>
+    </div>
+    <{/if}>
+    <div class="bw-row mt5 pad10 ta-c cut">
+      <div class="bw-row pad10 cut">
+        <div class="chart-btnopt ta-l fl cut" id="preset-btn">
+          <button type="button" class="disabled cbtn btn" data-start="<{date('Y-m-d', $todaystamp - 86400 * 7)}>">最近7日</button><span class="sep20"></span>
+          <button type="button" class="cbtn btn" data-start="<{date('Y-m-d', $todaystamp - 86400 * 15)}>">最近15日</button><span class="sep20"></span>
+          <button type="button" class="cbtn btn" data-start="<{date('Y-m-d', $todaystamp - 86400 * 30)}>">最近1个月</button><span class="sep20"></span>
+          <button type="button" class="cbtn btn" data-start="<{date('Y-m-d', $todaystamp - 86400 * 90)}>">最近3个月</button>
+        </div>
+        <div class="chart-dateopt ta-r fr cut">
+          <label><font class="c888 mr5">开始日期</font><input title="开始日期" value="" class="date w100 txt"name="start_date" id="start_date" type="text" /></label>
+          <span class="sep10"></span>
+          <label><font class="c888 mr5">截止日期</font><input title="截止日期" value="" class="date w100 txt"name="end_date" id="end_date" type="text" /></label>
+          <button class="cbtn btn" type="button" onclick="selectDate()">查询</button>
+        </div>
+      </div>
+      <div class="chartwrap module mt5 cut" id="chartwrap">
+        <div class="equal fl">
+          <div class="pie mr5" id="sitepie">
+            <h3 class="c888">来源网站</h3>
+            <div class="chart hide"></div>
+            <div class="hint caaa hide"></div>
+            <div class="loading x-auto hide"></div>
+          </div>
+        </div>
+        <div class="equal eq2">
+          <div class="pie ml5" id="catepie">
+            <h3 class="c888">来源分类</h3>
+            <div class="chart hide"></div>
+            <div class="hint caaa hide"></div>
+            <div class="loading x-auto hide"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="public/theme/backend/js/datetimepicker.js"></script>
+</body>
+</html>

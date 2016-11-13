@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/login.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript" src="public/script/md5.js"></script>
+<script type="text/javascript">
+function login(btn){
+  $('#username').vdsFieldChecker({rules: {required:[true, '请输入登录名']}, tipsPos:'abs'});
+  $('#password').vdsFieldChecker({rules: {required:[true, '请输入密码']}, tipsPos:'abs'});
+  if($('#captcha').size() > 0){
+    $('#captcha').vdsFieldChecker({rules: {required:[true, '请输入验证码']}, tipsPos:'abs'});
+  }
+  $('form').vdsFormChecker({
+    beforeSubmit: function(){
+      $(btn).addClass('disabled').text('正在登陆').prop('disabled', true);
+      vdsSetCipher('password', 'Verydows');
+    }
+  });
+}
+
+function resetCaptcha(){
+  var rand = Math.random();
+  var src = "<{url c='api/captcha' a='image' v='"+rand'}>;
+  $('#captcha-img').attr('src', src);	
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="banner fl">
+    <h1><a href="http://www.verydows.com/" target="_blank">Verydows</a></h1>
+    <h2 class="mt10">高效安全强大的电子商务平台管理系统</h2>
+    <p class="mt8">一站式开启电商之旅</p>
+  </div>
+  <{if empty($lockout)}>
+  <form method="post" action="<{url m=$MOD c='main' a='login'}>">
+    <input type="password" value="" class="hide" />
+    <input type="hidden" name="<{$_SESSION.LOGIN_TOKEN.KEY}>" value="<{$_SESSION.LOGIN_TOKEN.VAL}>" />
+    <div class="login">
+      <h2 class="c666">系统管理登陆</h2>
+      <dl class="username mt20">
+        <dt><i class="icon"></i></dt>
+        <dd><input name="username" id="username" type="text" placeholder="请输入登录名" /></dd>
+      </dl>
+      <dl class="pwd mt20">
+        <dt><i class="icon"></i></dt>
+        <dd><input name="password" id="password" type="password" placeholder="请输入密码" autocomplete="off" /></dd>
+      </dl>
+      <{if $captcha == 1}>
+      <div class="captcha module mt20 cut">
+        <div class="module cut">
+          <dl class="fl cut"><dd><input name="captcha" id="captcha" type="text" placeholder="请输入验证码" /></dd></dl>
+          <div class="fr"><a onclick="resetCaptcha()">看不清换一张</a></div>
+        </div>
+        <div class="mt10"><img src="<{url c='api/captcha' a='image'}>" id="captcha-img" onclick="resetCaptcha()" /></div>
+      </div>
+      <{/if}>
+      <div class="login-btn cut">
+        <div class="fl"><a class="btn unslt" onclick="login(this)">登 陆</a></div>
+        <div class="fr"><label><input name="stay" type="checkbox" value="1" /><font class="unslt">一周内保持登陆</font></label></div>
+      </div>
+    </div>
+  </form>
+  <{else}>
+  <div class="login">
+    <h2 class="c666">系统管理登陆</h2>
+    <div class="lockout pad10">由于您多次输入错误的登录信息，系统将拒绝您的所有登录请求，请于<b><{$lockout}>分钟</b>后刷新本页面重新尝试登录！</div>
+  </div>
+  <{/if}>
+</div>
+</body>
+</html>

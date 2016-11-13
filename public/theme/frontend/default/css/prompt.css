@@ -1,0 +1,11 @@
+html, body {background:#f6f6f6;}
+.w800 {width:800px;margin:100px auto;}
+.err404 {padding:200px 0 100px 0;border:1px solid #eee;background:#fff url(../images/404_error.gif) no-repeat center 50px;}
+.err404 a {font-size:14px;margin:0 10px;}
+.prompt {padding:0 0 50px 0;text-align:center;border:1px solid #e8e8e8;background:#fff;}
+.prompt h1 {font-size:16px;padding:8px 0;background:#f8f8f8;border-bottom:1px solid #eee;}
+.prompt h3 {font-size:14px;color:#666;font-weight:normal;line-height:150%;}
+.prompt h3.success {color:#009933}
+.prompt h3.error {color:#CC3366}
+.prompt .countdown {color:#CC3366;margin:0 3px;}
+.prompt .links a {margin:0 10px;}

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/panel.css" />
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/panel.js"></script>
+<script type="text/javascript">
+function jump(uri){
+  url = 'index.php?m=<{$MOD}>&' + uri;
+  parent.$('#main').attr('src', url);
+}
+</script>
+</head>
+<body>
+<!-- 头部开始 -->
+<{include file='backend/lib/header.html'}>
+<!-- 头部结束 -->
+<div class="container">
+  <!-- 菜单开始 -->
+  <div class="nav fl" id="nav">
+    <{foreach $menus as $k => $v}>
+    <h2><{$k}></h2>
+    <{foreach $v as $kk => $vv}>
+    <{if !is_array($vv)}>
+    <div class="nochild">
+      <ul><li onclick="jump('<{$vv}>')"><a><i class="arrow"></i><{$kk}></a></li></ul>
+    </div>
+    <{else}>
+    <div>
+      <h3><a><i class="arrow"></i><{$kk}></a></h3>
+      <ul>
+        <{foreach $vv as $kkk => $vvv}>
+        <li onclick="jump('<{$vvv}>')"><a><i class="arrow"></i><{$kkk}></a></li>
+        <{/foreach}>
+      </ul>
+    </div>
+    <{/if}>
+    <{/foreach}>
+    <{/foreach}>
+  </div>
+  <!-- 菜单结束 -->
+  <!-- 主体开始 -->
+  <div class="rwrap">
+    <iframe name="main" id="main" scrolling="auto" width="100%" height="700" frameborder="0" src="<{url m=$MOD c='main' a='dashboard'}>"></iframe>
+  </div>
+  <!-- 主体结束 -->
+</div>
+<!-- 页脚开始 -->
+<div class="footer" id="footer"><p>Powered by Verydows © <{date('Y')}></p></div>
+<!-- 页脚结束-->
+</body>
+</html>

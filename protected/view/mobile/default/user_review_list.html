@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>购买评价 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  showReviews();
+  $.vdsTouchScroll({
+    onBottom: function(){
+      var container = $('#reviews');
+      if(container.data('cur') != container.data('next')){
+        showReviews();
+      }else{
+        $('#nomore').show();
+      }
+    },
+  });
+});
+
+function showReviews(){
+  var container = $('#reviews'), page_id = container.data('next');
+  $.asynList("<{url c='api/review' a='list'}>", {page:page_id, pernum:8}, function(res){
+    if(res.status == 'success'){
+      container.append(juicer($('#review-tpl').html(), res));
+      if(res.paging){
+        container.data('cur', page_id);
+        container.data('next', res.paging.next_page);
+      }
+    }else{
+      container.parent().html($('#nodata-tpl').html());
+    }
+  });
+}
+</script>
+</head>
+<body>
+<div class="wrapper" id="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>我的评价</h2>
+  </div>
+  <!-- header end -->
+  <div class="module cut">
+    <div class="revli cut" id="reviews" data-cur='1' data-next='1'></div>
+    <div class="nomore mt8 center hide" id="nomore">没有更多内容了</div>
+  </div>
+</div>
+<!-- 评价模板开始 -->
+<script type="text/template" id="review-tpl">
+{@each list as v}
+<dl>
+  <dt>
+    <a href="<{url c='mobile/order' a='view' id='${v.order_id}'}>">
+      <div class="gim fl"><img src="<{$common.baseurl}>/upload/goods/prime/50x50/${v.goods_image}" /></div>
+      <div class="gname">${v.goods_name}</div>
+    </a>
+  </dt>
+  <dd class="con">${v.content}</dd>
+  <dd class="rating mt8">
+    <div class="fl">
+      <font>${v.satis}</font>
+      <span class="star-${v.rating}"><i class="iconfont">&#xe612;</i><i class="iconfont">&#xe612;</i><i class="iconfont">&#xe612;</i><i class="iconfont">&#xe612;</i><i class="iconfont">&#xe612;</i></span>
+    </div>
+    <div class="fr">${v.created_date}</div>
+  </dd>
+  {@if v.replied}
+  <dd class="reply mt5">
+    <p class="c666"><b class="c888">客服回复：</b>${v.replied.content}</p>
+    <p>${v.replied.dateline}</p>
+  </dd>
+  {@/if}
+</dl>
+{@/each}
+</script>
+<!-- 评价模板结束 -->
+<script type="text/template" id="nodata-tpl">
+<div class="nodata">
+  <div class="th"><span><i class="iconfont">&#xe622;</i></span><div class="line"></div></div>
+  <p>暂无任何商品评价记录</p>
+</div>
+</script>
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8" />
+<{include file='mobile/default/lib/meta.html'}>
+<title>系统提示 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/prompt.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  var $cd = $('#countdown'), $timer = parseInt($cd.text());
+  window.setInterval(function(){
+    if($timer <= 0){window.clearInterval();return;}
+    $timer --;
+    $cd.text($timer);
+    if($timer == 0){
+      window.location.href = "<{$rs.redirect nofilter}>";
+    }
+  }, 1000); 
+});
+</script>
+</head>
+<body>
+<div class="wrapper" id="wrapper">
+  <!-- header start -->
+  <div class="header"><h2>系统提示</h2></div>
+  <!-- header end -->
+  <div class="sysprompt module">
+    <div class="main cut">
+      <i class="type-<{$rs.type}>"></i>
+      <h3 class="mt20 xauto <{$rs.type}>"><{if is_array($rs.text)}><{foreach $rs.text as $v}><{$v}><br /><{/foreach}><{else}><{$rs.text}><{/if}></h3>
+      <p class="center c999 mt15">系统将在<font id="countdown" class="countdown"><{$rs.time}></font>秒后自动跳转</p>
+    </div>
+    <div class="act center mt20">
+      <a href="<{url c='mobile/main' a='index'}>">返回首页</a>
+      <a href="<{$rs.redirect nofilter}>">直接跳转</a>
+    </div>
+  </div>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

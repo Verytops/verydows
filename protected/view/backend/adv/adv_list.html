@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<{include file='backend/lib/meta.html'}>
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/verydows.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/main.css" />
+<link rel="stylesheet" type="text/css" href="public/theme/backend/css/datetimepicker.css"/>
+<script type="text/javascript" src="public/script/jquery.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/list.js"></script>
+<script type="text/javascript">
+$(function(){
+  searchRes(1);
+  $('#start_date').datetimepicker({
+    format:'Y-m-d',
+    formatDate:'Y-m-d',
+    allowBlank:true,
+    onShow:function(ct){
+      this.setOptions({maxDate:$('#end_date').val()? $('#end_date').val(): false});
+    },
+    timepicker:false,
+  });
+  $('#end_date').datetimepicker({
+    format:'Y-m-d',
+    formatDate: 'Y-m-d',
+    allowBlank:true,
+    onShow:function(ct){
+      this.setOptions({minDate:$('#start_date').val()? $('#start_date').val():false})
+    },
+    timepicker:false
+  });
+});
+
+function searchRes(page_id){
+  var dataset = {
+    start_date: $('#start_date').val(),
+    end_date: $('#end_date').val(),
+    type: $('#type').val(),
+    status: $('#status').val(),
+    kw: $('#kw').val(),
+    page: page_id,
+    pernum: 10
+  };
+  $.asynList("<{url m=$MOD c='adv' a='index' step='search'}>", dataset, function(data){
+    if(data.status == 'success'){
+      $('#rows').append(juicer($('#table-tpl').html(), data));
+      $('#rows tr').vdsRowHover();
+      $('#rows tr:even').addClass('even');
+      if(data.paging != null) $('#rows').append(juicer($('#paging-tpl').html(), data));
+    }else{
+      $('#rows').append("<div class='nors mt5'>未找到相关数据记录...</div>");
+    }
+  });
+}
+
+function pageturn(page_id){searchRes(page_id);}
+</script>
+</head>
+<body>
+<div class="content">
+  <div class="loc"><h2><i class="icon"></i>广告列表</h2></div>
+  <div class="box">
+    <div class="doacts">
+      <a class="ae add btn" href="<{url m=$MOD c='adv' a='add'}>"><i></i><font>添加新广告</font></a>
+      <a class="ae btn" onclick="doslvent('<{url m=$MOD c='adv' a='edit'}>')"><i class="edit"></i><font>编辑</font></a>
+      <a class="ae btn" onclick="domulent('<{url m=$MOD c='adv' a='delete'}>')"><i class="remove"></i><font>删除</font></a>
+    </div>
+    <div class="stools mt5">
+      <input class="date w150 txt" name="start_date" id="start_date" type="text" value="" placeholder="起始日期" />
+      <input class="date w150 txt" name="end_date" id="end_date" type="text" value="" placeholder="结束日期" />
+      <select name="type" class="slt" id="type">
+        <option value="" selected="selected">类型不限</option>
+        <{foreach $type_list as $k => $v}>
+        <option value="<{$k}>"><{$v}></option>
+        <{/foreach}>
+      </select>
+      <select name="status" class="slt" id="status">
+        <option value="" selected="selected">状态不限</option>
+        <option value="1">启用</option>
+        <option value="0">关闭</option>
+      </select>
+      <input type="text" class="w300 txt" name="kw" placeholder="输入广告名称关键词" />
+      <button type="button" class="sbtn btn" onclick="searchRes(1)">搜 索</button>
+    </div>
+    <div class="module mt5" id="rows"></div>
+  </div>
+</div>
+<script type="text/template" id="table-tpl">
+<form method="post" id="mulentform">
+<table class="datalist">
+  <tr>
+    <th width="50" colspan="2">编号</th>
+    <th class="ta-l">名称</th>
+    <th width="180">广告位置</th>
+    <th width="100">类型</th>
+    <th width="220" colspan="3">有效日期</th>
+    <th width="80">显示顺序</th>
+    <th width="90">启用状态</th>
+  </tr>
+  {@each list as v}
+  <tr>
+    <td width="20"><input name="id[]" type="checkbox" value="${v.adv_id}" /></td>
+    <td width="30">${v.adv_id}</td>
+    <td class="ta-l"><a class="blue" href="<{url m=$MOD c='adv' a='edit' id='${v.adv_id}'}>">${v.name}</a></td>
+    <td>{@if v.position_name != ''}${v.position_name}{@else}<font class="c888">未设置</font>{@/if}</td>
+    <td>${v.type}</td>
+    <td width="100" class="ta-r">{@if v.start_date != ''}${v.start_date}{@else}<font class="c888">不限</font>{@/if}</td>
+    <td width="20" class="c999">~</td>
+    <td width="100" class="ta-l">{@if v.end_date != ''}${v.end_date}{@else}<font class="c888">不限</font>{@/if}</td>
+    <td>${v.seq}</td>
+    <td>{@if v.status == 1}<i class="icon yes"></i>{@else}<i class="icon no"></i>{@/if}</td>
+  </tr>
+  {@/each}
+</table>
+</form>
+</script>
+<{include file='backend/lib/paging.html'}>
+<script type="text/javascript" src="public/script/juicer.js"></script>
+<script type="text/javascript" src="public/theme/backend/js/datetimepicker.js"></script>
+</body>
+</html>

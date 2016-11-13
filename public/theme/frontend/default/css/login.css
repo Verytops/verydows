@@ -1,0 +1,67 @@
+@charset "utf-8";
+html, body {background:#f6f6f6;}
+.ml80 {margin-left:80px;}
+.w900 {width:900px;margin-left:auto;margin-right:auto;}
+.ml530 {margin-left:530px;}
+.wbox {background:#fff;padding:15px;}
+.form-submit {display:block;color:#f6f6f6;font-size:14px;padding:7px 0;background:#3E8BF5;border:1px solid #2378EB;cursor:pointer}
+.form-submit:hover {text-decoration:none;color:#ffffcc;background:#2C81F3;border-color:#156DE6}
+/* 登陆 */
+.login-banner {width:500px;height:auto;}
+.login {width:300px;padding:20px 0;}
+.login h2 {font-size:14px;padding:0 0 0 5px;}
+.login dl {display:block;width:298px;height:34px;border:1px solid #ccc;overflow:hidden}
+.login dl dt {float:left;display:block;width:16px;height:16px;padding:9px;background:#f3f3f3;border-right:1px solid #ccc;}
+.login dl dt i {width:16px;height:16px;}
+.login dl dd {display:block;float:right;width:260px;text-align:right}
+.login dl dd input {width:250px;height:34px;line-height:34px;font-size:12px;padding:0 5px;border:none;background:none;outline:none}
+.login dl.username dt i {width:16px;height:16px;background-position:-260px -50px;}
+.login dl.pwd dt i {background-position:-290px -50px;}
+.login dl.captcha dt {height:18px;padding:8px 9px;}
+.login dl.captcha dt i {width:16px;height:18px;background-position:-320px -50px;}
+.login div.captcha {padding:0 0 10px 0;}
+.login div.captcha a.fr {display:block;width:90px;padding:18px 0 18px 25px;text-decoration:none;border-left:1px solid #ddd;cursor:pointer}
+.login div.captcha a.fr font {margin-left:8px;color:#0090C0;}
+.login div.captcha a.fr:hover font {color:#0070C0;}
+.login .ck {color:#666;}
+.login .ck label input {vertical-align:middle}
+.login .oauthli .line {border-color:#eee;}
+.login .oauthli a {margin:0 8px;}
+/* 注册 */
+.signup, .binder {border:1px solid #e6e6e6;}
+.binder {padding-bottom:30px;}
+.signup .th, .binder .th {padding:8px 0;background:#f7f7f7;border-bottom:1px solid #e6e6e6;}
+.signup .th h2, .binder .th h2 {width:40%;padding:0 0 0 10px;font-size:14px;color:#777;}
+.signup .th div.fr, .binder .th div.fr {color:#777;padding:0 15px 0 0;}
+.signup .form {padding:30px 0 50px 50px;}
+.signup dl {display:block;margin-bottom:20px;}
+.signup dl dt {float:left;display:block;width:75px;line-height:36px;font-size:12px;color:#777;text-align:right}
+.signup dl dd {display:block;margin-left:80px;}
+.signup dl dd input {width:260px;padding:7px 0 7px 5px;border:1px solid #7F9DB9;border-bottom:1px solid #C0D2E0;border-right:1px solid #C0D2E0;}
+.signup dl.captcha dd input {width:150px;}
+.signup dl.captcha dd a {color:#0090C0;margin-left:20px;text-decoration:none;cursor:pointer}
+.signup dl.captcha dd a:hover {color:#0070C0;}
+.signup .agreement input {vertical-align:middle}
+.sutr {width:270px;}
+/* 找回密码 */
+.retrieve h2 {font-size:14px;color:#666;}
+.retrieve .step {width:640px;height:auto;position:relative;}
+.retrieve .step ul {position:relative;z-index:2;}
+.retrieve .step ul li {width:160px;float:left;text-align:center;}
+.retrieve .step ul li .circle {width:22px;height:22px;line-height:22px;font-weight:bold;color:#fff;margin:0 auto;background:#e2e2e2;-moz-border-radius:11px;-webkit-border-radius:11px;border-radius:11px;}
+.retrieve .step ul li p {margin-top:5px;color:#aaa;}
+.retrieve .step ul li.passed {position:relative;}
+.retrieve .step ul li.passed .axis {width:160px;height:5px;background:#7ABD54;position:absolute;top:10px;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;z-index:1}
+.retrieve .step ul li.passed .circle {position:relative;background:#7ABD54;z-index:2;}
+.retrieve .step ul li.passed p {color:#7ABD54}
+.retrieve .xaxis {width:100%;height:5px;line-height:0;font-size:0;background:#e2e2e2;position:absolute;top:10px;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;z-index:1}
+.retrieve .sfm {width:420px;height:auto;}
+.sfm dl.table {display:block;overflow:hidden;line-height:30px;padding:6px 0;}
+.sfm dl dt {width:100px;text-align:right;float:left;color:#666;}
+.sfm dl dd {margin-left:110px;}
+.sfm dl dd input.txt {width:180px;padding:6px 5px;}
+.sfm .pl100 {padding-left:100px;}
+.sfm .pl120 {padding-left:115px;}
+.sfm .pl120 img {vertical-align:middle;}
+.sfm .nextbtn {width:120px;height:28px;line-height:28px;color:#f6f6f6;text-align:center;text-decoration:none;background:#3E8BF5;border:1px solid #2378EB;cursor:pointer}
+.sfm .nextbtn:hover {color:#FC6}

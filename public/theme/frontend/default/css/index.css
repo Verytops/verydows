@@ -1,0 +1,31 @@
+.categories {height:250px;}
+/* 宽高容器 */
+div.w1110 {width:1110px;height:auto;position:relative;overflow:hidden;}
+/* 轮播图片 */
+.carousel {width:630px;height:240px;margin:10px 0 0 10px;position:relative;}
+.carousel-imgs {width:100%;height:240px;}
+.carousel-tog {position:absolute;bottom:12px;right:20px;}
+.carousel-tog li {display:block;float:left;width:10px;height:10px;border:1px solid #fff;margin-left:12px;background:#ccc;overflow:hidden;text-indent:-99px;cursor:pointer;}
+.carousel-tog li.cur {background:#FFCC66;}
+/* 资讯 */
+.news {width:238px;height:158px;border:1px solid #e5e5e5;}
+.news h2 {font-size:14px;color:#666;padding:7px 0 7px 10px;border-bottom:1px solid #e5e5e5;background:#f3f3f3;}
+.news h2 a {color:#999;font-weight:normal;font-size:12px;margin-right:10px;}
+.news h2 a i {font-style:normal;font-family:simsun;}
+.news h2 a:hover, .news ul li a:hover {color:#CC3366;text-decoration:none}
+.news ul {padding:5px 8px;}
+.news ul li {padding:7px 5px;}
+.news ul li a {color:#666;}
+.news ul li a b {color:#666;margin-right:5px;}
+/* 商品列表 */
+.gli_t {color:#666;padding:0 0 0 2px;}
+.gli_t h2 {font-size:18px;font-weight:normal}
+.gli {padding:10px 0;}
+.gli ul li {display:block;float:left;width:190px;margin-right:10px;padding:10px 10px 15px 10px;border:1px solid #e9e9e9;}
+.gli ul li .im {text-align:center;}
+.gli ul li .im img {width:160px;height:160px;}
+.gli ul li h3 { padding:10px;}
+.gli ul li h3 a {font-weight:normal;color:#666;}
+.gli ul li h3 a:hover {color:#CC3366;text-decoration:none}
+.gli ul li p.price {text-align:center;font-size:16px;color:#CC3333}
+.gli ul li p.price i {font-family:Arial;font-style:normal;font-size:14px;}

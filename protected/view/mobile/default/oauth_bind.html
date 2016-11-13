@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<meta name="keywords" content="绑定本站账号" />
+<meta name="description" content="绑定本站账号" />
+<title>绑定本站账号</title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/login.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('.tabs a').on('click', function(){
+    if(!$(this).hasClass('cur')){
+      var i = $(this).index();
+      $('.eform').hide().eq(i).show();
+      $('.tabs a.cur').removeClass('cur');
+      $(this).addClass('cur');
+    }
+  });
+});
+//注册请求
+function register(){
+  var form = $('.eform').eq(0).find('form');
+  form.find('input[name="username"]').vdsFieldChecker({rules: {required:[true, '请设置用户名']}});
+  form.find('input[name="email"]').vdsFieldChecker({rules: {required:[true, '请设置邮箱地址'], email:[true, '邮箱地址无效']}});
+  form.find('input[name="password"]').vdsFieldChecker({rules: {required:[true, '请设置密码'], password:[true, '密码不符合要求，可包含字母、数字或特殊符号，长度须为6~32个字符']}});
+  form.find('input[name="repassword"]').vdsFieldChecker({rules: {equal:[form.find('input[name="password"]').val(), '两次密码不一致']}});
+  if(form.find('input[name="captcha"]').size() > 0){
+    form.find('input[name="captcha"]').vdsFieldChecker({rules: {required:[true, '请输入验证码']}});
+  }
+  if(form.vdsFormChecker({isSubmit:false}) == true){
+    $.asynInter("<{url c='api/user' a='register'}>", form.serialize(), function(res){
+      if(res.status == 'success'){
+        bindUser();
+      }else{
+        $.vdsPrompt({content:res.msg});
+      }
+    });
+  }
+}
+//登录请求
+function login(){
+  var form = $('.eform').eq(1).find('form'), username = form.find('input[name="username"]'), password = form.find('input[name="password"]'), captcha = form.find('input[name="captcha"]');
+  username.vdsFieldChecker({rules:{required:[true, '请输入用户名']}});
+  password.vdsFieldChecker({rules:{required:[true, '请输入密码']}});
+  if(captcha.size() > 0){
+    captcha.vdsFieldChecker({rules: {required:[true, '请输入验证码']}});
+  }
+  if(form.vdsFormChecker({isSubmit:false}) == true){
+    $.asynInter("<{url c='api/user' a='login'}>", {username:username.val(), password:hex_md5(password.val()+'Verydows'), captcha:captcha.val()}, function(res){
+      if(res.status == 'success'){
+        bindUser();
+      }else{
+        $.vdsPrompt({content:res.msg, clicked: function(){
+          if(res.captcha == 'enabled' && captcha.size() == 0){
+            var captchaTpl = $('#captcha-tpl').html().replace('$captchaSrc', "<{url c='api/captcha' a='image'}>");
+            form.find('div.pwd').after(captchaTpl);
+          }
+        }});
+      }
+    });
+  }
+}
+//绑定第三方授权信息
+function bindUser(){
+  $.asynInter("<{url c='api/oauth' a='bind' party=$oauth.party}>", null, function(res){
+    var target = "<{url c='mobile/user' a='index'}>";
+    if(res.status == 'success'){
+      window.location.href = target;
+    }else{
+      $.vdsPrompt({content:res.msg, clicked: function(){
+        window.location.href = target;
+      }});
+    }
+  });
+}
+</script>
+</head>
+<body>
+<div class="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="<{url c='mobile/user' a='login'}>"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>完善您的账号信息</h2>
+  </div>
+  <!-- header end -->
+  <div class="oauth">
+    <div class="tabs"><a class="cur">完善账号信息</a><a>绑定已有账号</a></div>
+    <div class="form">
+      <div class="eform">
+        <form>
+        <div class="tr puff"><input class="field" type="text" name="username" id="username" placeholder="设置用户名" /></div>
+        <div class="tr puff mt10"><input class="field" type="email" name="email" id="email" placeholder="设置邮箱" /></div>
+        <div class="tr puff mt10"><input class="field" type="password" name="password" placeholder="设置登录密码" /><i class="vineyebtn iconfont">&#xe66e;</i></div>
+        <div class="tr puff mt10"><input class="field" type="password" name="repassword" placeholder="确认登录密码" /><i class="vineyebtn iconfont">&#xe66e;</i></div>
+        <{if !empty($GLOBALS.cfg.captcha_user_register)}>
+        <div class="captcha puff tr mt10" id="captcha">
+          <a class="fr"><img onclick="resetCaptcha(this)" src="<{url c='api/captcha' a='image'}>" /></a>
+          <input class="field" name="captcha" type="text" placeholder="请输入图形验证码" />
+        </div>
+        <{/if}>
+        <div class="submit mt20"><a href="javascript:void(0)" onClick="register()">确定并提交</a></div>
+        </form>
+      </div>
+      <div class="login eform hide">
+        <form>
+        <div class="user tr"><span class="icopos"><i class="iconfont">&#xe60c;</i></span><input class="field variseclear" type="text" name="username" placeholder="请输入用户名" required /><i class="vinclrbtn iconfont">&#xe62d;</i></div>
+        <div class="pwd tr"><span class="icopos"><i class="iconfont">&#xe607;</i></span><input class="field variseclear" type="password" name="password" placeholder="请输入密码" required /><i class="vinclrbtn iconfont">&#xe62d;</i><i class="vineyebtn iconfont">&#xe66e;</i></div>
+        <{if !empty($login_captcha)}>
+        <div class="captcha tr puff mt8" id="captcha">
+          <a class="fr"><img onclick="resetCaptcha(this)" src="<{url c='api/captcha' a='image'}>" /></a>
+          <span class="icopos"><i class="iconfont">&#xe601;</i></span><input class="field" name="captcha" type="text" placeholder="请输入图形验证码" />
+        </div>
+        <{/if}>
+        <div class="submit mt20"><a href="javascript:void(0)" onClick="login()">登录并绑定</a></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/template" id="captcha-tpl">
+<div class="captcha puff tr mt10" id="captcha">
+  <a class="fr"><img onclick="resetCaptcha(this)" src="$captchaSrc" /></a>
+  <input class="field" type="text" placeholder="请输入图形验证码" />
+</div>
+</script>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

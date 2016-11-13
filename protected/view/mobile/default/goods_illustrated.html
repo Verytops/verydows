@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title><{$goods.goods_name}> - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/goods.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+</head>
+<body>
+<div class="wrapper">
+  <!-- header start -->
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>图文详情</h2>
+  </div>
+  <!-- header end -->
+  <div class="ilustd">
+    <div class="gsubth"><h2 class="xauto"><{$goods.goods_name}></h2></div>
+    <{if !empty($goods.goods_content)}>
+    <div class="main mt10"><{$goods.goods_content nofilter}></div>
+    <{else}>
+    <div class="nodata f14 caaa">暂无内容...</div>
+    <{/if}>
+  </div>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>第3步 - 安装 Verydows</title>
+<link rel="stylesheet" type="text/css" href="template/style.css" />
+<style type="text/css">
+.infotable {text-align:left}
+.infotable h2 {text-align:center;font-size:14px;color:#006666;}
+.infotable table {border-collapse:collapse}
+.infotable table th, .infotable table td {padding:8px;border:1px solid #e5e5e5;}
+.infotable table th {color:#666;}
+.infotable table td {color:#555;}
+font.green {font-size:14px;}
+input.w240 {width:240px;}
+</style>
+<script type="text/javascript" src="../public/script/jquery.js"></script>
+<script type="text/javascript" src="../public/theme/backend/js/verydows.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('#submitbtn').on('click', function(){submitForm()});
+});
+function submitForm(){
+  var form = $('form');
+  form.find('input[name="db_host"]').vdsFieldChecker({rules:{required:[true, '请设置数据库主机']}});
+  form.find('input[name="db_port"]').vdsFieldChecker({
+    rules:{
+      required:[true, '请设置数据库端口'], 
+      format: [/(^[1-9]\d{0,3}$)|(^[1-5]\d{4}$)|(^6[0-4]\d{3}$)|(^65[0-4]\d{2}$)|(^655[0-2]\d$)|(^6553[0-5]$)/.test(form.find('input[name="db_port"]').val()), '端口只能是 1 - 65535']
+    }
+  });
+  form.find('input[name="db_user"]').vdsFieldChecker({rules:{required:[true, '请设置数据库用户']}});
+  form.find('input[name="db_name"]').vdsFieldChecker({rules:{required:[true, '请设置数据库名称']}});
+  form.find('input[name="db_table_pre"]').vdsFieldChecker({rules:{format:[/^[A-Za-z0-9_-]*$/.test(form.find('input[name="db_table_pre"]').val()), '数据库表前缀不能包含特殊字符']}});
+  form.find('input[name="admin_username"]').vdsFieldChecker({
+    rules:{
+      required:[true, '请设置管理员用户名'],
+      format:[/^[a-zA-Z][_a-zA-Z0-9]{4,15}$/.test(form.find('input[name="admin_username"]').val()), '用户名不符合格式要求'],
+    }
+  });
+  form.find('input[name="admin_password"]').vdsFieldChecker({rules:{required:[true, '请设置管理员密码'], password:[true, '密码不符合格式要求']}});
+  form.find('input[name="admin_repassword"]').vdsFieldChecker({rules:{equal:[form.find('input[name="admin_password"]').val(), '两次密码不一致']}});
+  form.find('input[name="admin_email"]').vdsFieldChecker({rules:{required:[true, '请设置管理员邮箱'], email:[true, '无效的邮箱地址'], maxlen:[60, '邮箱不能超过60个字符']}});
+  form.vdsFormChecker({
+    beforeSubmit:function(){
+      $('#submitbtn').text('正在提交...').addClass('disabled').off();
+    }
+  });
+}
+</script>
+</head>
+<body>
+<!-- header start -->
+<?php include('template'.DS.'header.html') ?>
+<!-- header end -->
+<!-- container start -->
+<div class="container mt20">
+  <?php include('template'.DS.'progressbar.html') ?>
+  <form method="post" action="index.php?step=4">
+    <div class="checx_envir mt40" style="padding:10px 15px 20px 15px;line-height:180%;border:1px solid #d5d5d5;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;">
+      <div class="infotable mt10">
+        <div class="module">
+          <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+            <tr><th colspan="2"><h2>设置数据库</h2></th></tr>
+            <tr>
+              <th width="150" align="right">数据库主机 :</th>
+              <td><input name="db_host" type="text" value="localhost" class="w240 txt" /></td>
+            </tr>
+            <tr>
+              <th width="150" align="right">数据库端口 :</th>
+              <td><input name="db_port" type="text" value="3306" class="w240 txt" /></td>
+            </tr>
+            <tr>
+              <th align="right">数据库用户 :</th>
+              <td><input name="db_user" type="text" value="root" class="w240 txt" /></td>
+            </tr>
+            <tr>
+              <th align="right">数据库密码 :</th>
+              <td><input name="db_pass" type="text" class="w240 txt" /></td>
+            </tr>
+            <tr>
+              <th align="right">数据库名称 :</th>
+              <td><input name="db_name" type="text" class="w240 txt" value="verydows" /></td>
+            </tr>
+            <tr>
+              <th align="right">数据库表前缀 :</th>
+              <td><input name="db_table_pre" type="text" value="verydows_" class="w240 txt" /></td>
+            </tr>
+          </table>
+        </div>
+        <div class="module mt10">
+          <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="dirtable">
+            <tr><th colspan="2"><h2>设置系统初始化管理员</h2></th></tr>
+            <tr>
+              <th width="150" align="right">管理员用户名 :</th>
+              <td><input name="admin_username" type="text" value="admin" class="w240 txt" /><p class="caaa mt5">用户名可以包含字母、数字或下划线，须以字母开头，长度为5~16个字符</p></td>
+            </tr>
+            <tr>
+              <th align="right">设置密码 :</th>
+              <td><input name="admin_password" type="password" class="w240 txt" /><p class="caaa mt5">密码可包含字母、数字或特殊符号，长度为6~32个字符</p></td>
+            </tr>
+            <tr>
+              <th align="right">确认密码 :</th>
+              <td><input name="admin_repassword" type="password" class="w240 txt" /></td>
+            </tr>
+            <tr>
+              <th align="right">管理员邮箱 :</th>
+              <td><input title="管理员邮箱" name="admin_email" type="text" id="admin_email" class="w240 txt" placeholder="@" /></td>
+            </tr>
+          </table>
+        </div>
+        <!--div class="module mt20" style="text-align:center;">
+          <p>
+            <label class="mr10"><font class="mr5">是否安装样本数据:</font><input style="vertical-align:middle" name="sample_data" type="checkbox" value="1" checked="checked" /></label>
+            <span class="gray">(安装简单的样本测试数据)</span>
+          </p>
+          <p class="mt5 green">如果您是首次使用Verydows, 建议您选择安装样本数据，以便您能快速熟悉本系统的各项功能</p>
+        </div-->
+      </div>
+    </div>
+    <div class="mt30" style="text-align:center;"><a class="sbtn btn" id="submitbtn">下一步</a></div>
+  </form>
+</div>
+<!-- container end -->
+</body>
+</html>

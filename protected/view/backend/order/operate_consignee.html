@@ -1,0 +1,59 @@
+<script type="text/javascript">
+function submitConsigneeForm(){
+  var form = $('#pop-consignee form');
+  form.find('input[name="receiver"]').vdsFieldChecker({rules: {required:[true, '收件人不能为空'], maxlen:[30, '收件人不能超过30个字符']}});
+  form.find('input[name="province"]').vdsFieldChecker({rules: {required:[true, '省份不能为空'], maxlen:[20, '省份不能超过20个字符']}});
+  form.find('input[name="city"]').vdsFieldChecker({rules: {required:[true, '城市不能为空'], maxlen:[20, '城市不能超过20个字符']}});
+  form.find('input[name="borough"]').vdsFieldChecker({rules: {required:[true, '区县不能为空'], maxlen:[20, '区县不能超过20个字符']}});
+  form.find('input[name="address"]').vdsFieldChecker({rules: {required:[true, '详细地址不能为空'], maxlen:[240, '详细地址不能超过240个字符']}});
+  form.find('input[name="zip"]').vdsFieldChecker({rules: {zip:[true, '邮编格式不正确']}});
+  form.find('input[name="mobile"]').vdsFieldChecker({rules: {required:[true, '手机号码不能为空'], mobile:[true, '手机号码格式不正确']}});
+  form.find('textarea[name="cause"]').vdsFieldChecker({
+    rules: {required:[true, '修改原因不能为空'], maxlen:[240, '修改原因不能超过240个字符']},
+    tipsPos: 'br'
+  });
+  form.vdsFormChecker();
+}
+</script>
+<div class="poper cut" id="pop-consignee"> <a class="close" onclick="closeOperate('pop-consignee')"></a>
+  <h3 class="th f14 ta-c">修改收件人信息</h3>
+  <div class="pad10 cut">
+    <form method="post" action="<{url m=$MOD c='order' a='operate' step='consignee' id=$order.order_id}>">
+      <table class="dataform">
+        <tr>
+          <th width="100">收件人</th>
+          <td><input name="receiver" type="text" class="w200 txt" value="<{$consignee.receiver}>" /></td>
+        </tr>
+        <tr>
+          <th>所在地区</th>
+          <td>
+            <input name="province" type="text" class="w100 txt" value="<{$consignee.province}>" placeholder="省份" />
+            <input name="city" type="text" class="w100 txt" value="<{$consignee.city}>" placeholder="城市" />
+            <input name="borough" type="text" class="w100 txt" value="<{$consignee.borough}>" placeholder="区/县" />
+          </td>
+        </tr>
+        <tr>
+          <th>详细地址</th>
+          <td><input name="address" type="text" class="w400 txt" value="<{$consignee.address}>" /></td>
+        </tr>
+        <tr>
+          <th>邮编</th>
+          <td><input name="zip" type="text" class="w100 txt" value="<{$consignee.zip}>" /></td>
+        </tr>
+        <tr>
+          <th>手机号码</th>
+          <td><input name="mobile" type="text" class="w200 txt" value="<{$consignee.mobile}>" /></td>
+        </tr>
+        <tr>
+          <th>修改原因</th>
+          <td><textarea class="txtarea" name="cause" cols="80" rows="4"></textarea></td>
+        </tr>
+      </table>
+      <div class="ta-c mt5 pad10">
+        <button type="button" class="ubtn btn" onclick="submitConsigneeForm()">确定</button>
+        <span class="sep40"></span>
+        <button type="reset" class="fbtn btn" onclick="closeOperate('pop-consignee')">取消</button>
+      </div>
+    </form>
+  </div>
+</div>

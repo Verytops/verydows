@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>用户中心 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('#order-pending a').each(function(i, e){
+    $.getJSON("<{url c='api/order' a='pending'}>", {pending:$(e).data('pending')}, function(res){
+      if(res.status == 'success' && res.count > 0) $(e).find('em').text(res.count).show();
+    }); 
+  });
+  viewCartbar();
+  preserveSpace('footnav');
+});
+
+function logout(){
+  $.vdsConfirm({
+    content:'您确定要登出吗?',
+    ok: function(){
+      window.location.href = "<{url c='mobile/user' a='logout'}>";
+    }
+  });
+}
+</script>
+</head>
+<body>
+<div class="wrapper">
+  <div class="topinfo">
+    <div class="module xauto cut">
+      <div class="avatar fl"><a href="<{url c='mobile/user' a='profile'}>"><img src="<{if !empty($user.avatar)}><{$common.baseurl}>/upload/user/avatar/<{$user.avatar}><{else}><{$common.baseurl}>/public/image/noavatar_m.gif<{/if}>" /></h3></div>
+      <div class="info">
+        <dl>
+          <dd class="mt5"><font class="f14"><{$user.username}></font><span class="ml10 dim"><{$account.group_name}></span></dd>
+          <dd class="mt5">
+            <font class="dim">账户余额：</font><b><{$account.balance}> 元</b>
+            <span class="sep5"></span>
+            <font class="dim">积分：</font><b><{$account.points}></b>
+          </dd>
+        </dl>
+      </div>
+    </div>
+    <div class="menus cut">
+      <ul>
+        <li><a href="<{url c='mobile/favorite' a='list'}>"><i class="iconfont">&#xe60a;</i><p>商品收藏</p></a></li>
+        <li><a href="<{url c='mobile/user' a='footprint'}>"><i class="iconfont">&#xe613;</i><p>我的足迹</p></a></li>
+        <li><a href="<{url c='mobile/consignee' a='list'}>"><i class="iconfont">&#xe625;</i><p>收件地址</p></a></li>
+        <li><a href="<{url c='mobile/review' a='list'}>"><i class="iconfont">&#xe622;</i><p>我的评价</p></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="columns module mt10 cut">
+    <div class="order">
+      <div class="th"><a class="fr" href="<{url c='mobile/order' a='list' order_status='all'}>">查看全部订单<i class="iconfont">&#xe614;</i></a><i class="icon"></i><font class="f14">我的订单</font></div>
+      <div class="menus cut" id="order-pending">
+        <a data-pending="pay" href="<{url c='mobile/order' a='list' pending='pay'}>"><i class="iconfont">&#xe624;</i><p>待付款</p><em>0</em></a>
+        <a data-pending="ship" href="<{url c='mobile/order' a='list' pending='ship'}>"><i class="iconfont">&#xe623;</i><p>待发货</p><em>0</em></a>
+        <a data-pending="sign" href="<{url c='mobile/order' a='list' pending='sign'}>"><i class="iconfont">&#xe627;</i><p>待签收</p><em>0</em></a>
+        <a data-pending="review" href="<{url c='mobile/order' a='list' pending='review'}>"><i class="iconfont">&#xe62c;</i><p>待评价</p><em>0</em></a>
+      </div>
+    </div>
+    <a class="aftersales row mt10" href="<{url c='mobile/aftersales' a='list'}>">
+      <span class="fl"><i class="iconfont">&#xe608;</i><font class="f14">售后服务</font></span>
+      <span class="fr"><i class="iconfont">&#xe614;</i></span>
+    </a>
+    <a class="feedback row" href="<{url c='mobile/feedback' a='list'}>">
+      <span class="fl"><i class="iconfont">&#xe634;</i><font class="f14">咨询反馈</font></span>
+      <span class="fr"><i class="iconfont">&#xe614;</i></span>
+    </a>
+    <a class="urinfo row" href="<{url c='mobile/user' a='profile'}>">
+      <span class="fl"><i class="iconfont">&#xe636;</i><font class="f14">个人设置</font></span>
+      <span class="fr"><i class="iconfont">&#xe614;</i></span>
+    </a>
+    <a class="helper row" href="<{url c='mobile/help' a='index'}>">
+      <span class="fl"><i class="iconfont">&#xe640;</i><font class="f14">帮助中心</font></span>
+      <span class="fr"><i class="iconfont">&#xe614;</i></span>
+    </a>
+    <a class="logout row" onclick="logout()">
+      <span class="fl"><i class="iconfont">&#xe63d;</i><font class="f14">退出登录</font></span>
+    </a>
+  </div>
+</div>
+<div class="footnav absmu" id="footnav">
+  <a href="<{url c='mobile/main' a='index'}>"><i class="iconfont">&#xe606;</i><span>首页</span></a>
+  <a href="<{url c='mobile/category' a='index'}>"><i class="iconfont">&#xe60b;</i><span>商品分类</span></a>
+  <a id="cartbar" href="<{url c='mobile/cart' a='index'}>"><i class="iconfont">&#xe603;</i><span>购物车</span><em class="hide">0</em></a>
+  <a class="cur"><i class="iconfont">&#xe632;</i><span>我的</span></a>
+</div>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>

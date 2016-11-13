@@ -1,0 +1,30 @@
+<tr id="type-flash" class="type-tr hide">
+  <th>Flash 广告</th>
+  <td>
+    <dl class="upsw pad5">
+      <dt class="pad5"><a class="cur ml5 mr5">上传文件</a><a class="ml10">输入URL</a></dt>
+      <dd class="mt5 pad5" id="advfla">
+        <div>
+          <label>
+          <input name="flash_file" type="file" />
+          </label>
+          <p class="c999 mt10">仅允许上传 "swf"、"flv" 格式的Flash文件</p>
+        </div>
+        <div class="hide">
+          <label>
+          <input name="flash_params[src]" class="w500 txt" type="text" />
+          </label>
+        </div>
+      </dd>
+    </dl>
+    <div class="mt5 pad5">
+      <label class="mr10"><font class="c666 mr5">Flash 宽度:</font>
+      <input id="flash-w" class="w100 txt" name="flash_params[width]" type="text" />
+      <font class="c999 ml5">像素(px)</font></label>
+      <label><font class="c666 mr5">Flash 高度:</font>
+      <input id="flash-h" class="w100 txt" name="flash_params[height]" type="text" />
+      <font class="c999 ml5">像素(px)</font></label>
+      <p class="c999 mt10">(选填) Flash在浏览器中的宽度和高度，如果留空或为0则表示不限制</p>
+    </div>
+  </td>
+</tr>

@@ -1,0 +1,58 @@
+<div class="bw-row pad10 cut">
+  <form method="post" action="<{url m=$MOD c='setting' a='update' step='user'}>">
+    <table class="dataform">
+      <tr>
+        <th width="140">用户注册邮箱认证</th>
+        <td>
+          <div class="pad5">
+            <label><input type="radio" name="user_register_email_verify" value="0" <{if $rs.user_register_email_verify == 0}>checked="checked"<{/if}> /><font class="red ml5">关闭</font></label>
+            <label class="ml20"><input type="radio" name="user_register_email_verify" value="1" <{if $rs.user_register_email_verify == 1}>checked="checked"<{/if}> /><font class="green ml5">注册完成时认证</font></label>
+            <label class="ml20"><input type="radio" name="user_register_email_verify" value="2" <{if $rs.user_register_email_verify == 2}>checked="checked"<{/if}> /><font class="c666 ml5">用户登陆后提示认证</font></label>
+            <p class="caaa mt10">如设置为 "注册完成后认证", 系统将会在用户注册完成时自动发送认证邮件，用户需完成邮箱认证后才能正常登陆</p>
+            <p class="caaa mt5">注：开启邮箱认证后，请确保系统邮件服务器设置正确并能正常发送邮件</p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>购买商品评价审核</th>
+        <td>
+          <div class="pad5">
+            <label><input type="radio" name="user_review_approve" value="0" <{if $rs.user_review_approve == 0}>checked="checked"<{/if}> /><font class="red ml5">关闭</font></label>
+            <label class="ml20"><input type="radio" name="user_review_approve" value="1" <{if $rs.user_review_approve == 1}>checked="checked"<{/if}> /><font class="green ml5">开启</font></label>
+            <p class="caaa mt10">开启此项后, 用户对购买的商品发表评价需通过后台管理员审核才能正常显示</p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>上传头像文件大小</th>
+        <td>
+          <input class="w100 txt" name="upload_avatar_filesize" type="text" value="<{$rs.upload_avatar_filesize}>" />
+          <font class="caaa ml20">用户上传头像图片的文件大小上限(单位可以是"KB"或"MB")，为 0 则表示系统不做限制(使用PHP默认配置)</font>
+        </td>
+      </tr>
+      <tr>
+        <th>收件人地址数量限制</th>
+        <td>
+          <input class="w100 txt" name="user_consignee_limits" type="text" value="<{$rs.user_consignee_limits}>" />
+          <font class="caaa ml20">用户所能添加的收件人地址最大个数限制(建议10 ~ 20之间)</font>
+        </td>
+      </tr>
+      <tr>
+        <th>未付款订单取消时限</th>
+        <td>
+          <input class="w100 txt" name="order_cancel_expires" type="text" value="<{$rs.order_cancel_expires}>" />
+          <font class="c888 ml5">小时</font> <font class="caaa ml20">从订单提交之时起，如在设定时限内用户未完成付款，系统将会自动取消该订单</font>
+        </td>
+      </tr>
+      <tr>
+        <th>用户确认收货时限</th>
+        <td><input class="w100 txt" name="order_delivery_expires" type="text" value="<{$rs.order_delivery_expires}>" />
+          <font class="c888 ml5">天</font> <font class="caaa ml20">从发货之日起，如在设定时限内用户未确认收货，系统将会自动签收(建议设置在 7 - 15 之间)</font> </td>
+      </tr>
+    </table>
+    <div class="submitbtn">
+      <button type="submit" class="ubtn btn">保存并更新用户设置</button>
+      <button type="reset" class="fbtn btn">重置表单</button>
+    </div>
+  </form>
+</div>

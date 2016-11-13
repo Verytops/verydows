@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<{include file='mobile/default/lib/meta.html'}>
+<title>我的收藏 - <{$GLOBALS.cfg.site_name}></title>
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/general.css" />
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/iconfont/iconfont.css">
+<link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
+<script type="text/javascript" src="<{$common.theme}>/js/zepto.min.js"></script>
+<script type="text/javascript" src="<{$common.theme}>/js/verydows.mobile.js"></script>
+<script type="text/javascript">
+$(function(){
+  showFavs();
+  $.vdsTouchScroll({
+    onBottom: function(){
+      var obj = $('#favorites');
+      if(obj.data('cur') != obj.data('next')){
+        showFavs();
+      }else{
+        $('#nomore').show();
+      }
+    },
+  });
+});
+
+function showFavs(){
+  var container = $('#favorites'), page_id = container.data('next');
+  $.asynList("<{url c='api/favorite' a='list'}>", {page:page_id, pernum:8}, function(res){
+    if(res.status == 'success'){
+      container.append(juicer($('#favorite-tpl').html(), res));
+      if(res.paging){
+        container.data('cur', page_id);
+        container.data('next', data.paging.next_page);
+      }
+    }else{
+      container.append($('#nodata-tpl').html());
+    }
+  });
+}
+
+function delFav(obj, id){
+  $.vdsConfirm({
+    content: '您确定要删除此商品吗?',
+    ok: function(){
+      $.asynInter("<{url c='api/favorite' a='delete'}>", {id:id}, function(res){
+        if(res.status == 'success'){
+          $(obj).closest('.item').remove();
+          if($('#favorites .item').size() == 0) $('#favorites').append($('#nodata-tpl').html());
+        }else{
+          $.vdsPrompt({content:res.msg});
+        }
+      });
+    }
+  });
+}
+</script>
+</head>
+<body>
+<div class="wrapper">
+  <div class="header">
+    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <h2>商品收藏</h2>
+  </div>
+  <div class="favli cut" id="favorites" data-cur='1' data-next='1'></div>
+  <div class="loadbar mt8 hide" id="loading"><i class="rec-loading"></i></div>
+  <div class="nomore hide" id="nomore">—— 没有更多内容了 ——</div>
+</div>
+<script type="text/template" id="favorite-tpl">
+{@each list as v}
+<div class="item">
+  <div class="goods">
+    <a class="im" href="<{url c='mobile/goods' a='index' id='${v.goods_id}'}>"><img src="<{$common.baseurl}>/upload/goods/prime/150x150/${v.goods_image}" /></a>
+    <a class="name mt5 c666" href="<{url c='mobile/goods' a='index' id='${v.goods_id}'}>">${v.goods_name}</a>
+    <div class="mt5"><a class="fr" onclick="delFav(this, ${v.goods_id})"><i class="iconfont">&#xe610;</i></a><span class="red"><i class="cny">¥</i><font class="f14">${v.now_price}</font></span></div>
+  </div>
+</div>
+{@/each}
+</script>
+<script type="text/template" id="nodata-tpl">
+<div class="nodata">
+  <div class="th"><span><i class="iconfont">&#xe605;</i></span><div class="line"></div></div>
+  <p>暂无商品收藏记录</p>
+</div>
+</script>
+<script type="text/javascript" src="<{$common.baseurl}>/public/script/juicer.js"></script>
+<{include file='mobile/default/lib/footer.html'}>
+</body>
+</html>
