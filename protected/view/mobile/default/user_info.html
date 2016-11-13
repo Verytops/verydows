@@ -113,7 +113,7 @@
         $.vdsPrompt({content:checker});
         return false;
       }
-      $.asynInter("<{url c='api/user' a='edit'}>", {field:'email', email:$('email').val(), email_captcha:$('#email_captcha').val()}, function(res){
+      $.asynInter("<{url c='api/user' a='edit'}>", {field:'email', email:$('#email').val(), email_captcha:$('#email_captcha').val()}, function(res){
         if(res.status == 'success'){
           window.location.href = "<{url c='mobile/user' a='profile'}>";
         }else{
