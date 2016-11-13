@@ -33,7 +33,7 @@ function check_envir()
     $ok_html = "<font class=\"green\">支持 √</font>";
     $no_html = "<font class=\"red\">不支持 ×</font>";
 
-    if(version_compare(PHP_VERSION, '5.2.2', '>='))
+    if(version_compare(PHP_VERSION, '5.2', '>='))
     {
         $envir['php'] = "<font class=\"green\">".PHP_VERSION." √</font>";
     }

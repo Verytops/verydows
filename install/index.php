@@ -75,6 +75,7 @@ switch($step)
         $sql = '';
         $install_errors = 0;
         
+        ob_start();
         foreach($line_array as $line)
         {
             if(preg_match("/^#|^\-\-/", ltrim($line)) && trim($sql) == '') continue;
@@ -137,6 +138,7 @@ switch($step)
             call_script('finished', 'failure', "安装失败，错误数：{$install_errors}");
         }
         
+        ob_end_flush();
         $dbh = null;
         
     break;

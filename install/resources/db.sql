@@ -119,7 +119,7 @@ CREATE TABLE `#tablepre#article` (
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `created_date` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `cate_id` (`cate_id`) USING BTREE
+  KEY `cate_id` USING BTREE(`cate_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -207,7 +207,7 @@ CREATE TABLE `#tablepre#feedback` (
   `created_date` int(10) unsigned NOT NULL DEFAULT '0',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`fb_id`),
-  KEY `user_id` (`user_id`) USING BTREE
+  KEY `user_id` USING BTREE(`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -221,7 +221,7 @@ CREATE TABLE `#tablepre#feedback_message` (
   `content` text NOT NULL,
   `dateline` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `fb_id` (`fb_id`) USING BTREE
+  KEY `fb_id` USING BTREE(`fb_id`) 
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -845,7 +845,7 @@ CREATE TABLE `#tablepre#visitor_stats` (
   `browser` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `platform` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `area` char(10) NOT NULL DEFAULT '',
-  KEY `sessid` (`sessid`) USING BTREE,
+  KEY `sessid` USING BTREE(`sessid`),
   KEY `ip` (`ip`),
   KEY `dateline` (`dateline`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
