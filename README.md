@@ -17,7 +17,7 @@
 
 * JS¿ò¼Ü£º[jQuery](https://github.com/jquery/jquery) 1.10.2
 
-* ÒÆ¶¯¶ËJS¿ò¼Ü£º[Zepto](https://github.com/madrobby/zepto) 1.10.2
+* ÒÆ¶¯¶ËJS¿ò¼Ü£º[Zepto](https://github.com/madrobby/zepto) 1.2.0
 
 * Í¼±í¿â£º[Flot](https://github.com/flot/flot) 0.8.3
 
