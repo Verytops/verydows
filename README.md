@@ -8,6 +8,10 @@
 
 * 新增H5移动端
 
+
+![intro](http://git.oschina.net/uploads/images/2016/1114/082205_d6678e5e_480212.jpeg)
+
+
 * 本次更新安装程序没有加入体验数据
 
 
