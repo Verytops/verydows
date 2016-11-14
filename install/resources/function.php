@@ -196,7 +196,7 @@ function write_config($params)
 
 function init_setting($encrypt_key)
 {
-    $setting = include(APP_DIR.DS.'protected'.DS.'cache'.DS.'setting.php');
+    $setting = include(INSTALL_DIR.DS.'resources'.DS.'setting.php');
     $setting['http_host'] = baseurl();
     $setting['encrypt_key'] = $encrypt_key;
     $codes = "<?php \nreturn ".var_export($setting, TRUE).";";
