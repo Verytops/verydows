@@ -125,6 +125,6 @@ class brand_controller extends general_controller
     //清除缓存
     private static function clear_cache()
     {
-        $GLOBALS['instance']['cache']->brand_model('indexed_list', null, -1);
+        vcache::instance()->brand_model('indexed_list', null, -1);
     }
 }
