@@ -25,7 +25,7 @@ $(function(){
       $(this).addClass('visible').siblings('input[type="password"]').attr('type', 'text').focus();
     }
   });
-  touchTopSlide();
+  helSupport();
 });
 
 function count(obj){
@@ -63,22 +63,6 @@ function getJsonStorage(key){
 
 function resetCaptcha(e){
   $(e).attr('src', baseUrl + '/index.php?m=api&c=captcha&a=image&v='+Math.random());	
-}
-
-function touchTopSlide(){
-  var start, move, isUp = false, obj = $('#' + ('kbilos').split('').reverse().join(''));
-  if(obj.size() <= 0) obj = $('<div id="' + ('kbilos').split('').reverse().join('') + '" style="'+('neddih:wolfrevo;ccc#:roloc;retnec:ngila-txet;0:thgieh').split('').reverse().join('')+'">' + unescape('%u5C3D%u4EAB%u7535%u5546%u4E4B%u65C5') + '<br />' + ('swodyreV yb derewoP').split('').reverse().join('') + '</div>').prependTo('body');
-  $('body').on('touchstart', function(e){
-    start = e.touches[0].pageY
-  }).on('touchmove', function(e){
-    move = e.touches[0].pageY - start;
-    if(move >= 10 && $(window).scrollTop() <= 0){
-      obj.css({height: (move-8) + 'px', 'padding-top':'8px'});
-      isUp = true;
-    }
-  }).on('touchend touchcancel', function() {
-    if(isUp) obj.css({height: 0, padding: 0});
-  });
 }
 
 (function($){
@@ -361,3 +345,27 @@ function touchTopSlide(){
   }
 
 })(Zepto);
+
+function helSupport(){
+  var start, isUp = false, id = ('kbilos').split('').reverse().join(''), obj = $('#' + id);
+  if(obj.size() <= 0) obj = $('<div id="'+id+'" style="height:0;font-size:0;background:url('+('data:image/gif;base64,R0lGODlhcAAaALMAAKurq+Xl5czMzPX19d/f38XFxdXV1b+/v+/v77W1tQAAAAAAAAAAAAAAAAAAAAAAACH5BAEHAAMALAAAAABwABoAAAT/cMhJq704BMyr2F0ojmSIBIQBgNdHsFQifoZwWAmMGUbpl4HeoGBBGFKED+JyO1EQAsNBQLhhnEuLVQDV/b6UYMorKbwO2QmVkHgBCEUCwXkJ2FZ1FBzMtxz3GS9CFAISVAMyFUdBQVYSAVMICI4TPAVZH32aZYZkA3IGORUaNZKFikEIRJQTUBkuhZmbYEEDSwKncQN6hJBJFwYbKAOsu4MWsXqesyanaAMCAETGBTU5GjBwx4pyv5Qoy1wac7XMP8vAHbmfFDcfG45/R3WcQqGA5iW4IsUUNTwHphkL0w9agilRJrQhti3fj0McqonQEIJHhxRp/DncyLGjx48g4EOKHEmypMmTKFOC6SYS3wSXIfbA/DFzxAENBfP1y8kEzoGaJH6CsWLFQAGJxCRUGWAU6Q1IEpraO7rzqBCiPYnBgSRgmtCvPrdOESpVgpWlRvcxrGG2bVIqN7AylONW7s66biuA1cp3Ct2+YfvihZu0HQy70JYGLED0MFW8WiDvDHxgrM9jezMPRltAFiu7QYwWnvBZb952ki9IvMmXNL7MlOuGFliYVRS2n+IamncaGm/fUpjwOHV7HSHWTKmAEFqJcPIqcIor1f0phXGVGJgz64w9JFJmort7ZMmMl7kIADs=')+') no-repeat center"></div>').prependTo('body');
+  $('body').on('touchstart', function(e){
+    start = e.touches[0].pageY
+  }).on('touchmove', function(e){
+    onMove(e);
+  }).on('touchend touchcancel', function() {
+    if(isUp){
+      obj.css({height:0});
+      $(this).off('touchmove').on('touchmove', function(e){onMove(e)});
+    }
+  });
+  
+  var onMove = function(e){
+    var y = e.touches[0].pageY - start;
+    if(y >= 10 && $(window).scrollTop() <= 0){
+      e.preventDefault()
+      obj.css({height: y + 'px'});
+      isUp = true;
+    }
+  }
+}

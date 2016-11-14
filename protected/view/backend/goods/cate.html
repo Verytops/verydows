@@ -31,12 +31,15 @@ function submitForm(){
             <td>
               <select id="parent_id" name="parent_id" class="slt">
                 <option value="0">-- 无上级分类 --</option>
+                <{if !empty($parent_list)}>
                 <{foreach $parent_list as $v}>
                 <option value="<{$v.cate_id}>"><{str_repeat('|— ',$v.lv)}> <{$v.cate_name}></option>
                 <{/foreach}>
+                <{/if}>
               </select>
             </td>
           </tr>
+          <{if !empty($brand_list)}>
           <tr>
             <th>分类下品牌</th>
             <td>
@@ -49,6 +52,7 @@ function submitForm(){
               </div>
             </td>
           </tr>
+          <{/if}>
           <tr>
             <th>Meta 关键词</th>
             <td><textarea name="meta_keywords" id="meta_keywords" class="txtarea" cols="68" rows="5"></textarea></td>
@@ -86,6 +90,7 @@ function submitForm(){
             <td>
               <select id="parent_id" name="parent_id" class="slt">
                 <option value="0">-- 无上级分类 --</option>
+                <{if !empty($parent_list)}>
                 <{foreach $parent_list as $v}>
                 <{if $v.cate_id != $rs.cate_id}>
                 <{if $v.cate_id == $rs.parent_id}>
@@ -95,9 +100,11 @@ function submitForm(){
                 <{/if}>
                 <{/if}>
                 <{/foreach}>
+                <{/if}>
               </select>
             </td>
           </tr>
+          <{if !empty($brand_list)}>
           <tr>
             <th>分类下品牌</th>
             <td>
@@ -110,6 +117,7 @@ function submitForm(){
               </div>
             </td>
           </tr>
+          <{/if}>
           <tr>
             <th>Meta 关键词</th>
             <td><textarea name="meta_keywords" id="meta_keywords" class="txtarea" cols="68" rows="5"><{$rs.meta_keywords}></textarea></td>

@@ -116,11 +116,13 @@ function submitForm(){
             <td>
               <select id="position_id" name="position_id" class="slt">
                 <option value="0">选择广告位置</option>
+                <{if !empty($position_list)}>
                 <option disabled="disabled">------------------------------</option>
                 <{foreach $position_list as $v}> <option <{if $position_id == $v.id}>selected="selected"<{/if}> value="<{$v.id}>"><{$v.name}> (<{if !empty($v.width)}><{$v.width}><{else}>不限<{/if}>*<{if !empty($v.height)}><{$v.height}><{else}>不限<{/if}>)
                 
                 </option>
                 <{/foreach}>
+                <{/if}>
               </select>
             </td>
           </tr>
@@ -198,11 +200,13 @@ function submitForm(){
             <td>
               <select id="position_id" name="position_id" class="slt">
                 <option value="0">选择广告位置</option>
+                <{if !empty($position_list)}>
                 <option disabled="disabled">------------------------------</option>
                 <{foreach $position_list as $v}><option value="<{$v.id}>" <{if $rs.position_id == $v.id}>selected="selected"<{/if}>><{$v.name}> (<{if !empty($v.width)}><{$v.width}><{else}>不限<{/if}>*<{if !empty($v.height)}><{$v.height}><{else}>不限<{/if}>)
                 
                 </option>
                 <{/foreach}>
+                <{/if}>
               </select>
             </td>
           </tr>

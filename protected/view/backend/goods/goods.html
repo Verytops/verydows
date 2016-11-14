@@ -66,9 +66,11 @@ function submitForm(){
               <select id="cate_id" name="cate_id" class="slt">
                 <option value="0">无分类</option>
                 <option disabled="disabled">------------------------------</option>
+                <{if !empty($cate_list)}>
                 <{foreach $cate_list as $v}>
                 <option value="<{$v.cate_id}>"><{str_repeat('|— ',$v.lv)}> <{$v.cate_name}></option>
                 <{/foreach}>
+                <{/if}>
               </select>
             </td>
           </tr>
@@ -77,10 +79,12 @@ function submitForm(){
             <td>
               <select id="brand_id" name="brand_id" class="slt">
                 <option value="0">无品牌</option>
+                <{if !empty($brand_list)}>
                 <option disabled="disabled">------------------------------</option>
                 <{foreach $brand_list as $v}>
                 <option value="<{$v.brand_id}>"><{$v.brand_name}></option>
                 <{/foreach}>
+                <{/if}>
               </select>
             </td>
           </tr>
@@ -165,10 +169,12 @@ function submitForm(){
             <td>
               <select class="slt" id="opt-type">
                 <option value="0">选择选项类型</option>
+                <{if !empty($opt_type_list)}>
                 <option disabled="disabled">------------------------------</option>
                 <{foreach $opt_type_list as $k => $v}>
                 <option value="<{$k}>"><{$v}></option>
                 <{/foreach}>
+                <{/if}>
               </select>
               <button type="button" class="cbtn btn" onclick="selectedOptType(this)">确定</button>
               <a class="blue ml10" href="<{url m=$MOD c='goods_optional_type' a='add'}>">新增选项类型</a>
@@ -238,6 +244,7 @@ function submitForm(){
             <td>
               <select id="cate_id" name="cate_id" class="slt">
                 <option value="0">无分类</option>
+                <{if !empty($cate_list)}>
                 <option disabled="disabled">------------------------------</option>
                 <{foreach $cate_list as $v}> <{if $v.cate_id == $rs.cate_id}>
                 <option selected="selected" value="<{$v.cate_id}>"><{str_repeat('|— ',$v.lv)}> <{$v.cate_name}></option>
@@ -245,6 +252,7 @@ function submitForm(){
                 <option value="<{$v.cate_id}>"><{str_repeat('|— ',$v.lv)}> <{$v.cate_name}></option>
                 <{/if}>
                 <{/foreach}>
+                <{/if}>
               </select>
             </td>
           </tr>
@@ -253,12 +261,15 @@ function submitForm(){
             <td>
               <select id="brand_id" name="brand_id" class="slt">
                 <option value="0">无品牌</option>
+                <{if !empty($brand_list)}>
                 <option disabled="disabled">------------------------------</option>
                 <{foreach $brand_list as $v}> <{if $v.brand_id == $rs.brand_id}>
                 <option selected="selected" value="<{$v.brand_id}>"><{$v.brand_name}></option>
                 <{else}>
                 <option value="<{$v.brand_id}>"><{$v.brand_name}></option>
-                <{/if}> <{/foreach}>
+                <{/if}>
+                <{/foreach}>
+                <{/if}>
               </select>
             </td>
           </tr>
@@ -374,10 +385,12 @@ function submitForm(){
             <td>
               <select class="slt" id="opt-type">
                 <option value="0">选择选项类型</option>
+                <{if !empty($opt_type_list)}>
                 <option disabled="disabled">------------------------------</option>
                 <{foreach $opt_type_list as $k => $v}>
                 <option value="<{$k}>"><{$v}></option>
                 <{/foreach}>
+                <{/if}>
               </select>
               <button type="button" class="cbtn btn" onclick="selectedOptType(this)">确定</button>
               <a class="blue ml10" href="<{url m=$MOD c='goods_optional_type' a='add'}>">新增选项类型</a>

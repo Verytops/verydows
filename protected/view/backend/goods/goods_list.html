@@ -51,15 +51,19 @@ function pageturn(page_id){searchRes(page_id);}
     <div class="stools mt5">
       <select id="cate_id" class="slt">
         <option value="" selected="selected">全部分类</option>
+        <{if !empty($cate_list)}>
         <{foreach $cate_list as $v}>
         <option value="<{$v.cate_id}>"><{str_repeat('|— ',$v.lv)}> <{$v.cate_name}></option>
         <{/foreach}>
+        <{/if}>
       </select>
       <select id="brand_id" class="slt">
         <option value="" selected="selected">全部品牌</option>
+        <{if !empty($brand_list)}>
         <{foreach $brand_list as $v}>
         <option value="<{$v.brand_id}>"><{$v.brand_name}></option>
         <{/foreach}>
+        <{/if}>
       </select>
       <select id="sign_id" class="slt">
         <option value="" selected="selected">全部标记</option>

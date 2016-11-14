@@ -21,8 +21,9 @@
 .details .th .tbm {font-size:14px;}
 .details .th .tbf {line-height:180%;color:#555;}
 .details .th .aim {width:100%;}
+.details .pic img {max-width:100%;}
 .details .con {font-size:16px;color:#666;line-height:180%;overflow:hidden;}
-.details .con img {max-width:99%;}
+.details .con img {max-width:100%;}
 .hpli {padding:5px;}
 .hpli a {display:block;height:40px;line-height:40px; color:#666;font-size:14px;padding:0 5px 0 10px;background:#fff;border:1px solid #e9e9e9;}
 .hpli a span.fr {display:block;}

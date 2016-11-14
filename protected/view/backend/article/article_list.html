@@ -49,9 +49,11 @@ function cateMap(cate_id){
       <select id="cate_id" class="slt">
         <option value="" selected="selected">全部分类</option>
         <option value="0" data-name="未分类">未分类</option>
+        <{if !empty($cate_list)}>
         <{foreach $cate_list as $v}>
         <option value="<{$v.cate_id}>"><{$v.cate_name}></option>
         <{/foreach}>
+        <{/if}>
       </select>
       <select id="status" class="slt">
         <option value="">全部状态</option>
