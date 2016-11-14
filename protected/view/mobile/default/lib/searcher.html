@@ -6,11 +6,11 @@
       <div class="in cut"><input id="kwenter" name="kw" type="text" class="variseclear" value="<{if !empty($_GET['kw'])}><{$_GET['kw']}><{/if}>" required="required" /><i class="vinclrbtn iconfont">&#xe62d;</i></div>
     </div>
   </div>
-  <{if !empty($searches.hot)}>
+  <{if !empty($hot_searches)}>
   <dl class="hot">
     <dt>热搜：</dt>
     <dd>
-      <{foreach $searches.hot as $v}>
+      <{foreach $hot_searches as $v}>
       <a href="<{url c='mobile/search' a='index' kw=$v}>"><{$v}></a>
       <{/foreach}>
     </dd>

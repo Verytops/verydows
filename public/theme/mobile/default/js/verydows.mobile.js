@@ -344,6 +344,18 @@ function touchTopSlide(){
     }
   }
   
+  $.getScript = function(url, callback){
+    var script = $('<script type="text/javascript" src="'+url+'"></script>');
+    $('head').append(script);
+    if(document.all){ //IE
+      script.onreadystatechange = function(){
+        if(js.readyState == 'loaded' || js.readyState == 'complete') callback();
+      }
+    }else{
+      script.onload = function(){callback()}
+    }
+  }
+  
   function _isSet(v){
     return typeof(v) != 'undefined';
   }

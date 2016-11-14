@@ -3,17 +3,16 @@ class main_controller extends general_controller
 {
     public function action_index()
     {   
-        $this->searches = array
-        (
-            'hot' => !empty($GLOBALS['cfg']['goods_hot_searches']) ? explode(',', $GLOBALS['cfg']['goods_hot_searches']) : null,
-            'history' => !empty($_COOKIE['vds_search_history']) ? unserialize($_COOKIE['vds_search_history']) : null,
-        );
+        $this->hot_searches = !empty($GLOBALS['cfg']['goods_hot_searches']) ? explode(',', $GLOBALS['cfg']['goods_hot_searches']) : null;
         
         $vcache = vcache::instance();
-        $this->newarrival = $vcache->goods_model('find_goods', array(array('newarrival' => 1), $GLOBALS['cfg']['home_newarrival_num']), $GLOBALS['cfg']['data_cache_lifetime']);
-        $this->recommend = $vcache->goods_model('find_goods', array(array('recommend' => 1), $GLOBALS['cfg']['home_recommend_num']), $GLOBALS['cfg']['data_cache_lifetime']);
-        $this->bargain = $vcache->goods_model('find_goods', array(array('bargain' => 1), $GLOBALS['cfg']['home_bargain_num']), $GLOBALS['cfg']['data_cache_lifetime']);
-        $this->latest_article = $vcache->article_model('get_latest_article', array($GLOBALS['cfg']['home_article_num']), $GLOBALS['cfg']['data_cache_lifetime']);
+        
+        $this->newarrival = $vcache->goods_model('find_goods', array(array('newarrival' => 1), 6), $GLOBALS['cfg']['data_cache_lifetime']);
+        
+        $this->recommend = $vcache->goods_model('find_goods', array(array('recommend' => 1), 6), $GLOBALS['cfg']['data_cache_lifetime']);
+        
+        $this->bargain = $vcache->goods_model('find_goods', array(array('bargain' => 1), 6), $GLOBALS['cfg']['data_cache_lifetime']);
+        
         $this->compiler('index.html');
     }
     

@@ -38,10 +38,6 @@ class setting_controller extends general_controller
                     'home_title' => trim(request('home_title', '')),
                     'home_keywords' => request('home_keywords', ''),
                     'home_description' => request('home_description', ''),
-                    'home_newarrival_num' => (int)request('home_newarrival_num', 5),
-                    'home_recommend_num' => (int)request('home_recommend_num', 5),
-                    'home_bargain_num' => (int)request('home_bargain_num', 5),
-                    'home_article_num' => (int)request('home_article_num', 5),
                 );
                 
             break;
