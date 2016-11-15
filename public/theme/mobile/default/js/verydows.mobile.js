@@ -196,7 +196,7 @@ function resetCaptcha(e){
   }
   
   $.asynList = function(url, dataset, success){
-    $.ajax({type:'post',dataType:'json',url:url, data:dataset,beforeSend:function(){$('body').append('<div class="loadbar" id="vdsbomloader"><p>正在加载</p><i class="rec-loading"></i></div>');},success:function(data){$('#vdsbomloader').remove();success.call($(this), data);},error:function(data, err){$.vdsLoading(false);alert(err);}});
+    $.ajax({type:'post',dataType:'json',url:url, data:dataset,beforeSend:function(){$('body').append('<div class="loadbar" id="vdsbomloader"><p>正在加载</p><i class="rec-loading"></i></div>');},success:function(data){$('#vdsbomloader').remove();success.call($(this), data);},error:function(data, err){$('#vdsbomloader').remove();alert(err);}});
   }
   
   $.vdsConfirm = function(options){
