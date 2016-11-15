@@ -15,15 +15,15 @@ function formatTime(timestamp, format) {
 }
 
 function transtime(timestamp, format){
-  var d = new Date(), now = parseInt(d.getTime() / 1000), distance = now - timestamp, string;
+  var d = new Date(), now = parseInt(d.getTime() / 1000), distance = now - timestamp, string = '';
   if(distance < 300){
     string = '刚刚';
   }else if(distance < 3600){
-    string = floor(distance / 60) + '分钟前';
+    string = Math.floor(distance / 60) + '分钟前';
   }else if(distance < 86400){
-    string = floor($distance / 3600) + '小时前';
+    string = Math.floor(distance / 3600) + '小时前';
   }else if(distance < 604800){
-    string = floor($distance / 86400) + '天前';
+    string = Math.floor(distance / 86400) + '天前';
   }else{
     string = formatTime(timestamp, format);
   }

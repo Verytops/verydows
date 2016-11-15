@@ -79,7 +79,7 @@ function showFalls(){
   <dd class="bf">${v.brief}</dd>
   {@/if}
   <dd class="bm">
-    <span><i class="iconfont">&#xe63f;</i><font>${v.created_date|transtime, 'dddd'}</font></span>
+    <span><i class="iconfont">&#xe63f;</i><font>${v.created_date|transtime, 'y-m-d'}</font></span>
     <a href="<{url c='mobile/article' a='view' id='${v.id}'}>"><i class="iconfont">&#xe66e;</i><font>查看全文</font></a>
   </dd>
 </dl>

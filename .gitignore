@@ -1,5 +1,6 @@
 ﻿/index.php
 /.htaccess
+/nginx.conf
 /upload
 /protected/config.php
 /protected/cache
