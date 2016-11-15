@@ -327,15 +327,22 @@ function resetCaptcha(e){
   }
   
   $.getScript = function(url, callback){
-    var script = $('<script type="text/javascript" src="'+url+'"></script>');
-    $('head').append(script);
-    if(document.all){ //IE
-      script.onreadystatechange = function(){
-        if(js.readyState == 'loaded' || js.readyState == 'complete') callback();
-      }
-    }else{
-      script.onload = function(){callback()}
-    }
+    var script = document.createElement('script');  
+    script.type = 'text/javascript';  
+    if(script.readyState){  
+      script.onreadystatechange = function(){  
+        if(script.readyState == 'loaded' || script.readyState == 'complete'){  
+          script.onreadystatechange = null;  
+          callback();  
+        }  
+      }  
+    }else{  
+      script.onload = function(){  
+        callback();  
+      }  
+    }  
+    script.src = url;  
+    document.getElementsByTagName('head')[0].appendChild(script); 
   }
   
   function _isSet(v){
