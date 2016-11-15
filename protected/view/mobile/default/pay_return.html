@@ -25,7 +25,7 @@
     <{if !empty($order)}>
     <div class="order">
       <dl><dt>订单号：</dt><dd><b class="c555" id="order_id"><{$order.order_id}></b></dd></dl>
-      <dl><dt>金额：</dt><dd class="amount"><i class="f14 cny">¥</i><font class="f18"><{$order.order_amount}></font></dd></dl>
+      <dl><dt>金额：</dt><dd class="amount"><i class="f18 cny">¥</i><font class="f18 ml2"><{$order.order_amount}></font></dd></dl>
     </div>
     <div class="submit mt20"><a class="xauto center" href="<{url c='mobile/order' a='view' id=$order.order_id}>">查看订单</a></div>
     <{/if}>

@@ -17,10 +17,12 @@ a:hover {text-decoration:none;}
 .center {text-align:center}
 .pointer {cursor:pointer}
 .module {width:100%;height:auto;}
+.blank {background:#fff;}
 /* 边距 */
 .mt2 {margin-top:2px;}
 .mt5 {margin-top:5px;}
 .mt8 {margin-top:8px;}
+.mb5 {margin-bottom:5px;}
 .mb8 {margin-bottom:8px;}
 .mb10 {margin-bottom:10px;}
 .mt10 {margin-top:10px;}
@@ -28,11 +30,13 @@ a:hover {text-decoration:none;}
 .mt20 {margin-top:20px;}
 .mt30 {margin-top:30px;}
 .mt50 {margin-top:50px;}
+.ml2 {margin-left:2px;}
 .ml5 {margin-left:5px;}
 .ml10 {margin-left:10px;}
 .mr5 {margin-right:5px;}
 .mr8 {margin-right:8px;}
 .mr10 {margin-right:10px;}
+.ptb5 {padding-top:5px;padding-bottom:5px;}
 .sep3 {margin-left:3px;margin-right:3px;}
 .sep5 {margin-left:5px;margin-right:5px;}
 .sep10 {margin-left:10px;margin-right:10px;}

@@ -18,7 +18,8 @@ function searchRes(page_id){
     status: $('#status').val(),
     kw: $('#kw').val(),
     sort_id: $('#sort_id').val(),
-    page: page_id
+    page: page_id,
+    pernum: 12,
   };
   $.asynList("<{url m=$MOD c='goods' a='index' step='search'}>", dataset, function(data){
     if(data.status == 'success'){

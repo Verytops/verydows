@@ -39,6 +39,7 @@ class review_controller extends general_controller
                             'rating' => (int)request('rating', 0),
                             'content' => trim(strip_tags(request('content', ''))),
                             'created_date' => $_SERVER['REQUEST_TIME'],
+                            'replied' => '',
                         );           
                                 
                         $verifier = $review_model->verifier($data);

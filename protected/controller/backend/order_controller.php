@@ -11,40 +11,40 @@ class order_controller extends general_controller
             $user_id = (int)request('user_id', 0);
             if(!empty($user_id))
             {
-                $where .= ' AND user_id = :user_id';
+                $where .= ' AND a.user_id = :user_id';
                 $binds[':user_id'] = $user_id;
             }
             
             $order_status = request('order_status', '');
             if($order_status != '')
             {
-                $where .= ' AND order_status = :order_status';
+                $where .= ' AND a.order_status = :order_status';
                 $binds[':order_status'] = $order_status;
             }
             
             $start_date = request('start_date', '');
             if($start_date != '')
             {
-                $where .= ' AND created_date >= :start_date';
+                $where .= ' AND a.created_date >= :start_date';
                 $binds[':start_date'] = strtotime($start_date);
             }
             
             $end_date = request('end_date', '');
             if($end_date != '')
             {
-                $where .= ' AND created_date <= :end_date';
+                $where .= ' AND a.created_date <= :end_date';
                 $binds[':end_date'] = strtotime($end_date);
             }
             
             $order_id = request('order_id', '');
             if($order_id != '')
             {
-                $where .= ' AND order_id = :order_id';
+                $where .= ' AND a.order_id = :order_id';
                 $binds[':order_id'] = $order_id;
             }
             
             $order_model = new order_model();
-            $total = $order_model->query("SELECT COUNT(*) as count FROM {$order_model->table_name} {$where}", $binds);  
+            $total = $order_model->query("SELECT COUNT(*) as count FROM {$order_model->table_name} AS a {$where}", $binds);  
             if($total[0]['count'] > 0)
             {
                 $limit = $order_model->set_limit(array(request('page', 1), request('pernum', 10)), $total[0]['count']);

@@ -33,13 +33,20 @@ class review_controller extends general_controller
                 'rating' => (int)request('rating', 5),
                 'content' => strip_tags(trim(request('content', ''))),
                 'created_date' => $_SERVER['REQUEST_TIME'],
+                'replied' => '',
             );
             $verifier = $review_model->verifier($data);
             if(TRUE === $verifier)
             {
-                $review_model->create($data);
-                $order_goods_model->update(array('order_id' => $order_id, 'goods_id' => $goods_id), array('is_reviewed' => 1));
-                $res = array('status' => 'success');
+                if($review_model->create($data))
+                {
+                    $order_goods_model->update(array('order_id' => $order_id, 'goods_id' => $goods_id), array('is_reviewed' => 1));
+                    $res = array('status' => 'success');
+                }
+                else
+                {
+                    $res = array('status' => 'error', 'msg' => '评价失败, 请稍后重试');
+                }
             }
             else
             {

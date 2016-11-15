@@ -93,10 +93,10 @@ function submitApply(){
         </dl>
         <dl>
           <dt>手机号码</dt>
-          <dd><input name="mobile" type="text" class="vinput" placeholder="请输入您的常用手机号码"></dd>
+          <dd><input name="mobile" type="number" pattern="[0-9]*" class="vinput" placeholder="请输入您的常用手机号码"></dd>
         </dl>
       </div>
-      <a class="submit xauto mt20 f14 center" onclick="submitApply()">提交申请</a>
+      <a class="submit xauto mt20 f14 center" href="javascript:void(0)" onclick="submitApply()">提交申请</a>
     </div>
     </form>
   </div>

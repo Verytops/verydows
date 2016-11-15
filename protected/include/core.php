@@ -191,6 +191,7 @@ class Model{
 	public function find($conditions = array(), $sort = null, $fields = '*'){
 		$conditions = $this->_where($conditions);
         $sql = ' FROM '.$this->table_name.$conditions["_where"];
+        $sort = !empty($sort) ? ' ORDER BY '.$sort : '';
         $res = $this->query('SELECT '. $fields . $sql . $sort . ' LIMIT 1', $conditions["_bindParams"]);
 		return !empty($res) ? array_pop($res) : false;
 	}
@@ -216,7 +217,7 @@ class Model{
 		return $this->execute("DELETE FROM ".$this->table_name.$conditions["_where"], $conditions["_bindParams"]);
 	}
 	
-	public function create($row, $return_field = NULL){
+	public function create($row, $return_field = null){
 		$values = array();
 		foreach($row as $k=>$v)
         {

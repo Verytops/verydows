@@ -31,8 +31,8 @@
             <button class="fr" type="submit">搜 索</button>
           </div>
         </form>
-        <{if !empty($home.hot_searches)}>
-        <div class="hw mt8">热门搜索：<{foreach $home.hot_searches as $v}><a href="<{url c='goods' a='search' kw=$v}>"><{$v}></a><{/foreach}></div>
+        <{if !empty($hot_searches)}>
+        <div class="hw mt8">热门搜索：<{foreach $hot_searches as $v}><a href="<{url c='goods' a='search' kw=$v}>"><{$v}></a><{/foreach}></div>
         <{/if}>
       </div>
       <!-- 头部搜索结束 -->
@@ -142,7 +142,7 @@
       <h2>特价促销</h2>
     </div>
     <div class="gli w1110">
-      <{if !empty($recommend)}>
+      <{if !empty($bargain)}>
       <ul>
         <{foreach $bargain as $v}>
         <li>

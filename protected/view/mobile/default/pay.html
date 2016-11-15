@@ -33,7 +33,7 @@ function doPay(){
 <div class="wrapper">
   <!-- header start -->
   <div class="header">
-    <div class="op lt"><a href="javascript:history.back(-1)"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <div class="op lt"><a href="<{url c='mobile/order' a='view' id=$order.order_id}>"><i class="f20 iconfont">&#xe602;</i></a></div>
     <h2>支付订单</h2>
   </div>
   <!-- header end -->
@@ -45,7 +45,7 @@ function doPay(){
       </dl>
       <dl>
         <dt>金额：</dt>
-        <dd class="amount"><i class="f14 cny">¥</i><font class="f18"><{$order.order_amount}></font></dd>
+        <dd class="amount"><i class="f18 cny">¥</i><font class="f18 ml2"><{$order.order_amount}></font></dd>
       </dl>
     </div>
     <div class="payment mt10" id="payments">

@@ -82,9 +82,25 @@ class order_model extends Model
         }
         return FALSE;
     }
-
+    
     /**
-     * 过期订单处理
+     * 订单是否超期未付款
+     * @return 超期自动取消返回FALSE 未超期返回剩余时间
+     */
+    public function is_overdue($order_id, $created_date)
+    {
+        $expire = $created_date + ($GLOBALS['cfg']['order_cancel_expires'] * 3600);
+        if($expire <= $_SERVER['REQUEST_TIME'])
+        {
+            $this->update(array('order_id' => $order_id), array('order_status' => 0));
+            return FALSE;
+        }
+        return $expire - $_SERVER['REQUEST_TIME'];
+    }
+    
+    
+    /**
+     * 过期订单批量处理
      */
     public function expired()
     {

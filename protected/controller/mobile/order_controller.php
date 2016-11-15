@@ -49,8 +49,7 @@ class order_controller extends general_controller
             $shipping_map = $vcache->shipping_method_model('indexed_list');
             $order['payment_method_name'] = $payment_map[$order['payment_method']]['name'];
             $order['shipping_method_name'] = $shipping_map[$order['shipping_method']]['name'];
-            $this->order = $order;
-            
+  
             $condition = array('order_id' => $order_id);
             $consignee_model = new order_consignee_model();
             $this->consignee = $consignee_model->find($condition);
@@ -60,19 +59,25 @@ class order_controller extends general_controller
             
             $this->progress = $order_model->get_user_order_progress($order['order_status'], $order['payment_method']);
             $this->status_map = $order_model->status_map;
-            if($order['order_status'] == 3)
+            
+            if($order['order_status'] == 1 && $order['payment_method'] != 2)
+            {
+                if(!$this->countdown = $order_model->is_overdue($order_id, $order['created_date'])) $order['order_status'] = 0;
+            }
+            elseif($order['order_status'] == 3)
             {
                 $shipping_model = new order_shipping_model();
                 if($shipping = $shipping_model->find($condition, 'dateline DESC'))
                 {
-                    $shipping['countdown'] = $shipping['dateline'] + $GLOBALS['cfg']['order_delivery_expires'] * 86400 - $_SERVER['REQUEST_TIME'];
-                    if($shipping['countdown'] <= 0) $order_model->update($condition, array('order_status' => 4));
+                    $this->countdown = intval($shipping['dateline'] + $GLOBALS['cfg']['order_delivery_expires'] * 86400 - $_SERVER['REQUEST_TIME']);
+                    if(!$this->countdown) $order_model->update($condition, array('order_status' => 4));
                     $this->shipping = $shipping;
                     $carrier_map = $vcache->shipping_carrier_model('indexed_list');
                     $this->carrier = $carrier_map[$shipping['carrier_id']];
                 }
             }
             
+            $this->order = $order;
             $this->compiler('user_order_details.html');
         }
         else

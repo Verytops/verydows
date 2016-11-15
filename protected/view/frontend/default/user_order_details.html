@@ -7,6 +7,29 @@
 <link rel="stylesheet" type="text/css" href="<{$common.theme}>/css/user.css" />
 <script type="text/javascript" src="<{$common.baseurl}>/public/script/jquery.js"></script>
 <script type="text/javascript" src="<{$common.theme}>/js/general.js"></script>
+<script type="text/javascript">
+$(function(){countdown()});
+
+function countdown(){
+  var obj = $('#countdown');
+  if(obj.size() == 0) return false;
+  var _countdown = parseInt(obj.data('countdown'));
+  window.setInterval(function(){
+    var _d = 0, _h = 0, _m = 0, _s = 0;
+    if(_countdown > 0){
+      _d = Math.floor(_countdown / (60 * 60 * 24));
+      _h = Math.floor(_countdown / (60 * 60)) - (_d * 24);
+      _m = Math.floor(_countdown / 60) - (_d * 24 * 60) - (_h * 60);
+      _s = Math.floor(_countdown) - (_d * 24 * 60 * 60) - (_h * 60 * 60) - (_m * 60);
+    }
+    if(_m <= 9) _m = '0' + _m;
+    if(_s <= 9) _s = '0' + _s;
+    obj.text(_d+'天'+_h+'小时'+_m+'分'+_s+'秒');
+    _countdown --;
+    obj.data('countdown', _countdown);
+  }, 1000);
+}
+</script>
 </head>
 <body>
 <!-- 顶部开始 -->
@@ -78,32 +101,13 @@
             </div>
             <div class="cdo aln-c cut">
               <h3 class="f14 c666">订单状态：<font class="c333"><{array_pop($progress)}></font></h3>
-              <{if !empty($shipping)}>
+              <{if !empty($carrier) && !empty($shipping)}>
               <div class="module mt20">
                 <p class="c888"> 物流：<font class="c333"><{$carrier.name}></font><span class="ml5 mr5"></span> 运单号：<a href="<{$carrier.tracking_url}><{$shipping.tracking_no}>" target="_blank"><{$shipping.tracking_no}></a><span class="ml5 mr5"></span> 客服电话：<font class="c333"><{$carrier.service_tel}></font> </p>
               </div>
-              <{if $order.order_status == 3}>
-              <p class="c666 mt10">还有 <font class="red" id="shipping-countdown" data-time="<{$shipping.countdown}>">0天0小时0分0秒</font> 来确认签收, 超时订单将自动确认签收</p>
-              <script type="text/javascript">
-                $(function(){
-                  var obj = $('#shipping-countdown'), remaining = parseInt(obj.data('time'));
-                  window.setInterval(function(){
-                    var _d = 0, _h = 0, _m = 0, _s = 0;
-                    if(remaining > 0){
-                      _d = Math.floor(remaining / (60 * 60 * 24));
-                      _h = Math.floor(remaining / (60 * 60)) - (_d * 24);
-                      _m = Math.floor(remaining / 60) - (_d * 24 * 60) - (_h * 60);
-                      _s = Math.floor(remaining) - (_d * 24 * 60 * 60) - (_h * 60 * 60) - (_m * 60);
-                    }
-                    if(_m <= 9) _m = '0' + _m;
-                    if(_s <= 9) _s = '0' + _s;
-                    obj.text(_d+'天'+_h+'小时'+_m+'分'+_s+'秒');
-                    remaining --;
-                    obj.data('time', remaining);
-                  }, 1000);
-                });
-              </script>
               <{/if}>
+              <{if !empty($countdown)}>
+              <div class="c666 mt10">还有 <font class="red" id="countdown" data-countdown="<{$countdown}>">0天0小时0分0秒</font> <{if $order.order_status == 1}>来付款，超时订单将自动取消<{else}>确认签收，超时订单将自动签收<{/if}></div>
               <{/if}>
               <div class="module mt20">
                 <{if $order.order_status == 1}>

@@ -15,7 +15,7 @@ div.w1110 {width:1110px;height:auto;position:relative;overflow:hidden;}
 .news h2 a:hover, .news ul li a:hover {color:#CC3366;text-decoration:none}
 .news ul {padding:5px 8px;}
 .news ul li {padding:7px 5px;}
-.news ul li a {color:#666;}
+.news ul li a {display:block;color:#666;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
 .news ul li a b {color:#666;margin-right:5px;}
 /* 商品列表 */
 .gli_t {color:#666;padding:0 0 0 2px;}

@@ -39,7 +39,7 @@ function searchRes(page_id){
     status: $('#status').val(),
     kw: $('#kw').val(),
     page: page_id,
-    pernum: 10
+    pernum: 15
   };
   $.asynList("<{url m=$MOD c='adv' a='index' step='search'}>", dataset, function(data){
     if(data.status == 'success'){

@@ -56,8 +56,8 @@
 .order dl.countdown dd {margin-left:70px;line-height:16px;}
 .order dl.countdown dd font.red {margin:0 2px;}
 .order dl.col {padding:8px;line-height:14px;background:#fff;overflow:hidden;}
-.order dl.col dt {float:left;width:75px;color:#777;text-align:right;}
-.order dl.col dd {margin-left:85px;}
+.order dl.col dt {float:left;width:80px;color:#777;text-align:right;}
+.order dl.col dd {margin-left:90px;}
 .order dl.address dt, .order dl.carrier dt {width:60px;text-align:center;height:30px;line-height:30px;}
 .order dl.address dt {width:50px;}
 .order dl.address dt .iconfont {font-size:24px;color:#339966}

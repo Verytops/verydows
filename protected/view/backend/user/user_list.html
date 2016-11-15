@@ -11,7 +11,7 @@
 $(function(){searchRes(1);});
 
 function searchRes(page_id){
-  var dataset = {type: $('#type').val(), kw: $('#kw').val()};
+  var dataset = {type: $('#type').val(), kw: $('#kw').val(), page:page_id, pernum:12};
   $.asynList("<{url m=$MOD c='user' a='index' step='search'}>", dataset, function(data){
     if(data.status == 'success'){
       juicer.register('format_date', function(v){return formatTimestamp(v, 'y-m-d<br />h:i:s');});

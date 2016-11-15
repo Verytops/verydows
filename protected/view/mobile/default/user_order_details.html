@@ -45,21 +45,21 @@ function countdown(){
   <!-- header end -->
   <div class="order cut">
     <{if !empty($countdown)}>
-    <dl class="countdown mb8" id="countdown" data-remaining="<{$countdown}>">
+    <dl class="countdown mb8 cut" id="countdown" data-remaining="<{$countdown}>">
       <dt><i class="iconfont">&#xe633;</i></dt>
       <dd>
         <p class="c666 mt2">您还有<font class="remaining red">0天0小时0分0秒</font><{if $order.order_status == 1}>来付款，超时订单将自动取消<{else}>确认签收，超时订单将自动签收<{/if}></p>
       </dd>
     </dl>
     <{/if}>
-    <div class="module cut">
+    <div class="blank ptb5 f14 cut">
       <dl class="col"><dt>订单号：</dt><dd><{$order.order_id}></dd></dl>
       <dl class="col"><dt>订单状态：</dt><dd><font class="red"><{array_pop($progress)}></font></dd></dl>
       <dl class="col"><dt>下单时间：</dt><dd><{date('Y-m-d H:i:s', $order.created_date)}></dd></dl>
       <dl class="col"><dt>支付方式：</dt><dd><{$order.payment_method_name}></dd></dl>
       <dl class="col"><dt>配送方式：</dt><dd><{$order.shipping_method_name}></dd></dl>
     </div>
-    <{if !empty($carrier)}>
+    <{if !empty($carrier) && !empty($shipping)}>
     <dl class="carrier col mt8">
       <dt><i class="iconfont">&#xe623;</i></dt>
       <dd>
@@ -92,10 +92,10 @@ function countdown(){
         <{/foreach}>
       </ul>
     </div>
-    <div class="amount mt8 cut">
-      <dl class="col mt8"><dt>商品总计：</dt><dd><i class="cny">¥</i><{$order.goods_amount}></dd></dl>
-      <dl class="col mt5"><dt>运费：</dt><dd><i class="cny">¥</i><{$order.shipping_amount}></dd></dl>
-      <dl class="col total mt5"><dt>订单总额：</dt><dd class="f14"><i class="cny">¥</i><{$order.order_amount}></dd></dl>
+    <div class="amount mt8 f14 cut">
+      <dl class="col mt10"><dt>商品总计：</dt><dd><i class="cny">¥</i><{$order.goods_amount}></dd></dl>
+      <dl class="col mt10"><dt>运费：</dt><dd><i class="cny">¥</i><{$order.shipping_amount}></dd></dl>
+      <dl class="col total mt10"><dt>订单总额：</dt><dd class="f16"><i class="cny">¥</i><{$order.order_amount}></dd></dl>
     </div>
     <{if !empty($order.memos)}>
     <dl class="memo col mt8">
