@@ -24,7 +24,7 @@
       <h2 class="xauto"><{$article.title}></h2>
       <div class="tbm center f14 mt5"><span class="c999"><{transtime($article.created_date)}></span></div>
       <{if !empty($article.brief)}>
-      <div class="tbf f14 mt8">根据软件更新文件显示，本次更新修复了包括部分用户无法查看“健康”数据在内的一些问题。</div>
+      <div class="tbf f14 mt8"><{$article.brief}></div>
       <{/if}>
       <{if !empty($article.picture)}>
       <div class="pic center mt5"><img src="<{$article.picture}>" /></div>

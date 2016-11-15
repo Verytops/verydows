@@ -5,7 +5,7 @@ h1,h2,h3,h4,h5 {font-size:12px;}
 ul,li {list-style-type:none;}
 dl,dt,dd {display:block;}
 input {-webkit-appearance:none;outline:none;}
-img {border:none;}
+img {max-width:100%;border:none;}
 a {color:#333;text-decoration:none;}
 a:hover {text-decoration:none;}
 .clearfix {font-size:0;height:0;line-height:0;border:0;clear:both;}
