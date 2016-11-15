@@ -45,7 +45,7 @@ function showHistory(){
 
 function clearHistory(){
   $.vdsConfirm({
-    content: '您确定要清空吗?',
+    content: '您确定要全部清空吗?',
     ok: function(){
       localStorage.removeItem('SEARCH_HISTORY');
       $('#history').remove();

@@ -49,7 +49,7 @@ class pay_controller extends general_controller
     
     public function action_return()
     {
-        $pcode = request('pcode', '', 'get');
+        $pcode = sql_escape(request('pcode', ''));
         $payment_model = new payment_method_model();
         if($payment = $payment_model->find(array('pcode' => $pcode, 'enable' => 1), null, 'params'))
         {

@@ -15,11 +15,21 @@ $(function(){
 
 function showFootprint(){
   var container = $('#fpli');
-  $.asynInter("<{url c='api/user' a='footprint'}>", null, function(data){
-    if(data.status == 'success'){
-      container.append(juicer($('#fp-tpl').html(), data));
+  $.asynInter("<{url c='api/user' a='footprint'}>", null, function(res){
+    if(res.status == 'success'){
+      container.append(juicer($('#fp-tpl').html(), res));
     }else{
       container.append($('#nodata-tpl').html());
+    }
+  }, 'get');
+}
+
+function clearFootprint(){
+  $.vdsConfirm({
+    content: '您确定要全部清空吗?',
+    ok: function(){
+      setCookie('FOOTPRINT', null, -9999);
+      $('#fpli').empty().html($('#nodata-tpl').html());
     }
   });
 }
@@ -28,8 +38,9 @@ function showFootprint(){
 <body>
 <div class="wrapper">
   <div class="header">
-    <div class="op lt"><a href="javascript:history.back(-1);"><i class="f20 iconfont">&#xe602;</i></a></div>
+    <div class="op lt"><a href="javascript:history.back(-1)"><i class="f20 iconfont">&#xe602;</i></a></div>
     <h2>我的足迹</h2>
+    <div class="op rt"><a class="pointer" href="javascript:void(0)" onClick="clearFootprint()"><i class="f20 iconfont">&#xe62b;</i></a></div>
   </div>
   <div class="fpli cut" id="fpli"></div>
 </div>

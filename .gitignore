@@ -1,5 +1,6 @@
 ﻿/index.php
 /.htaccess
 /upload
+/protected/config.php
 /protected/cache
 /protected/view/adv

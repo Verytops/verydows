@@ -191,14 +191,12 @@ function resetCaptcha(e){
     });    
   }
   
-  $.asynInter = function(url, dataset, success, datatype){
-     $.ajax({type:'post',dataType: datatype || 'json',url:url,data:dataset,beforeSend:function(){$.vdsLoading(true)},success: function(data){$.vdsLoading(false);success.call($(this), data);}});
+  $.asynInter = function(url, dataset, success, type, datatype){
+     $.ajax({type:type || 'post',dataType:datatype || 'json',url:url,data:dataset,beforeSend:function(){$.vdsLoading(true)},success: function(data){$.vdsLoading(false);success.call($(this), data);}, error:function(data, err){$.vdsLoading(false);alert(err);}});
   }
   
   $.asynList = function(url, dataset, success){
-    $.ajax({type:'post', dataType:'json', url:url, data:dataset, beforeSend:function(){$('body').append('<div class="loadbar" id="vdsbomloader"><p>正在加载</p><i class="rec-loading"></i></div>');},success:function(data){
-      $('#vdsbomloader').remove();success.call($(this), data);}
-    });
+    $.ajax({type:'post',dataType:'json',url:url, data:dataset,beforeSend:function(){$('body').append('<div class="loadbar" id="vdsbomloader"><p>正在加载</p><i class="rec-loading"></i></div>');},success:function(data){$('#vdsbomloader').remove();success.call($(this), data);},error:function(data, err){$.vdsLoading(false);alert(err);}});
   }
   
   $.vdsConfirm = function(options){

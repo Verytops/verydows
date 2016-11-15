@@ -54,9 +54,9 @@ class goods_model extends Model
         {
             $where .= ' AND newarrival = 1';
         }
-        if(!empty($conditions['popular']))
+        if(!empty($conditions['recommend']))
         {
-            $where .= ' AND popular = 1';
+            $where .= ' AND recommend = 1';
         }
         if(!empty($conditions['bargain']))
         {
