@@ -313,11 +313,11 @@ function submitForm(){
             <td>
               <p> 
                 <{if $rs.status == 1}>
-                <label class="green mr10"><input type="radio" name="status" value="1" checked="checked" />上架</label>
-                <label class="red"><input type="radio" name="status" value="0" />下架</label>
+                <label class="mr10"><input type="radio" name="status" value="1" checked="checked" /><font class="green ml5">上架</font></label>
+                <label><input type="radio" name="status" value="0" /><font class="red ml5">下架</font></label>
                 <{else}>
-                <label class="green mr10"><input type="radio" name="status" value="1" />上架</label>
-                <label class="red"><input type="radio" name="status" value="0" checked="checked" />下架</label>
+                <label class="mr10"><input type="radio" name="status" value="1" /><font class="green ml5">上架</font></label>
+                <label><input type="radio" name="status" value="0" checked="checked" /><font class="red ml5">下架</font></label>
                 <{/if}>
               </p>
               <p class="c999 mt10">如状态选择下架，前台则不会显示该商品</p></td>
