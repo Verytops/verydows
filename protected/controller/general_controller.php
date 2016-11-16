@@ -36,7 +36,7 @@ class general_controller extends Controller
             if($cookie = request('USER_STAYED', null, 'cookie'))
             {
                 $user_model = new user_model();
-                if($user_model->is_stayed($cookie))
+                if($user_model->check_stayed($cookie, get_ip()))
                 {
                     $_SESSION['REDIRECT'] = $_SERVER['REQUEST_URI'];
                     $redirect = $_SERVER['REQUEST_URI'];
