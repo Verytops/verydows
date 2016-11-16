@@ -188,7 +188,7 @@ function array_paging($data, $page_no = 1, $per_qty = 10, $scope = 10)
         if($total_page <= $scope) $pagination['all_pages'] = range(1, $total_page);
         else if($page_no <= $scope/2) $pagination['all_pages'] = range(1, $scope);
         else if($page_no <= $total_page - $scope/2 ) $pagination['all_pages'] = range(($page_no + intval($scope/2))- $scope + 1, $page_no + intval($scope/2));
-   	    else $pagination['all_pages'] = range($total_page - $scope + 1, $total_page);
+        else $pagination['all_pages'] = range($total_page - $scope + 1, $total_page);
         $results['pagination'] = $pagination;
     }
     return $results;

@@ -11,7 +11,7 @@ if($GLOBALS['cfg']['debug']){
 	ini_set("display_errors", "Off");
 	ini_set("log_errors", "On");
 }
-#set_error_handler("_err_handle");
+set_error_handler("_err_handle");
 require(INCL_DIR.DS.'functions.php');
 
 if($GLOBALS['cfg']['rewrite_enable'] && strpos($_SERVER['REQUEST_URI'], 'index.php?') === FALSE){
