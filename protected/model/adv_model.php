@@ -69,7 +69,10 @@ class adv_model extends Model
                 ORDER BY seq ASC 
                ";
         $results = array();
-        if($arr = $this->query($sql)) foreach($arr as $v) $results[$v['position_id']][] = $v['codes'];
+        if($arr = $this->query($sql))
+        {
+            foreach($arr as $v) $results[$v['position_id']][] = $v['codes'];
+        }
         return $results;
     }
     

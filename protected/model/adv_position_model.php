@@ -52,8 +52,7 @@ class adv_position_model extends Model
         $tpl_name = $id.'.html';
         if(is_file(VIEW_DIR.DS.'adv'.DS.$tpl_name))
         {
-            $vcache = new vcache();
-            $adv_list = $vcache->adv_model('get_adv_codes_list');
+            $adv_list = vcache::instance()->adv_model('get_adv_codes_list');
             if(isset($adv_list[$id]))
             {
                 $view = new View(VIEW_DIR.DS.'adv', APP_DIR.DS.'protected'.DS.'cache'.DS.'template');
