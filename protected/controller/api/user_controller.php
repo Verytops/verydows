@@ -5,7 +5,7 @@ class user_controller extends general_controller
     {
         $client_ip = get_ip();
         $error_model = new request_error_model();
-        if($is_captcha = $error_model->check($client_ip, $GLOBALS['cfg']['captcha_user_login']))
+        if($error_model->check($client_ip, $GLOBALS['cfg']['captcha_user_login']))
         {
             $captcha = strtolower(trim(request('captcha', '', 'post')));
             if(empty($_SESSION['CAPTCHA']) || $_SESSION['CAPTCHA'] != $captcha)
@@ -30,7 +30,7 @@ class user_controller extends general_controller
         else
         {
             $error_model->incr_err($client_ip);
-            $res = array('status' => 'error', 'captcha' => $is_captcha ? 'enabled' : 'disabled', 'msg' => '用户名或密码错误');
+            $res = array('status' => 'error', 'msg' => '用户名或密码错误');
         }
         
         echo json_encode($res);

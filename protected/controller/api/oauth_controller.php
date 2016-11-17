@@ -53,7 +53,7 @@ class oauth_controller extends general_controller
         }
         else
         {
-            $res = array('status' => 'success', '解除绑定失败');
+            $res = array('status' => 'error', 'msg' => '解除绑定失败');
         }
         echo json_encode($res);
     }

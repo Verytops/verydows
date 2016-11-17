@@ -22,9 +22,11 @@ function login(){
       if(res.status == 'success'){
         window.location.href = "<{url c='mobile/user' a='index'}>";
       }else{
-        $.vdsPrompt({content:res.msg, clicked: function(){
-          if(res.captcha == 'enabled') window.location.reload(true);
-        }});
+        if(res.captcha){
+          $.vdsPrompt({content:res.msg, clicked:function(){window.location.reload()}});
+        }else{
+          $.vdsPrompt({content:res.msg});
+        }
       }
     });
   }
