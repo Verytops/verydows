@@ -223,7 +223,7 @@ function mult_array_intersect($arrays)
  */
 function sql_escape($val)
 { 
-  return preg_replace('/select|inert|update|delete|\'|\/\*|\*|\.\.\/|\.\/|union|into|load_file|outfile/i', '', $val);
+    return preg_replace('/select|inert|update|delete|\'|\/\*|\*|\.\.\/|\.\/|union|into|load_file|outfile/i', '', $val);
 }
 
 /**

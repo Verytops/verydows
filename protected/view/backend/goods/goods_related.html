@@ -64,17 +64,21 @@ function removeRelated(){
     <div class="bw-row mt5 pad10 ta-c cut">
       <select id="cate_id" class="slt">
         <option value="">全部分类</option>
+        <{if !empty($cate_list)}>
         <option disabled="disabled">------------------------------</option>
         <{foreach $cate_list as $v}>
         <option value="<{$v.cate_id}>"><{str_repeat('|— ',$v.lv)}> <{$v.cate_name}></option>
         <{/foreach}>
+        <{/if}>
       </select>
       <select id="brand_id" class="slt">
         <option value="">全部品牌</option>
+        <{if !empty($brand_list)}>
         <option disabled="disabled">------------------------------</option>
         <{foreach $brand_list as $v}>
         <option value="<{$v.brand_id}>"><{$v.brand_name}></option>
         <{/foreach}>
+        <{/if}>
       </select>
       <input class="w250 txt" id="kw" type="text" placeholder="商品关键词或商品货号" />
       <button class="cbtn btn" type="button" onclick="searchGoods()">搜索</button>

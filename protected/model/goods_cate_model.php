@@ -53,7 +53,7 @@ class goods_cate_model extends Model
         while(TRUE)
         {
             if(!empty($cate))
-			{
+            {
                 array_unshift($results, $cate);
                 $cate = $this->find(array('cate_id' => $cate['parent_id']), null, 'cate_id, parent_id, cate_name');
             }
