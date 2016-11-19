@@ -124,7 +124,7 @@ function addFavorite(goods_id){
           <ul>
             <{foreach $related as $v}>
             <li>
-              <div class="im"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/150x150/<{$v.goods_image}>" /></a></div>
+              <div class="im"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/100x100/<{$v.goods_image}>" /></a></div>
               <h3 class="mustrcut"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><{$v.goods_name}></a></h3>
               <p class="price"><i>¥</i><{$v.now_price}></p>
             </li>
@@ -145,7 +145,7 @@ function addFavorite(goods_id){
           <ul>
             <{foreach $bestseller as $v}>
             <li>
-              <div class="im"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/150x150/<{$v.goods_image}>" /></a></div>
+              <div class="im"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><img alt="<{$v.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/100x100/<{$v.goods_image}>" /></a></div>
               <h3 class="mustrcut"><a href="<{url c='mobile/goods' a='index' id=$v.goods_id}>"><{$v.goods_name}></a></h3>
               <p class="sold">已售出<b><{$v.count}></b>件</p>
               <p class="price"><i>¥</i><{$v.now_price}></p>

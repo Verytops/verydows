@@ -58,7 +58,7 @@ class security_controller extends general_controller
             case 'email':
                 
                 if(empty($_SESSION['EMAIL_AUTH'])) $this->prompt('error', '非法请求');
-                if($_SESSION['EMAIL_AUTH']['CAPTCHA'] != request('email_captcha')) $this->prompt('error', '验证码不正确');
+                if($_SESSION['EMAIL_AUTH']['CAPTCHA'] != strtolower(request('email_captcha', ''))) $this->prompt('error', '验证码不正确');
                 if($_SESSION['EMAIL_AUTH']['EXPIRES'] < $_SERVER['REQUEST_TIME']) $this->prompt('error', '验证码过期');
                 if($_SESSION['EMAIL_AUTH']['EMAIL'] != request('email')) $this->prompt('error', '您所输入的邮箱与接收验证码的邮箱不一致');
                 
