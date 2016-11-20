@@ -137,7 +137,7 @@ class setting_controller extends general_controller
                 (
                     'captcha_admin_login' => (int)request('captcha_admin_login', 0),
                     'captcha_user_login' => (int)request('captcha_user_login', 0),
-                    'captcha_user_signin' => (int)request('captcha_user_signin', 0),
+                    'captcha_user_register' => (int)request('captcha_user_register', 0),
                     'captcha_feedback' => (int)request('captcha_feedback', 0),
                 );
                 
