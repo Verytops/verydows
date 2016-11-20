@@ -10,7 +10,7 @@ class wxpay extends abstract_payment
         
     }
     
-    public function create_js_params($args)
+    public function set_js_params($args)
     {
         $params = array
         (
@@ -35,7 +35,7 @@ class wxpay extends abstract_payment
                 'state' => 'STATE#wechat_redirect',
             );
             $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?'.$this->_set_params($params);
-			jump($url);
+			
 		}
         else
         {
@@ -68,13 +68,13 @@ class wxpay extends abstract_payment
             'body' => $args['body'],
             'out_trade_no' => $args['out_trade_no'],
             'total_fee' => $args['total_fee'],
-            'notify_url' => $this->notify_callback,
+            'notify_url' => $this->baseurl. '/api/pay/notify/wxpay',
             'trade_type' => 'JSAPI',
             'spbill_create_ip' => get_ip(),
         );
         
         $xml = $this->_array_to_xml($params);
-        $res = _post_xml('https://api.mch.weixin.qq.com/pay/unifiedorder', $xml);
+        $res = $this->_post_xml('https://api.mch.weixin.qq.com/pay/unifiedorder', $xml);
         $res = $this->_xml_to_array($res);
         if(!empty($res['prepay_id'])) return $res['prepay_id'];
         return FALSE;
@@ -111,7 +111,7 @@ class wxpay extends abstract_payment
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);//严格校验
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		curl_setopt($ch, CURLOPT_HEADER, FALSE);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_POST, TRUE);

@@ -110,7 +110,7 @@ class security_controller extends general_controller
                 {
                     $data['password'] = trim(request('password', '', 'post'));
                     $data['repassword'] = trim(request('repassword', '', 'post'));
-                    $verifier = $user_model->verifier($data, array('username' => FALSE, 'email' => FALSE, 'mobile' => FALSE));
+                    $verifier = $user_model->verifier($data, array('username' => FALSE, 'email' => FALSE, 'mobile' => FALSE, 'captcha' => FALSE));
                     if(TRUE === $verifier)
                     {
                         $user_model->update(array('user_id' => $user_id), array('password' => md5e($data['password'])));
