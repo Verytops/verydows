@@ -119,7 +119,7 @@ class admin_controller extends general_controller
                 $rs['role_ids'] = $admin_role_model->find_all($condition, null, 'role_id');
                 if(!empty($rs['role_ids']))
                 {
-                    $rs['role_ids'] = array_column((array)$role_ids, 'role_id');
+                    $rs['role_ids'] = array_column($rs['role_ids'], 'role_id');
                 }
                 $this->rs = $rs;
                 $role_model = new role_model();
