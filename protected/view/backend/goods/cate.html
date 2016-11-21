@@ -111,7 +111,7 @@ function submitForm(){
               <div class="ckrow pad5">
                 <ul class="c666">
                 <{foreach $brand_list as $v}>
-                <li><label class="mr20"><input name="brands[]" type="checkbox" value="<{$v.brand_id}>" <{$v.checked}> /><font class="c666 ml5"><{$v.brand_name}></font></label></li>
+                <li><label class="mr20"><input name="brands[]" type="checkbox" value="<{$v.brand_id}>" <{if !empty($v.checked)}><{$v.checked}><{/if}> /><font class="c666 ml5"><{$v.brand_name}></font></label></li>
                 <{/foreach}>
                 </ul>
               </div>
