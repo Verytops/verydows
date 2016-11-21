@@ -304,7 +304,7 @@ class order_controller extends general_controller
     public function action_delete()
     {
         $id = request('id');
-        $condition = array('order_id' => $id);
+        $condition = array('id' => $id);
         $order_model = new order_model();
         if($order = $order_model->find($condition))
         {
