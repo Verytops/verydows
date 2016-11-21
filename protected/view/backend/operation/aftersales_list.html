@@ -84,7 +84,7 @@ function pageturn(page_id){searchRes(page_id);}
     <td>${v.goods_qty}</td>
     <td width="30"><a class="blue" href="index.php?m=<{$MOD}>&c=user&a=view&id=${v.user_id}">${v.username}</a></td>
     <td>${v.type}</td>
-    <td class="c666">${v.created_date}</td>
+    <td class="c666">$${v.created_date}</td>
     <td>${v.status}</td>
   </tr>
   {@/each}
