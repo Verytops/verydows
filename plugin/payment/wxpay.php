@@ -2,12 +2,13 @@
 /**
  * WxPay Payment
  * @author Cigery
+ * Unfinished
  */
 class wxpay extends abstract_payment
 {
     public function create_pay_url($args)
     {
-        
+        //unfinished
     }
     
     public function set_js_params($args)
@@ -20,11 +21,12 @@ class wxpay extends abstract_payment
             'package' => "prepay_id={$args['prepay_id']}",
             'signType' => 'MD5',
         );
+        return $params;
     }
     
     private function _get_openid()
-	{
-		if(!isset($_GET['code']))
+    {
+        if(!isset($_GET['code']))
         {
             $params = array
             (
@@ -36,7 +38,7 @@ class wxpay extends abstract_payment
             );
             $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?'.$this->_set_params($params);
 			
-		}
+        }
         else
         {
             $params = array
@@ -52,8 +54,8 @@ class wxpay extends abstract_payment
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-		    curl_setopt($ch, CURLOPT_HEADER, FALSE);
-		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            curl_setopt($ch, CURLOPT_HEADER, FALSE);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
             $res = curl_exec($ch);
             curl_close($ch);
             $res = json_decode($res, TRUE);
@@ -85,14 +87,14 @@ class wxpay extends abstract_payment
     	$xml = '<xml>';
     	foreach($array as $k => $v)
     	{
-    		if(is_numeric($v))
+            if(is_numeric($v))
             {
-    			$xml .= '<'.$k.'>'.$v.'</'.$k.'>';
-    		}
+                $xml .= '<'.$k.'>'.$v.'</'.$k.'>';
+            }
             else
             {
-    			$xml .= '<'.$k.'><![CDATA['.$v.']]></'.$k.'>';
-    		}
+                $xml .= '<'.$k.'><![CDATA['.$v.']]></'.$k.'>';
+            }
         }
         $xml .= '</xml>';
         return $xml;
@@ -109,14 +111,14 @@ class wxpay extends abstract_payment
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-		curl_setopt($ch, CURLOPT_HEADER, FALSE);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
-		$res = curl_exec($ch);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+        $res = curl_exec($ch);
         curl_close($ch);
         return $res;
     }
