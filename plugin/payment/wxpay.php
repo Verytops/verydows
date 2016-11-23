@@ -60,8 +60,8 @@ class wxpay extends abstract_payment
             curl_close($ch);
             $res = json_decode($res, TRUE);
             return $res['openid'];
-		}
-	}
+        }
+    }
     
     private function _get_prepayid($args)
     {
@@ -98,7 +98,7 @@ class wxpay extends abstract_payment
         }
         $xml .= '</xml>';
         return $xml;
-	}
+    }
     
     private function _xml_to_array($xml)
     {
@@ -123,13 +123,13 @@ class wxpay extends abstract_payment
         return $res;
     }
     
-	private function _set_params($params)
-	{
-		$args = '';
-		foreach($params as $k => $v)
-		{
-			if($k != 'sign') $args .= $k.'='.$v.'&';
-		}
-		return trim($args, '&');
-	}
+    private function _set_params($params)
+    {
+        $args = '';
+        foreach($params as $k => $v)
+        {
+            if($k != 'sign') $args .= $k.'='.$v.'&';
+        }
+        return trim($args, '&');
+    }
 }
