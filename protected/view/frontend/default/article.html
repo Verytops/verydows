@@ -38,9 +38,11 @@
       <div class="cli mb10">
         <h2>资讯分类</h2>
         <ul>
+          <{if !empty($article_cate_list)}>
           <{foreach $article_cate_list as $v}>
           <li><a href="<{url c='article' a='category' id=$v.cate_id}>"><{$v.cate_name}></a></li>
           <{/foreach}>
+          <{/if}>
         </ul>
       </div>
     </div>

@@ -27,7 +27,9 @@
   <div class="module cut">
     <!-- 左侧开始 -->
     <div class="w210 fl cut">
-      <div class="cli mb10"> <{foreach $cate_help_list as $v}>
+      <div class="cli mb10">
+        <{if !empty($cate_help_list)}>
+        <{foreach $cate_help_list as $v}>
         <dl>
           <dt><{$v.cate_name}></dt>
           <{if !empty($v.children)}>
@@ -41,6 +43,7 @@
           <{/if}>
         </dl>
         <{/foreach}>
+        <{/if}>
       </div>
     </div>
     <!-- 左侧结束 -->

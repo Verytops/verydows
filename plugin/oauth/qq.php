@@ -68,7 +68,6 @@ class qq extends abstract_oauth
             return $res['openid'];
         }
         return FALSE;
-        
     }
     
     public function get_user_info($access_token, $oauth_key)
