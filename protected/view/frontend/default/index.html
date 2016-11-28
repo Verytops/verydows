@@ -32,7 +32,7 @@
           </div>
         </form>
         <{if !empty($hot_searches)}>
-        <div class="hw mt8">热门搜索：<{foreach $hot_searches as $v}><a href="<{url c='goods' a='search' kw=$v}>"><{$v}></a><{/foreach}></div>
+        <div class="hw mt8">热门搜索：<{foreach $hot_searches as $v}><a href="<{url c='search' a='index' kw=$v}>"><{$v}></a><{/foreach}></div>
         <{/if}>
       </div>
       <!-- 头部搜索结束 -->
