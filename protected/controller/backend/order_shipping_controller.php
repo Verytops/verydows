@@ -27,8 +27,17 @@ class order_shipping_controller extends general_controller
                 $carrier_map = vcache::instance()->shipping_carrier_model('indexed_list');
                 foreach($list as &$v)
                 {
-                    $v['carrier_name'] = $carrier_map[$v['carrier_id']]['name'];
-                    $v['tracking_url'] = $carrier_map[$v['carrier_id']]['tracking_url'] . $v['tracking_no'];
+                    if(isset($carrier_map[$v['carrier_id']]))
+                    {
+                        $v['carrier_name'] = $carrier_map[$v['carrier_id']]['name'];
+                        $v['tracking_url'] = $carrier_map[$v['carrier_id']]['tracking_url'] . $v['tracking_no'];
+                    }
+                    else
+                    {
+                        $v['carrier_name'] = 'Unknown';
+                        $v['tracking_url'] = '';
+                    }
+                    
                     $v['dateline'] = date('Y-m-d H:i:s', $v['dateline']);
                 }
                 

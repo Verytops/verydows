@@ -11,7 +11,7 @@
 $(function(){searchRes(1);});
 
 function searchRes(page_id){
-  var dataset = {type:$('#type').val(), kw: $('#kw').val()};
+  var dataset = {type:$('#type').val(), kw: $('#kw').val(), page:page_id};
   $.asynList("<{url m=$MOD c='order_shipping' a='index' step='search'}>", dataset, function(data){
     if(data.status == 'success'){
       $('#rows').append(juicer($('#row-tpl').html(), data));
