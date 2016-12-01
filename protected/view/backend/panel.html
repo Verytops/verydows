@@ -9,7 +9,7 @@
 <script type="text/javascript" src="public/theme/backend/js/panel.js"></script>
 <script type="text/javascript">
 function jump(uri){
-  url = 'index.php?m=<{$MOD}>&' + uri;
+  var url = 'index.php?m=<{$MOD}>&' + uri;
   parent.$('#main').attr('src', url);
 }
 </script>
