@@ -60,9 +60,11 @@ function addFavorite(goods_id){
   <div class="gims" id="gims">
     <div class="slider">
       <a><img src="<{$common.baseurl}>/upload/goods/prime/350x350/<{$goods.goods_image}>" /></a>
+      <{if !empty($album_list)}>
       <{foreach $album_list as $v}>
       <a><img src="<{$common.baseurl}>/upload/goods/album/350x350/<{$v.image}>"></a>
       <{/foreach}>
+      <{/if}>
     </div>
     <div class="clearfix"></div>
     <div class="trigger"><b>1</b><span>/</span><font>1</font></div>
