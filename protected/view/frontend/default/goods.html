@@ -84,9 +84,11 @@ function reviewPageJump(e){showReviewList($(e).prev('input').val())}
           <div id="goods-imgarea"><img src="<{$common.baseurl}>/upload/goods/prime/350x350/<{$goods.goods_image}>" /></div>
           <ul class="hide" id="goods-imgsrc">
             <li data-zoom="<{$common.baseurl}>/upload/goods/prime/0/<{$goods.goods_image}>"><img src="<{$common.baseurl}>/upload/goods/prime/350x350/<{$goods.goods_image}>" /></li>
+            <{if !empty($album_list)}>
             <{foreach $album_list as $v}>
             <li data-zoom="<{$common.baseurl}>/upload/goods/album/0/<{$v.image}>"><img src="<{$common.baseurl}>/upload/goods/album/350x350/<{$v.image}>" /></li>
             <{/foreach}>
+            <{/if}>
           </ul>
           <i class="zoom icon"></i> </div>
         <div class="tmb mt10 cut">
@@ -94,9 +96,11 @@ function reviewPageJump(e){showReviewList($(e).prev('input').val())}
           <div class="tmb-im cut">
             <div class="module cut" id="thumb-container">
               <a class="cur"><img alt="<{$goods.goods_name}>" src="<{$common.baseurl}>/upload/goods/prime/50x50/<{$goods.goods_image}>" /></a>
+              <{if !empty($album_list)}>
               <{foreach $album_list as $v}>
               <a><img alt="<{$goods.goods_name}>" src="<{$common.baseurl}>/upload/goods/album/50x50/<{$v.image}>" /></a>
               <{/foreach}>
+              <{/if}>
             </div>
           </div>
           <a class="tmb-arrow rh disabled" id="tmb-forward-btn"><i class="icon">&gt;</i></a>
@@ -200,6 +204,7 @@ function reviewPageJump(e){showReviewList($(e).prev('input').val())}
       <!-- 规格参数开始 -->
       <div class="content hide">
         <div class="speci">
+          <{if !empty($specs)}>
           <table width="100%" border="0" cellpadding="0" cellspacing="0">
             <{foreach $specs as $v}>
             <tr>
@@ -208,6 +213,7 @@ function reviewPageJump(e){showReviewList($(e).prev('input').val())}
             </tr>
             <{/foreach}>
           </table>
+          <{/if}>
         </div>
       </div>
       <!-- 规格参数结束 -->
