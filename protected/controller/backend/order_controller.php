@@ -304,7 +304,7 @@ class order_controller extends general_controller
     public function action_delete()
     {
         $id = request('id');
-        $condition = array('id' => $id);
+        $condition = array('order_id' => $id);
         $order_model = new order_model();
         if($order = $order_model->find($condition))
         {
@@ -314,11 +314,20 @@ class order_controller extends general_controller
                 {
                     //删除订单商品
                     $order_goods_model = new order_goods_model();
+                    $goods_list = $order_goods_model->find_all($condition);
                     $order_goods_model->delete($condition);
-                    //删除订单售后
-                    $aftersales_model = new aftersales_model();
-                    $aftersales_model->delete($condition);
+                    if($goods_list)
+                    {
+                        $order_goods_optional = new order_goods_optional_model();
+                        foreach($goods_list as $v)
+                        {
+                            $order_goods_optional->delete(array('map_id' => $v['id']));
+                        }
+                    }
                     
+                    //删除订单收件人地址
+                    $order_consignee_model = new order_consignee_model();
+                    $order_consignee_model->delete($condition);
                     $this->prompt('success', '删除成功', url($this->MOD.'/order', 'index'));
                 }
                 else

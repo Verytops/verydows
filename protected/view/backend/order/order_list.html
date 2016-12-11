@@ -93,7 +93,7 @@ function pageturn(page_id){searchRes(page_id);}
     </tr>
     {@each list as v}
     <tr>
-      <td width="20"><input name="id[]" type="checkbox" value="${v.id}" /></td>
+      <td width="20"><input name="id[]" type="checkbox" value="${v.order_id}" /></td>
       <td width="40">${v.id}</td>
       <td><a class="blue" href="<{url m=$MOD c='order' a='view' id='${v.order_id}'}>">${v.order_id}</a></td>
       <td>$${v.created_date}</td>
