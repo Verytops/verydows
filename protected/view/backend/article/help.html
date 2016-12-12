@@ -39,9 +39,11 @@ function submitForm(){
               <select name="cate_id" class="slt">
                 <option value="0">无分类</option>
                 <option disabled="disabled">------------------------------</option>
+                <{if !empty($cate_list)}>
                 <{foreach $cate_list as $v}>
                 <option value="<{$v.cate_id}>"><{$v.cate_name}></option>
                 <{/foreach}>
+                <{/if}>
               </select>
             </td>
           </tr>
@@ -89,11 +91,15 @@ function submitForm(){
               <select name="cate_id" class="slt">
                 <option value="0">无分类</option>
                 <option disabled="disabled">------------------------------</option>
-                <{foreach $cate_list as $v}> <{if $v.cate_id == $rs.cate_id}>
+                <{if !empty($cate_list)}>
+                <{foreach $cate_list as $v}>
+                <{if $v.cate_id == $rs.cate_id}>
                 <option selected="selected" value="<{$v.cate_id}>"><{$v.cate_name}></option>
                 <{else}>
                 <option value="<{$v.cate_id}>"><{$v.cate_name}></option>
-                <{/if}> <{/foreach}>
+                <{/if}>
+                <{/foreach}>
+                <{/if}>
               </select>
             </td>
           </tr>
