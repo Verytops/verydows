@@ -72,7 +72,7 @@
                 _countdown --;
               }else{
                 clearInterval(timer);
-                email.prop('disabled', false);
+                $('#email').prop('disabled', false);
                 $('#sendbtn').text('重新发送验证码到邮箱').removeClass('sm-disb').addClass('sm-blue').on('click', function(){sendCaptcha()});
                 return false;
               }
