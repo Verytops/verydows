@@ -30,15 +30,15 @@ if($GLOBALS['cfg']['rewrite_enable'] && strpos($_SERVER['REQUEST_URI'], 'index.p
             if(isset($route[2]))
             {
                 list($_GET['m'], $_GET['c'], $_GET['a']) = $route;
-			}
+            }
             else
             {
                 list($_GET['c'], $_GET['a']) = $route;
-			}
+            }
             foreach($matchs as $matchkey => $matchval)
             {
                 if(!is_int($matchkey))$_GET[$matchkey] = $matchval;
-			}
+            }
             break;
         }
     }
@@ -102,7 +102,7 @@ function url($c = 'main', $a = 'index', $param = array())
     }
     
     $param = array_filter($param);
-	$params = empty($param) ? '' : '&'. urldecode(http_build_query($param));
+    $params = empty($param) ? '' : '&'. urldecode(http_build_query($param));
 
     if(isset($m))
     {
@@ -122,7 +122,7 @@ function url($c = 'main', $a = 'index', $param = array())
         $url = $_SERVER["SCRIPT_NAME"]."?c=$c&a=$a$params";
     }
     
-	if($GLOBALS['cfg']['rewrite_enable'] && ($m == '' || $m == 'mobile' || $m == 'api'))
+    if($GLOBALS['cfg']['rewrite_enable'] && ($m == '' || $m == 'mobile' || $m == 'api'))
     {
         static $urlArray = array();
         if(!isset($urlArray[$url]))
@@ -542,7 +542,7 @@ class View
             foreach($dir as $d)
             {
                 if(substr($d, 0, strlen($part)) == $part) @unlink($this->compile_dir.DS.$d);
-			}
+            }
         }
     }
 }
