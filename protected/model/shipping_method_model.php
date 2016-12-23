@@ -70,14 +70,16 @@ class shipping_method_model extends Model
         }
         if(!$shipping) return FALSE;
         
-        if($shipping['type'] == 'fixed')
+        switch($shipping['type'])
         {
-            $amount = $shipping['charges'];
-        }
-        else
-        {
-            if($shipping['type'] == 'weight')
-            {
+            case 'fixed':
+            
+                $amount = $shipping['charges'];
+            
+            break;
+            
+            case 'weight':
+            
                 if($cart['weight'] > $shipping['first_weight'])
                 {
                     $amount = $shipping['first_charges'] + ceil(($cart['weight'] - $shipping['first_weight']) / $shipping['added_weight']) * $shipping['added_charges'];
@@ -86,9 +88,11 @@ class shipping_method_model extends Model
                 {
                     $amount = $shipping['first_charges'];
                 }
-            }
-            else
-            {
+                
+            break;
+            
+            case 'piece':
+            
                 if($cart['qty'] > $shipping['first_piece'])
                 {
                     $amount = $shipping['first_charges'] + ($cart['qty'] - $shipping['first_piece']) * $shipping['added_charges'];
@@ -97,8 +101,12 @@ class shipping_method_model extends Model
                 {
                     $amount = $shipping['first_charges'];
                 }
-            }
+            
+            break;
+            
+            default: $amount = 0;
         }
+
         return $amount;
     }
 }

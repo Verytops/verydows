@@ -25,19 +25,17 @@ function editConsignee(btn){
 
 //触发选换收件人
 function onChangeConsignee(){
-  $('#consignee-list li label').click(function(){
-    var $label = $(this);
-    if($label.parent().hasClass('cur')) return false;
-    $label.vdsConfirm({
+  $('#consignee-list input[type="radio"]').change(function(){
+    $(this).vdsConfirm({
       text: '您确定要更换收件人地址吗?',
       ok: function(){
         $('#consignee-list li.cur').removeClass('cur').find('input[type="radio"]').prop('checked', false);
-        $label.find('input[type="radio"]').prop('checked', true).closest('li').addClass('cur');
+        $(this).prop('checked', true).closest('li').addClass('cur');
         countFreight();
       },
       no: function(){
         $('#consignee-list li.cur').find('input[type="radio"]').prop('checked', true);
-        $label.find('input[type="radio"]').prop('checked', false);
+        $(this).prop('checked', false);
       }
     });	  
   });
@@ -45,19 +43,17 @@ function onChangeConsignee(){
 
 //触发选换配送方式
 function onChangeShipping(){
-  $('#shipping_list li label').click(function(){
-    var $label = $(this);
-    if($label.parent().hasClass('cur')) return false;
-    $label.vdsConfirm({
+  $('#shipping_list input[type="radio"]').change(function(){
+    $(this).vdsConfirm({
       text: '您确定要更换配送方式吗?',
       ok: function(){
         $('#shipping_list li.cur').removeClass('cur').find('input[type="radio"]').prop('checked', false);
-        $label.find('input[type="radio"]').prop('checked', true).closest('li').addClass('cur');
+        $(this).prop('checked', true).closest('li').addClass('cur');
         countFreight();
       },
       no: function(){
         $('#shipping_list li.cur').find('input[type="radio"]').prop('checked', true);
-        $label.find('input[type="radio"]').prop('checked', false);
+        $(this).prop('checked', false);
       }
     });	  
   });
@@ -65,7 +61,7 @@ function onChangeShipping(){
 
 //计算运费
 function countFreight(){
-  var csn_id = $('#consignee-list label input[type="radio"]:checked').val(), shipping_id = $('#shipping_list label input[type="radio"]:checked').val();
+  var csn_id = $('#consignee-list input[type="radio"]:checked').val(), shipping_id = $('#shipping_list input[type="radio"]:checked').val();
   $.getJSON(freightApi, {csn_id:csn_id, shipping_id:shipping_id}, function(res){
     if(res.status == 'success'){
       $('#shipping_amount').text(res.amount);
