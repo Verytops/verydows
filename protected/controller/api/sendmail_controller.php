@@ -11,7 +11,7 @@ class sendmail_controller extends general_controller
             $limit_model = new sendmail_limit_model();
             if($limit_model->check_counts($tpl_id, $user_id))
             {
-                $captcha = random_chars(4, TRUE).random_chars(2);
+                $captcha = str_shuffle(random_chars(4, TRUE).random_chars(2));
                 $_SESSION['EMAIL_AUTH']['EMAIL'] = $email;
                 $_SESSION['EMAIL_AUTH']['CAPTCHA'] = strtolower($captcha);
                 $_SESSION['EMAIL_AUTH']['EXPIRES'] = $_SERVER['REQUEST_TIME'] + 3600;

@@ -298,7 +298,7 @@ class Model
             if($total_page <= $scope)
             {
                 $this->page['all_pages'] = range(1, $total_page);
-			}
+            }
             elseif($page <= $scope/2)
             {
                 $this->page['all_pages'] = range(1, $scope);
@@ -359,7 +359,7 @@ class Model
             try{
                 $GLOBALS['instance']['mysql'][$db_config_key] = new PDO('mysql:dbname='.$db_config['MYSQL_DB'].';host='.$db_config['MYSQL_HOST'].';port='.$db_config['MYSQL_PORT'], $db_config['MYSQL_USER'], $db_config['MYSQL_PASS'], array(PDO::MYSQL_ATTR_INIT_COMMAND=>'SET NAMES \''.$db_config['MYSQL_CHARSET'].'\''));
             }catch(PDOException $e){err('Database Err: '.$e->getMessage());}
-		}
+        }
         return $GLOBALS['instance']['mysql'][$db_config_key];
     }
 	
@@ -435,7 +435,7 @@ class View
         include $complied_file;
 		
         return ob_get_clean();
-	} 
+    } 
 	
     public function assign($mixed, $val = '')
     {
@@ -445,7 +445,8 @@ class View
             {
                 if($k != '')$this->template_vals[$k] = $v;
             }
-        }else
+        }
+        else
         {
             if($mixed != '')$this->template_vals[$mixed] = $val;
         }
@@ -567,7 +568,8 @@ function err($msg)
     $traces = debug_backtrace();
     if(!$GLOBALS['cfg']['debug'])
     {
-        if(!empty($GLOBALS['err_handler'])){
+        if(!empty($GLOBALS['err_handler']))
+        {
             call_user_func($GLOBALS['err_handler'], $msg, $traces);
         }
         else

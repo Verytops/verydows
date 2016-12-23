@@ -78,24 +78,24 @@ class shipping_method_model extends Model
         {
             if($shipping['type'] == 'weight')
             {
-                if($cart['weight'] > $v['first_weight'])
+                if($cart['weight'] > $shipping['first_weight'])
                 {
-                    $amount = $v['first_charges'] + ceil(($cart['weight'] - $v['first_weight']) / $v['added_weight']) * $v['added_charges'];
+                    $amount = $shipping['first_charges'] + ceil(($cart['weight'] - $shipping['first_weight']) / $shipping['added_weight']) * $shipping['added_charges'];
                 }
                 else
                 {
-                    $amount = $v['first_charges'];
+                    $amount = $shipping['first_charges'];
                 }
             }
             else
             {
-                if($cart['qty'] > $v['first_piece'])
+                if($cart['qty'] > $shipping['first_piece'])
                 {
-                    $amount = $v['first_charges'] + ($cart['qty'] - $v['first_piece']) / $v['added_charges'];
+                    $amount = $shipping['first_charges'] + ($cart['qty'] - $shipping['first_piece']) * $shipping['added_charges'];
                 }  
                 else
                 {
-                    $amount = $v['first_charges'];
+                    $amount = $shipping['first_charges'];
                 }
             }
         }

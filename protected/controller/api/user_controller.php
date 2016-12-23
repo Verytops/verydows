@@ -279,5 +279,4 @@ class user_controller extends general_controller
         }
         echo json_encode($res);
     }
-
 }
