@@ -76,7 +76,7 @@ class acl
         if(empty($identity))
         {
             $url = url($this->_module.'/main', 'index');
-            echo "<script type='text/javascript'>alert('您还没有登陆或登录超时, 请重新登录!');parent.window.location.href='{$url}';</script>";
+            echo "<script type='text/javascript'>alert('您还没有登陆或登录超时, 请重新登录!');top.location.href='{$url}';</script>";
         }
         else
         {
