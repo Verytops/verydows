@@ -30,7 +30,7 @@ class goods_cate_attr_controller extends general_controller
             (
                 'name' => trim(request('name', '')),
                 'cate_id' => $cate_id,
-                'opts' => request('opts', null),
+                'opts' => request('opts', ''),
                 'filtrate' => (int)request('filtrate', 0),
                 'uom' => trim(request('uom', '')),
                 'seq' => (int)request('seq', 99),
@@ -65,7 +65,7 @@ class goods_cate_attr_controller extends general_controller
             (
                 'name' => trim(request('name', '')),
                 'cate_id' => $cate_id,
-                'opts' => request('opts', null),
+                'opts' => request('opts', ''),
                 'filtrate' => (int)request('filtrate', 0),
                 'uom' => trim(request('uom', '')),
                 'seq' => (int)request('seq', 99),
