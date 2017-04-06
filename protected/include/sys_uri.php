@@ -80,7 +80,7 @@ return array
             'goods@add' => '添加商品',
             'goods@edit' => '编辑商品',
             'goods@delete' => '删除商品',
-            'goods@editor' => '商品编辑器上传',
+            'goods@image' => '上传商品图片',
             'goods_optional_type@index' => '查看商品选项类型列表',
             'goods_optional_type@add' => '添加商品选项类型',
             'goods_optional_type@edit' => '编辑商品选项类型',
