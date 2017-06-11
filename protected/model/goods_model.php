@@ -355,7 +355,7 @@ class goods_model extends Model
                 $res['items'][$k]['json'] = json_encode($v);
                 $res['amount'] += $res['items'][$k]['subtotal'];
                 $res['qty'] += $res['items'][$k]['qty'];
-                $res['weight'] += (float)$res['items'][$k]['goods_weight'];
+                $res['weight'] += floatval($res['items'][$k]['goods_weight'] * $res['items'][$k]['qty']);
             }
             $res['amount'] = sprintf('%1.2f', $res['amount']);
             $res['kinds'] = count($res['items']);
