@@ -95,7 +95,7 @@ class shipping_method_model extends Model
             
                 if($cart['qty'] > $shipping['first_piece'])
                 {
-                    $amount = $shipping['first_charges'] + ($cart['qty'] - $shipping['first_piece']) * $shipping['added_charges'];
+                    $amount = $shipping['first_charges'] + ceil(($cart['qty'] - $shipping['first_piece']) / $shipping['added_piece']) * $shipping['added_charges'];
                 }  
                 else
                 {
