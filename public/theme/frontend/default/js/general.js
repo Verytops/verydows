@@ -206,7 +206,7 @@ function incrCartNum(){
       $confirm = $('#vdspopconfirm');
       $confirm.find('p').text(opts.text);
     }
-    $confirm.css({left:btn.offset().left - $confirm.width() + opts.left, top:btn.offset().top - btn.height() - $confirm.height() + opts.top}).show().find('button').on('click', function(){
+    $confirm.css({left:btn.offset().left - $confirm.width() + opts.left, top:btn.offset().top - btn.height() - $confirm.height() + opts.top}).show().find('button').off('click').on('click', function(){
       if($(this).index() == 0){
         opts.ok();
       }else{
