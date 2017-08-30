@@ -47,14 +47,14 @@ class vcache
     public function set($key = '', $val = null, $expires = 0)
     {
         if(!empty($expires)) $expires = $_SERVER['REQUEST_TIME'] + $expires;
-        if(self::$_mem) return @self::$_mem->set($key, $val, FALSE, $expires);
+        if(self::$_mem) return @self::$_mem->set($key, $val, MEMCACHE_COMPRESSED, $expires);
         
         return file_put_contents($this->_filename($key), '<?php die();?>,'.$expires.','.base64_encode(serialize($val)));
     }
     
     public function get($key = '')
     {
-        if(self::$_mem) return @self::$_mem->get($key, FALSE);
+        if(self::$_mem) return @self::$_mem->get($key);
         
         $cache = $this->_filename($key);
         if(is_readable($cache))
