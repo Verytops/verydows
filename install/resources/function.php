@@ -23,7 +23,8 @@ function request($name, $default = FALSE, $method = 'request')
 
 function prompt($msg, $url = 'history.go(-1)')
 {
-    echo "<script type=\"text/javascript\">alert('{$msg}');{$url};</script>";
+    $msg = addslashes($msg);
+    echo "<script type=\"text/javascript\">alert(\"{$msg}\");{$url};</script>";
     exit;
 }
 
