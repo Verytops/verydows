@@ -167,11 +167,11 @@ class user_controller extends general_controller
         );
         
         $user_model = new user_model();
-        $verifier = $user_model->verifier($data, array('username' => FALSE, 'email' => FALSE));
+        $verifier = $user_model->verifier($data, array('username' => FALSE, 'email' => FALSE, 'mobile' => FALSE, 'captcha' => FALSE));
         if(TRUE === $verifier)
         {
             $condition = array('user_id' => request('id'));
-            $data['password'] = md5($data['password']);
+            $data['password'] = md5e($data['password']);
             unset($data['repassword']);
             $user_model->update($condition, $data);
             $this->prompt('success', '修改用户密码成功');
