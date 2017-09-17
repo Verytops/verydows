@@ -10,13 +10,13 @@
 <script type="text/javascript">
 $(function(){
   var $cd = $('#countdown'), $timer = parseInt($cd.text());
-  window.setInterval(function(){
-    if($timer <= 0){window.clearInterval();return;}
+  var t = window.setInterval(function(){
+    if($timer <= 1){window.clearInterval(t);}
     $timer --;
     $cd.text($timer);
     if($timer == 0){
       if($cd.data('redirect') == 'close'){
-        window.opener = null; window.close();
+        window.open(location, '_self').close();
       }else{
         window.location.href = $cd.data('redirect');
       }
