@@ -7,13 +7,14 @@
 <script type="text/javascript" src="public/script/jquery.js"></script>
 <script type="text/javascript">
 var countdown = <{$rs.time}>;
+var timer;
 $(function(){
   $('#countdown').text(countdown);
-  window.setInterval(redirect, 1000); 
+  timer = window.setInterval(redirect, 1000); 
 })  
 
 function redirect(){
-  if(countdown <= 0) {window.clearInterval(); return;}
+  if(countdown <= 1) {window.clearInterval(timer);}
   countdown --;
   $('#countdown').text(countdown);
   if (countdown == 0){
