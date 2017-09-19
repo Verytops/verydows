@@ -197,7 +197,7 @@ class Model
 	
     public function __construct($table_name = null)
     {
-        $this->table_name = $GLOBALS['mysql']['MYSQL_DB_TABLE_PRE']. ($table_name ? $table_name : $this->table_name);
+        $this->table_name = $GLOBALS['mysql']['MYSQL_DB_TABLE_PRE']. ($table_name ? '`$table_name`' : '`$this->table_name`');
     }
     
     public function find_all($conditions = array(), $sort = null, $fields = '*', $limit = null)
