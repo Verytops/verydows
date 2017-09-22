@@ -1,59 +1,59 @@
 ![verydows logo](http://www.verydows.com/public/index/images/logo.gif)
 ```
-Ãâ·Ñ¡¢¿ªÔ´¡¢¸ßĞ§¡¢°²È«µÄPHP B2CÉÌ³ÇÏµÍ³
+å…è´¹ã€å¼€æºã€é«˜æ•ˆã€å®‰å…¨çš„PHP B2Cå•†åŸç³»ç»Ÿ
 ```
 
-#### ¸üĞÂËµÃ÷
+#### æ›´æ–°è¯´æ˜
 
 
-* ĞÂÔöH5ÒÆ¶¯¶Ë
+* æ–°å¢H5ç§»åŠ¨ç«¯
 
 
 ![intro](http://git.oschina.net/uploads/images/2016/1114/082205_d6678e5e_480212.jpeg)
 
 
-* ±¾´Î¸üĞÂ°²×°³ÌĞòÃ»ÓĞ¼ÓÈëÌåÑéÊı¾İ
+* æœ¬æ¬¡æ›´æ–°å®‰è£…ç¨‹åºæ²¡æœ‰åŠ å…¥ä½“éªŒæ•°æ®
 
 
-#### ¼¼ÊõÊµÏÖ
+#### é¡¹ç›®ä¾èµ–ä»¥ä¸‹å¼€æºé¡¹ç›®
 
-* ºËĞÄ¿ò¼Ü£º»ùÓÚÈ«ĞÂ³¬ÇáÁ¿¸ßĞÔÄÜ[Speed](https://github.com/SpeedPHP/speed)¿ò¼Ü
+* æ ¸å¿ƒæ¡†æ¶ï¼šåŸºäºå…¨æ–°è¶…è½»é‡é«˜æ€§èƒ½[Speed](https://github.com/SpeedPHP/speed)æ¡†æ¶
 
-* JS¿ò¼Ü£º[jQuery](https://github.com/jquery/jquery) 1.10.2
+* JSæ¡†æ¶ï¼š[jQuery](https://github.com/jquery/jquery) 1.10.2
 
-* ÒÆ¶¯¶ËJS¿ò¼Ü£º[Zepto](https://github.com/madrobby/zepto) 1.2.0
+* ç§»åŠ¨ç«¯JSæ¡†æ¶ï¼š[Zepto](https://github.com/madrobby/zepto) 1.2.0
 
-* Í¼±í¿â£º[Flot](https://github.com/flot/flot) 0.8.3
+* å›¾è¡¨åº“ï¼š[Flot](https://github.com/flot/flot) 0.8.3
 
-* ¸»ÎÄ±¾±à¼­Æ÷£º°Ù¶È ¾«¼ò°æ [UMeditor](https://github.com/fex-team/umeditor)
+* å¯Œæ–‡æœ¬ç¼–è¾‘å™¨ï¼šç™¾åº¦ ç²¾ç®€ç‰ˆ [UMeditor](https://github.com/fex-team/umeditor)
 
-* JSÄ£°åÒıÇæ£º[Juicer](https://github.com/PaulGuo/Juicer) 0.6.8
+* JSæ¨¡æ¿å¼•æ“ï¼š[Juicer](https://github.com/PaulGuo/Juicer) 0.6.8
 
 
-#### ÔËĞĞ»·¾³
+#### è¿è¡Œç¯å¢ƒ
 
-* ²Ù×÷ÏµÍ³£º Windows / Linux / Unix
+* æ“ä½œç³»ç»Ÿï¼š Windows / Linux / Unix
  
-* Web ·şÎñÆ÷£ºApache / Nginx / IIS
+* Web æœåŠ¡å™¨ï¼šApache / Nginx / IIS
 
-* PHP °æ±¾£º5.2 ¼°ÒÔÉÏ
+* PHP ç‰ˆæœ¬ï¼š5.2 åŠä»¥ä¸Š
 
-* MySQL °æ±¾£º5.0 ¼°ÒÔÉÏ
+* MySQL ç‰ˆæœ¬ï¼š5.0 åŠä»¥ä¸Š
 
-* Éú²ú»·¾³ÍÆ¼ö£ºLinux + Nginx + PHP5.5 + MySQL5.6
-
-
-#### Ïà¹ØÁ´½Ó
-
-* ¹ÙÍøµØÖ·£ºhttp://www.verydows.com 
-
-* ÑİÊ¾µØÖ·£ºhttp://demo.verydows.com
+* ç”Ÿäº§ç¯å¢ƒæ¨èï¼šLinux + Nginx + PHP5.5 + MySQL5.6
 
 
-#### ÁªÏµÎÒÃÇ
+#### ç›¸å…³é“¾æ¥
 
-* ÓÊÏä£ºbesten#live.com (½«¡°#¡±»»³É"@")
+* å®˜ç½‘åœ°å€ï¼šhttp://www.verydows.com 
 
-* QQ£º150526401
+* æ¼”ç¤ºåœ°å€ï¼šhttp://demo.verydows.com
 
-* QQÌÖÂÛ½»Á÷Èº£º372701906
+
+#### è”ç³»æˆ‘ä»¬
+
+* é‚®ç®±ï¼šbesten#live.com (å°†â€œ#â€æ¢æˆ"@")
+
+* QQï¼š150526401
+
+* QQè®¨è®ºäº¤æµç¾¤ï¼š372701906
