@@ -95,7 +95,7 @@ function cancelOrder(e, order_id){
           </div>
           <{/foreach}>
           <{if !empty($order_list.paging)}>
-          <div class="aln-c mt10 pad10 cut"><{layout_paging paging=$order_list.paging class='paging small' c='order' a='index'}></div>
+          <div class="aln-c mt10 pad10 cut"><{layout_paging paging=$order_list.paging class='paging small' c='order' a='list'}></div>
           <{/if}> </div>
         <{else}>
         <div class="pad10 aln-c c999">暂无任何订单记录</div>
