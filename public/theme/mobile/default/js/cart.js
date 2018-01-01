@@ -8,7 +8,7 @@ function showCartList(url){
     }else{
       $('#cart').append($('#nodata-tpl').html());
     }
-  });
+  }, 'GET');
 }
 
 function bindOperates(){
