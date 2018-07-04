@@ -117,7 +117,7 @@ $(function(){
 <script type="text/template" id="today-tpl">
   <table class="stbl">
     <tr><th width="100">订单数量</th><td><b>${order}</b>个</td></tr>
-    <tr><th>今日营收</th><td><b>{@if revenue != null}{@else}0.00{@/if}</b>元</td></tr>
+    <tr><th>今日营收</th><td><b>{@if revenue != null}${revenue}{@else}0.00{@/if}</b>元</td></tr>
     <tr><th>新注册用户</th><td><b>${user}</b>个</td></tr>
     <tr><th>售后申请</th><td><b>${aftersales}</b>个</td></tr>
     <tr><th>咨询反馈</th><td><b>${feedback}</b>条</td></tr>
