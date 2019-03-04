@@ -30,6 +30,7 @@ function resetPwd(btn){
 <div class="content">
   <div class="loc"><h2><i class="icon"></i>添加新管理员</h2></div>
   <form method="post" action="<{url m=$MOD c='admin' a='add' step='submit'}>">
+    <input type="hidden" name="token" value="<{$token}>" />
     <div class="box">
       <div class="module">
         <table class="dataform">
@@ -86,6 +87,7 @@ function resetPwd(btn){
 <div class="content">
   <div class="loc"><h2><i class="icon"></i>编辑管理员:<font class="ml5">[<{$rs.user_id}>]</font></h2></div>
   <form method="post" action="<{url m=$MOD c='admin' a='edit' id=$rs.user_id step='submit'}>">
+    <input type="hidden" name="token" value="<{$token}>" />
     <div class="box">
       <div class="module">
         <table class="dataform">
