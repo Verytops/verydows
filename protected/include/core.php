@@ -278,7 +278,7 @@ class Model
         if($total > $pernum)
         {
             $total_page = ceil($total / $pernum);
-            $page = min(intval(max($page, 1)), $total);
+            $page = min(intval(max($page, 1)), $total_page);
             $this->page = array
             (
                 'total_count' => $total, 
