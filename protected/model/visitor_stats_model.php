@@ -122,6 +122,7 @@ class visitor_stats_model extends Model
         }
         if(!preg_match('/^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$/', $data['ip'])) $data['ip'] = get_ip();
         if(empty($data['referrer'])) $data['referrer'] = $this->_get_referer();
+        $data['referrer'] = strip_tags($data['referrer']);
         if(!isset($this->platform_map[$data['platform']])) $data['platform'] = $this->_get_platform();
         if(!isset($this->platform_map[$data['browser']])) $data['browser'] = $this->_get_browser();
         return $data;
