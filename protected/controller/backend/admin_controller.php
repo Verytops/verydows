@@ -13,6 +13,8 @@ class admin_controller extends general_controller
     {
         if(request('step') == 'submit')
         {
+            if(empty($_SESSION['SUBMIT_TOKEN']) || request('token') != $_SESSION['SUBMIT_TOKEN']) $this->prompt('error', '非法提交');
+            
             $data = array
             (
                 'username' => trim(request('username', '')),
@@ -40,6 +42,7 @@ class admin_controller extends general_controller
                     }
                     $this->clear_cache();
                 }
+                unset($_SESSION['SUBMIT_TOKEN']);
                 $this->prompt('success', '添加管理员成功', url($this->MOD.'/admin', 'index'));
             }
             else
@@ -51,6 +54,8 @@ class admin_controller extends general_controller
         {
             $role_model = new role_model();
             $this->role_list = $role_model->find_all(null, null, 'role_id, role_name');
+            $_SESSION['SUBMIT_TOKEN'] = uniqid(rand());
+            $this->token = $_SESSION['SUBMIT_TOKEN'];
             $this->compiler('admin/admin.html');
         }
     }
@@ -59,6 +64,8 @@ class admin_controller extends general_controller
     {
         if(request('step') == 'submit')
         {
+            if(empty($_SESSION['SUBMIT_TOKEN']) || request('token') != $_SESSION['SUBMIT_TOKEN']) $this->prompt('error', '非法提交');
+            
             $user_id = request('id');
             $condition = array('user_id' => $user_id);
             $data = array
@@ -101,6 +108,7 @@ class admin_controller extends general_controller
                 }
                     
                 $this->clear_cache();
+                unset($_SESSION['SUBMIT_TOKEN']);
                 $this->prompt('success', '更新管理员成功', url($this->MOD.'/admin', 'index'));        
             }
             else
@@ -124,6 +132,8 @@ class admin_controller extends general_controller
                 $this->rs = $rs;
                 $role_model = new role_model();
                 $this->role_list = $role_model->find_all(null, null, 'role_id, role_name');
+                $_SESSION['SUBMIT_TOKEN'] = uniqid(rand());
+                $this->token = $_SESSION['SUBMIT_TOKEN'];
                 $this->compiler('admin/admin.html');
             }
             else
