@@ -2,41 +2,41 @@
 define('VIEW_DIR', APP_DIR.DS.'protected'.DS.'view');
 $GLOBALS = require(APP_DIR.DS.'protected'.DS.'config.php');
 $GLOBALS['cfg'] = require(APP_DIR.DS.'protected'.DS.'cache'.DS.'setting.php');
-if($GLOBALS['cfg']['debug'])
-{
+if($GLOBALS['cfg']['debug']) {
     error_reporting(-1);
     ini_set('display_errors', 'On');
-}
-else
-{
+} else {
     error_reporting(E_ALL & ~(E_STRICT|E_NOTICE));
     ini_set('display_errors', 'Off');
     ini_set('log_errors', 'On');
 }
 set_error_handler('_err_handle');
+
+if((!empty($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == "https") || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") || (!empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)){
+    $GLOBALS['http_scheme'] = 'https://';
+} else {
+    $GLOBALS['http_scheme'] = 'http://';
+}
+
 require(INCL_DIR.DS.'functions.php');
 
-if($GLOBALS['cfg']['rewrite_enable'] && strpos($_SERVER['REQUEST_URI'], 'index.php?') === FALSE)
-{
+if($GLOBALS['cfg']['rewrite_enable'] && strpos($_SERVER['REQUEST_URI'], 'index.php?') === FALSE) {
     if(($pos = strpos( $_SERVER['REQUEST_URI'], '?')) !== FALSE) parse_str(substr($_SERVER['REQUEST_URI'], $pos + 1), $_GET);
     foreach($GLOBALS['cfg']['rewrite_rule'] as $rule => $mapper)
     {
-        if('/' == $rule)$rule = '';
-        if(0!==stripos($rule, 'http://')) $rule = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/\\') .'/'.$rule;
-        $rule = '/'.str_ireplace(array('\\\\', 'http://', '/', '<', '>',  '.'), array('', '', '\/', '(?P<', '>\w+)', '\.'), $rule).'/i';
-        if(preg_match($rule, 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $matchs))
-        {
+        if('/' == $rule) $rule = '';
+        if(0 !== stripos($rule, $GLOBALS['http_scheme'])) {
+            $rule = $GLOBALS['http_scheme'].$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/\\') .'/'.$rule;
+        }
+        $rule = '/'.str_ireplace(array('\\\\', $GLOBALS['http_scheme'], '/', '<', '>',  '.'), array('', '', '\/', '(?P<', '>\w+)', '\.'), $rule).'/i';
+        if(preg_match($rule, $GLOBALS['http_scheme'].$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $matchs)) {
             $route = explode('/', $mapper);
-            if(isset($route[2]))
-            {
+            if(isset($route[2])) {
                 list($_GET['m'], $_GET['c'], $_GET['a']) = $route;
-            }
-            else
-            {
+            } else {
                 list($_GET['c'], $_GET['a']) = $route;
             }
-            foreach($matchs as $matchkey => $matchval)
-            {
+            foreach($matchs as $matchkey => $matchval) {
                 if(!is_int($matchkey))$_GET[$matchkey] = $matchval;
             }
             break;
@@ -57,22 +57,17 @@ if(!empty($__module))
 if(!is_available_classname($__controller)) err("Err: Controller name '$__controller' is not correct!");
 
 spl_autoload_register('inner_autoload');
-function inner_autoload($class)
-{
+function inner_autoload($class) {
     GLOBAL $__module;
-    foreach(array('model', 'lib', 'controller'.(empty($__module)?'':DS.$__module)) as $dir)
-    {
+    foreach(array('model', 'lib', 'controller'.(empty($__module)?'':DS.$__module)) as $dir) {
         $file = APP_DIR.DS.'protected'.DS.$dir.DS.$class.'.php';
-        if(is_file($file))
-        {
+        if(is_file($file)) {
             include $file;
             return;
         }
         $lowerfile = strtolower($file);
-        foreach(glob(APP_DIR.DS.'protected'.DS.$dir.DS.'*.php') as $file)
-        {
-            if(strtolower($file) === $lowerfile)
-            {
+        foreach(glob(APP_DIR.DS.'protected'.DS.$dir.DS.'*.php') as $file) {
+            if(strtolower($file) === $lowerfile) {
                 include $file;
                 return;
             }
@@ -91,10 +86,8 @@ if(!method_exists($controller_obj, $action_name)) err("Err: Method '$action_name
 
 $controller_obj->$action_name();
 
-function url($c = 'main', $a = 'index', $param = array())
-{
-    if(is_array($c))
-    {
+function url($c = 'main', $a = 'index', $param = array()) {
+    if(is_array($c)) {
         $param = $c;
         if(isset($param['m'])) $m = $param['m']; unset($param['m']);
         $c = $param['c']; unset($param['c']);
@@ -104,19 +97,16 @@ function url($c = 'main', $a = 'index', $param = array())
     $param = array_filter($param);
     $params = empty($param) ? '' : '&'. urldecode(http_build_query($param));
 
-    if(isset($m))
-    {
+    if(isset($m)) {
         $route = "$m/$c/$a";
         $url = $_SERVER["SCRIPT_NAME"]."?m=$m&c=$c&a=$a$params";
     }
-    elseif(strpos($c, '/') !== false)
-    {
+    elseif(strpos($c, '/') !== false) {
         list($m, $c) = explode('/', $c);
         $route = "$m/$c/$a";
         $url = $_SERVER["SCRIPT_NAME"]."?m=$m&c=$c&a=$a$params";
     }
-    else
-    {
+    else {
         $m = '';
         $route = "$c/$a";
         $url = $_SERVER["SCRIPT_NAME"]."?c=$c&a=$a$params";
@@ -125,8 +115,7 @@ function url($c = 'main', $a = 'index', $param = array())
     if($GLOBALS['cfg']['rewrite_enable'] && ($m == '' || $m == 'mobile' || $m == 'api'))
     {
         static $urlArray = array();
-        if(!isset($urlArray[$url]))
-        {
+        if(!isset($urlArray[$url])) {
             foreach($GLOBALS['cfg']['rewrite_rule'] as $rule => $mapper)
             {
                 $mapper = '/'.str_ireplace(array('/', '<a>', '<c>', '<m>'), array('\/', '(?P<a>\w+)', '(?P<c>\w+)', '(?P<m>\w+)'), $mapper).'/i';
@@ -145,7 +134,9 @@ function url($c = 'main', $a = 'index', $param = array())
                         $urlArray[$url] = preg_replace('/<\w+>/', '', $urlArray[$url]).(!empty($_args) ? '?'.urldecode(http_build_query($_args)) : '');
                     }
 					
-                    if(0!==stripos($urlArray[$url], 'http://')) $urlArray[$url] = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/\\') .'/'.$urlArray[$url];
+                    if(0 !== stripos($urlArray[$url], $GLOBALS['http_scheme'])) {
+                        $urlArray[$url] = $GLOBALS['http_scheme'].$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/\\') .'/'.$urlArray[$url];
+                    }
                     $rule = str_ireplace(array('<m>', '<c>', '<a>'), '', $rule);
                     if(count($param) == preg_match_all('/<\w+>/is', $rule, $_match)) return $urlArray[$url];
                     break;
